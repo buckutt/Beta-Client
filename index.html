@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <title>Buckutt</title>
+        <meta charset="utf-8">
+        <meta name="description" content="Buckutt Client Application">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="bower_components/material-design-lite/material.min.css">
+        <link rel="stylesheet" href="styles/font.css">
+        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="styles/header.css">
+        <link rel="stylesheet" href="styles/articles.css">
+        <link rel="stylesheet" href="styles/cards.css">
+        <link rel="stylesheet" href="styles/transitions.css">
+    </head>
+    <body>
+        <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
+            <div class="shadow-loader" v-show="!articlesLoaded || !promotionsLoaded" v-transition="fade">
+                <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+            </div>
+            <header class="mdl-layout__header">
+                <div class="mdl-layout__header-row">
+                    <div class="mdl-layout-spacer">
+                        <user></user>
+                    </div>
+                    <nav class="mdl-navigation">
+                        <a id="eject" class="mdl-navigation__link" href="#"
+                           v-show="sellerConnected"
+                           v-on="click: onEject"
+                           v-transition="fade">
+                            <i class="material-icons">eject</i>
+                        </a>
+                        <a id="reload" class="mdl-navigation__link" href="#"
+                           v-show="userConnected"
+                           v-transition="fade">
+                            <i class="material-icons">attach_money</i>
+                        </a>
+                        <a id="changePoint" class="mdl-navigation__link" href="#">
+                            <i class="material-icons">sync</i>
+                        </a>
+                    </nav>
+                </div>
+                <div class="mdl-layout__tab-bar mdl-js-ripple-effect"
+                     v-show="userConnected"
+                     v-transition="fade">
+                    <a data-target="tab-{{ $index }}" class="mdl-layout__tab is-active"
+                       v-on="click: onTabClick"
+                       v-class="is-active: $index === 0"
+                       v-repeat="categories">{{ $value }}</a>
+                </div>
+            </header>
+            <main class="mdl-layout__content">
+                <div class="page-content">
+                    <!-- Keep v-if on this div and not v-show, else inittabs is called immediately -->
+                    <div class="mdl-grid"
+                         v-if="userConnected"
+                         v-inittabs="">
+                        <template v-repeat="categories">
+                            <div id="tab-{{ $index }}" class="mdl-tabs__panel mdl-cell mdl-cell--12-col articlesContainer">
+                                <template v-repeat="articles | filterBy categories[$index] in category.name" track-by="id">
+                                    <div class="mdl-card mdl-shadow--2dp buckutt-card-image"
+                                         v-on="click: onArticleClick"
+                                         data-id="{{ id }}">
+                                        <div class="mdl-card__title mdl-card--expand"></div>
+                                        <div class="mdl-card__actions">
+                                            <span class="buckutt-card-image__filename">{{ name }}</span>
+                                        </div>
+                                        <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                                                v-on="click: onMinusClick">
+                                            <i class="material-icons">remove</i>
+                                        </button>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="mdl-grid"
+                         v-show="sellerConnected && sellerAuth && !userConnected"
+                         v-transition="fade">
+                        <div class="mdl-card mdl-shadow--6dp infoCard">
+                            En attente d'un étudiant
+                        </div>
+                    </div>
+
+                    <div class="mdl-grid"
+                         v-show="sellerConnected && !sellerAuth"
+                         v-transition="fade">
+                        <div class="mdl-card mdl-shadow--6dp infoCard authCard">
+                            <div class="mdl-grid">
+                                <div class="mdl-cell mdl-cell--12-col">
+                                    <span id="password">{{ sellerPasswordInput | passwordHide }}</span>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">1</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">2</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">3</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">4</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">5</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">6</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">7</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">8</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">9</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onClearInput">
+                                    <i class="material-icons">clear</i>
+                                </div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onPasswordInput">0</div>
+                                <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                     v-on="click: onValidateInput">
+                                    <i class="material-icons">check</i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mdl-grid"
+                         v-show="!sellerAuth && !sellerConnected && !userConnected"
+                         v-transition="fade">
+                        <div class="mdl-card mdl-shadow--6dp infoCard">
+                            En attente d'un vendeur
+                        </div>
+                    </div>
+                </div>
+            </main>
+            <button id="done" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                    v-on="click: sendBucket">
+                    <i class="material-icons">done_all</i>
+            </button>
+        </div>
+        <script src="bower_components/vue/dist/vue.min.js"></script>
+        <script src="bower_components/material-design-lite/material.min.js"></script>
+
+        <script src="init.js"></script>
+        <script src="app/utils/uniq.js"></script>
+        <script src="app/utils/parents.js"></script>
+        <script src="app/utils/etuNumber.js"></script>
+        <script src="app/utils/filterObjId.js"></script>
+        <script src="app/utils/filterUndefined.js"></script>
+        <script src="app/filters/credit.js"></script>
+        <script src="app/filters/basket.js"></script>
+        <script src="app/filters/passwordHide.js"></script>
+        <script src="app/components/user.js"></script>
+        <script src="app/articles/articles.js"></script>
+        <script src="app/directives/initTabs.js"></script>
+        <script src="app/tabs/tabs.js"></script>
+        <script src="app/connection/connection.js"></script>
+        <script src="app/connection/auth.js"></script>
+        <script src="app/connection/ejecter.js"></script>
+        <script src="app/promotions/promotions.js"></script>
+        <script src="app/promotions/promotionsEvents.js"></script>
+        <script src="app/sendBucket/sendBucket.js"></script>
+        <script src="app.js"></script>
+    </body>
+</html>

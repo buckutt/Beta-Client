@@ -1,0 +1,66 @@
+html, body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.page-content {
+    height: 100%;
+}
+
+main.mdl-layout__content {
+    overflow: hidden;
+}
+
+.page-content > .mdl-grid {
+    height: calc(100% - 112px);
+    padding: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+}
+
+/* Paid button */
+#done {
+    background-color: #2ecc71;
+    bottom: 15px;
+    cursor: pointer;
+    margin: 0 15px;
+    position: absolute;
+    right: 15px;
+    z-index: 10;
+}
+
+/* Loader */
+.shadow-loader {
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 20;
+}
+
+.shadow-loader > .mdl-spinner {
+    margin-top: 10%;
+}
+
+.shadow-loader .mdl-spinner--single-color .mdl-spinner__layer {
+    border-color: #fff;
+}

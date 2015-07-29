@@ -1,0 +1,33 @@
+To do :
+
+* Real articles loading
+* Real user loading and hash computing
+* Send the basket
+* Reloads
+* Point change
+
+Working :
+
+Done :
+* Ergo : Too much thing on the header
+* Loading promotions / articles
+* Promotions
+* Calculate prices based on basket
+* Fake articles request
+* Ejection
+* Fake auth request
+* Eject vendeur
+* Eject user
+* Current user in header
+* Waiting for seller
+* Auth seller
+* Last action made by
+* Auth user
+* New credit after a selection
+* Structure
+* Design
+* Articles structure
+* Selection
+* Adding items from basket
+* Basket
+* Removing items from basket

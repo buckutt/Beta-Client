@@ -1,0 +1,13 @@
+{
+  "name": "Buckutt-Client",
+  "version": "1.0.0",
+  "authors": [
+    "Gabriel Juchault <gabriel.juchault@gmail.com>"
+  ],
+  "description": "Buckutt Client Application",
+  "license": "MIT",
+  "dependencies": {
+    "vue": "~0.12.7",
+    "material-design-lite": "~1.0.0"
+  }
+}
