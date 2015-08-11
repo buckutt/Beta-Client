@@ -15,13 +15,36 @@
     </head>
     <body>
         <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
-            <div class="shadow-loader" v-show="!articlesLoaded || !promotionsLoaded" v-transition="fade">
+            <div class="shadow-loader"
+                 v-show="!articlesLoaded || !promotionsLoaded"
+                 v-transition="fade">
                 <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
             </div>
+            <div class="modal"
+                 v-show="modalOpened"
+                 v-transition="fade"></div>
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row">
                     <div class="mdl-layout-spacer">
-                        <user></user>
+                        <div v-if="userConnected">
+                            <div class="userCredit">
+                                {{ currentUser.fullname }}
+                                <br>
+                                crédit :
+                                <span v-if="currentUser.credit - totalCost < 0" class="invalidPrice">{{ currentUser.credit - totalCost | credit true }}</span>
+                                <span v-if="currentUser.credit - totalCost >= 0">{{ currentUser.credit - totalCost | credit true }}</span>
+                            </div>
+                            <span class="userBasket">Panier : {{{ panier | basket }}}</span>
+                        </div>
+                        <div v-if="!userConnected && sellerConnected && sellerAuth && lastUser && lastCredit">
+                            Dernière action par {{ lastUser }} pour {{ lastCredit | credit true }}
+                        </div>
+                        <div v-if="!userConnected && sellerConnected && sellerAuth && !lastUser && !lastCredit">
+                            En attente d'un étudiant
+                        </div>
+                        <div v-if="!userConnected && (!sellerConnected || !sellerAuth)">
+                            En attente d'un vendeur
+                        </div>
                     </div>
                     <nav class="mdl-navigation">
                         <a id="eject" class="mdl-navigation__link" href="#"
