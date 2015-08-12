@@ -67,16 +67,17 @@ function checkSerie (etuNumber) {
     } else {
         console.info('Seller loading...');
         setTimeout(() => {
-            console.info('Seller loaded !');
-            vm.$data.$set('currentSeller', {
-                id: 'abc',
-                firstname: 'Gabriel',
-                lastname: 'Juchault',
-                fullname: 'Gabriel Juchault',
-                credit: 500
-            });
-
-            vm.$data.$set('sellerConnected', true);
+            const success = true;
+            if (success) {
+                console.info('Seller loaded !');
+                vm.$data.$set('sellerConnected', true);
+            } else {
+                let keepText = $infoCard.textContent;
+                $infoCard.textContent = 'Invalide !';
+                setTimeout(() => {
+                    $infoCard.textContent = keepText;
+                }, 1000);
+            }
         }, 500);
     }
 }

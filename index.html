@@ -184,7 +184,8 @@
                          v-transition="fade">
                         <div class="mdl-card mdl-shadow--6dp infoCard authCard">
                             <div class="mdl-grid">
-                                <div class="mdl-cell mdl-cell--12-col">
+                                <div class="mdl-cell mdl-cell--12-col"
+                                     v-class="wrong: wrongSellerPassword">
                                     <span id="password">{{ sellerPasswordInput | passwordHide }}</span>
                                 </div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
@@ -249,7 +250,7 @@
         <script src="app/directives/initTabs.js"></script>
         <script src="app/tabs/tabs.js"></script>
         <script src="app/connection/connection.js"></script>
-        <script src="app/connection/auth.js"></script>
+        <script src="app/connection/authInput.js"></script>
         <script src="app/connection/ejecter.js"></script>
         <script src="app/promotions/promotions.js"></script>
         <script src="app/promotions/promotionsEvents.js"></script>

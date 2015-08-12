@@ -30,7 +30,14 @@
 }
 
 .infoCard.authCard .mdl-cell:first-child {
+    border: 1px solid #ddd;
     cursor: default;
+
+    transition: border .3s ease;
+}
+
+.infoCard.authCard .mdl-cell.wrong:first-child {
+    border: 2px solid #e74c3c;
 }
 
 .infoCard.authCard .mdl-cell > i {
