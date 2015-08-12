@@ -11,6 +11,7 @@
         <link rel="stylesheet" href="styles/header.css">
         <link rel="stylesheet" href="styles/articles.css">
         <link rel="stylesheet" href="styles/cards.css">
+        <link rel="stylesheet" href="styles/reloads.css">
         <link rel="stylesheet" href="styles/transitions.css">
     </head>
     <body>
@@ -20,26 +21,98 @@
                  v-transition="fade">
                 <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
             </div>
-            <div class="modal"
-                 v-show="modalOpened"
-                 v-transition="fade"></div>
+
+            <div class="modal-reload-credit"
+                 v-show="reloadCreditOpened"
+                 v-transition="fade">
+                <div id="reloadCard" class="mdl-card mdl-shadow--4dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Rechargement</h2>
+                        <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
+                                v-on="click: closeReloadCredit">
+                            Annuler
+                        </button>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <template v-repeat="paymentMethods">
+                            <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
+                                    v-class="mdl-button--raised: reloadMethod === slug"
+                                    v-on="click: selectReloadMethod(slug)">
+                                {{ text }}
+                            </button>
+                        </template>
+                        <div class="mdl-grid amountGrid">
+                            <div class="mdl-cell mdl-cell--12-col">
+                                <span id="creditToReload">{{ creditToReload | credit }}</span>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">1</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">2</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">3</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">4</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">5</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">6</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">7</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">8</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">9</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadClearInput">
+                                <i class="material-icons">clear</i>
+                            </div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadInput">0</div>
+                            <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
+                                 v-on="click: onCreditToReloadValidateInput">
+                                <i class="material-icons">check</i>
+                            </div>
+                        </div>
+                        <div class="mdl-grid buttonsGrid">
+                            <div class="mdl-cell mdl-cell--12-col validate">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+                                        v-on="click: validateReload">
+                                    Paiement accepté
+                                </button>
+                            </div>
+                            <div class="mdl-cell mdl-cell--12-col cancel">
+                                <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
+                                        v-on="click: invalidPayment">
+                                    Paiement refusé
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <header class="mdl-layout__header">
                 <div class="mdl-layout__header-row">
                     <div class="mdl-layout-spacer">
                         <div v-if="userConnected">
-                            <div class="userCredit">
+                            <div class="userCredit" data-badge="+{{ totalReload | credit true }}"
+                                 v-class="mdl-badge: totalReload > 0">
                                 {{ currentUser.fullname }}
                                 <br>
                                 crédit :
-                                <span v-if="currentUser.credit - totalCost < 0" class="invalidPrice">{{ currentUser.credit - totalCost | credit true }}</span>
-                                <span v-if="currentUser.credit - totalCost >= 0">{{ currentUser.credit - totalCost | credit true }}</span>
+                                <span class="invalidPrice"
+                                      v-if="currentUser.credit - totalCost + totalReload < 0">{{ currentUser.credit - totalCost + totalReload | credit true }}</span>
+                                <span v-if="currentUser.credit - totalCost + totalReload >= 0">{{ currentUser.credit - totalCost + totalReload | credit true }}</span>
                             </div>
                             <span class="userBasket">Panier : {{{ panier | basket }}}</span>
                         </div>
-                        <div v-if="!userConnected && sellerConnected && sellerAuth && lastUser && lastCredit">
-                            Dernière action par {{ lastUser }} pour {{ lastCredit | credit true }}
+                        <div v-if="!userConnected && sellerConnected && sellerAuth && lastUser && (lastCredit || lastReload)">
+                            <span v-if="lastCredit && !lastReload">Dernière action par {{ lastUser }} pour un achat de {{ lastCredit | credit true }}</span>
+                            <span v-if="!lastCredit && lastReload">Dernière action par {{ lastUser }} pour un rechargement de {{ lastReload | credit true }}</span>
+                            <span v-if="lastCredit && lastReload">Dernière action par {{ lastUser }} pour un achat de {{ lastCredit | credit true }} et un rechargement de {{ lastReload | credit true }}</span>
                         </div>
-                        <div v-if="!userConnected && sellerConnected && sellerAuth && !lastUser && !lastCredit">
+                        <div v-if="!userConnected && sellerConnected && sellerAuth && !lastUser && !(lastCredit || lastReload)">
                             En attente d'un étudiant
                         </div>
                         <div v-if="!userConnected && (!sellerConnected || !sellerAuth)">
@@ -55,7 +128,8 @@
                         </a>
                         <a id="reload" class="mdl-navigation__link" href="#"
                            v-show="userConnected"
-                           v-transition="fade">
+                           v-transition="fade"
+                           v-on="click: askReload">
                             <i class="material-icons">attach_money</i>
                         </a>
                         <a id="changePoint" class="mdl-navigation__link" href="#">
@@ -171,7 +245,6 @@
         <script src="app/filters/credit.js"></script>
         <script src="app/filters/basket.js"></script>
         <script src="app/filters/passwordHide.js"></script>
-        <script src="app/components/user.js"></script>
         <script src="app/articles/articles.js"></script>
         <script src="app/directives/initTabs.js"></script>
         <script src="app/tabs/tabs.js"></script>
@@ -181,6 +254,7 @@
         <script src="app/promotions/promotions.js"></script>
         <script src="app/promotions/promotionsEvents.js"></script>
         <script src="app/sendBucket/sendBucket.js"></script>
+        <script src="app/reloads/askReload.js"></script>
         <script src="app.js"></script>
     </body>
 </html>

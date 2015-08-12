@@ -1,0 +1,85 @@
+.modal-reload-credit {
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 20;
+}
+
+#reloadCard {
+    margin: 150px auto 0 auto;
+    width: 450px;
+}
+
+/* Center grid */
+#reloadCard .mdl-card__supporting-text {
+    margin: 0 auto;
+}
+
+/* Prepare amount grid for animation */
+#reloadCard .amountGrid {
+    height: 242px;
+    margin: 10px;
+    overflow: hidden;
+    padding: 0;
+
+    transition: height .3s ease;
+}
+
+/* Prepare buttons grid for animation */
+#reloadCard .buttonsGrid {
+    height: 0;
+    margin: 10px;
+    overflow: hidden;
+    padding: 0;
+
+    transition: height .3s ease;
+}
+
+/* means of payment buttons */
+#reloadCard button {
+    margin: 0 5px;
+}
+
+#reloadCard .material-icons {
+    line-height: 36px;
+}
+
+#reloadCard button.mdl-button--raised {
+    background-color: #3498db;
+}
+
+#reloadCard button:not(.mdl-button--raised) {
+    color: #3498db;
+}
+
+/* close button */
+#reloadCard > .mdl-card__title > button {
+    color: #f39c12;
+    position: absolute;
+    right: 20px;
+}
+
+/* reload amount */
+#creditToReload {
+    font-size: 25px;
+}
+
+#reloadCard .buttonsGrid button {
+    height: 45px;
+}
+
+#reloadCard .buttonsGrid .validate button {
+    background-color: #2ecc71;
+    display: block;
+    width: 100%;
+}
+
+#reloadCard .buttonsGrid .cancel button {
+    background-color: #f39c12;
+    display: block;
+    width: 100%;
+}

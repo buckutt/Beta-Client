@@ -5,6 +5,10 @@ vmBuilder.data.currentUser     = {};
 vmBuilder.data.sellerConnected = false;
 vmBuilder.data.sellerAuth      = false;
 vmBuilder.data.userConnected   = false;
+vmBuilder.data.currentPoint    = {
+    id: 'pointId',
+    name: 'Foyer'
+};
 
 let serie = '';
 let clearSerieTimeout = 0;
@@ -51,6 +55,7 @@ function checkSerie (etuNumber) {
         setTimeout(() => {
             console.info('User loaded !');
             vm.$data.$set('currentUser', {
+                id: 'abc',
                 firstname: 'Gabriel',
                 lastname: 'Juchault',
                 fullname: 'Gabriel Juchault',
@@ -64,6 +69,7 @@ function checkSerie (etuNumber) {
         setTimeout(() => {
             console.info('Seller loaded !');
             vm.$data.$set('currentSeller', {
+                id: 'abc',
                 firstname: 'Gabriel',
                 lastname: 'Juchault',
                 fullname: 'Gabriel Juchault',

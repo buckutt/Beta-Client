@@ -5,7 +5,7 @@ Vue.filter('basket', () => {
     let promotion = {};
 
     // Articles display
-    vm.basket.forEach(item => {
+    vm.$data.basket.forEach(item => {
         let fullItem = vm.$data.articles.filterObjId(item);
 
         if (!fullItem) {
@@ -16,7 +16,7 @@ Vue.filter('basket', () => {
     });
 
     // Promotions display
-    vm.basketPromotions.forEach(promo => {
+    vm.$data.basketPromotions.forEach(promo => {
         let promotionId        = Object.keys(promo)[0];
         let promotionsArticles = promo[promotionId];
         console.log(promotionId, promotionsArticles);
@@ -40,6 +40,7 @@ Vue.filter('basket', () => {
         promotion[fullItem.name].articles = promotionsArticles;
     });
 
+    // Stringify promotions
     promotion = Object.keys(promotion)
         .map(item => {
             let fullName = `${promotion[item].name} x${promotion[item].count}`;
@@ -59,6 +60,7 @@ Vue.filter('basket', () => {
         })
         .join(', ');
 
+    // Stringify basket
     basket = Object.keys(basket)
         .map(item => `${item} x${basket[item]}`)
         .join(', ');
@@ -74,5 +76,9 @@ Vue.filter('basket', () => {
         return 'vide';
     }
 
-    return (promotion.length > 0) ? promotion + basket : basket;
+    let total = '';
+    total += (promotion.length > 0) ? promotion : '';
+    total += (basket.length > 0) ? basket : '';
+
+    return total;
 });

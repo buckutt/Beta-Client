@@ -13,7 +13,9 @@ setTimeout(function () {
                 { id: '51befa52-f25f-4d59-b77c-9f2839cb7629', name: 'Barres' },
                 { id: '912735f7-3257-4f5b-9245-fa7a75db7265', name: 'Canettes' }
             ],
-            price: { amount: 100 }
+            price: { amount: 100 },
+            fundationId: 'abcdef',
+            pointId: 'pointId'
         },
         {
             id: '5346d179-4f4c-4a32-989d-ecbfb5d21692',
@@ -38,7 +40,9 @@ setTimeout(function () {
                   editedAt : new Date,
                   isRemoved: false, category: { id: '166e5d2d-25ac-40e2-afe2-c85d5ad739ac', name: 'Général' }, price: { amount: 50 } }
             ],
-            price: { amount: 100 }
+            price: { amount: 100 },
+            fundationId: 'abcdef',
+            pointId: 'pointId'
         }
     ]);
 }, 1000);

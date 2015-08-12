@@ -20,6 +20,27 @@
     line-height: 22px;
     margin-right: 20px;
     text-align: center;
+
+    transition: margin-right .3s ease;
+}
+
+.userCredit.mdl-badge {
+    margin-right: 70px;
+}
+
+.userCredit.mdl-badge[data-badge]:after {
+    border-radius: 2px;
+    background-color: #2ecc71;
+    opacity: 0;
+    right: -60px;
+    top: 11px;
+    width: 52px;
+
+    transition: opacity .3s ease;
+}
+
+.userCredit.mdl-badge.showBadge[data-badge]:after {
+    opacity: 1;
 }
 
 .userBasket {
@@ -35,6 +56,7 @@
 /* Spacer has defined width */
 .mdl-layout__header .mdl-layout-spacer {
     flex-shrink: 1;
+    padding-left: 0;
 }
 
 .mdl-layout__header .mdl-layout-spacer > div {
