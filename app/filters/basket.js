@@ -36,7 +36,7 @@ Vue.filter('basket', () => {
         }
 
         promotion[fullItem.name].count++;
-        promotion[fullItem.name].articles = promotionsArticles;
+        promotion[fullItem.name].articles.push(...promotionsArticles);
     });
 
     // Stringify promotions
@@ -50,6 +50,7 @@ Vue.filter('basket', () => {
 
             template += promotion[item].articles
                 .map(articleId => vm.$data.articles.filterObjId(articleId))
+                .filerUndefined()
                 .map(article => `<li class="mdl-menu__item">${article.name}</li>`)
                 .join('\n');
 
