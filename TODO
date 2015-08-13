@@ -4,9 +4,9 @@ To do :
 * Point change
 
 Working :
-* If multiple promotions with different components they should be treated separately in bucket
 
 Done :
+* If multiple promotions with different components they should be treated separately in bucket
 * Basket is sent with error
 * Basket is sent without problem
 * Wrong seller password
