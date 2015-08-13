@@ -8,7 +8,6 @@ let promotions;
 let silent = false;
 
 vmBuilder.methods.silentBasketOnce = () => {
-    debugger;
     silent = true;
 };
 
