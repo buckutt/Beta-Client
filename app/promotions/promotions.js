@@ -2,51 +2,6 @@
 
 vmBuilder.data.promotionsLoaded = false;
 
-setTimeout(function () {
-    console.info('Loaded promotions');
-    vm.$data.$set('promotionsLoaded', true);
-    vm.$data.$set('promotions', [
-        {
-            id: 'a8b94aea-8be2-4b42-b171-930eb8d3e874',
-            name: 'Formule 1€',
-            categories: [
-                { id: '51befa52-f25f-4d59-b77c-9f2839cb7629', name: 'Barres' },
-                { id: '912735f7-3257-4f5b-9245-fa7a75db7265', name: 'Canettes' }
-            ],
-            price: { amount: 100 },
-            fundationId: 'abcdef',
-            pointId: 'pointId'
-        },
-        {
-            id: '5346d179-4f4c-4a32-989d-ecbfb5d21692',
-            name: '3 Crêpes',
-            articles: [
-                { id       : '9677b024-19e8-460a-93ac-14111be1309d',
-                  name     : 'Crêpe',
-                  stock    : 100,
-                  createdAt: new Date,
-                  editedAt : new Date,
-                  isRemoved: false, category: { id: '166e5d2d-25ac-40e2-afe2-c85d5ad739ac', name: 'Général' }, price: { amount: 50 } },
-                { id       : '9677b024-19e8-460a-93ac-14111be1309d',
-                  name     : 'Crêpe',
-                  stock    : 100,
-                  createdAt: new Date,
-                  editedAt : new Date,
-                  isRemoved: false, category: { id: '166e5d2d-25ac-40e2-afe2-c85d5ad739ac', name: 'Général' }, price: { amount: 50 } },
-                { id       : '9677b024-19e8-460a-93ac-14111be1309d',
-                  name     : 'Crêpe',
-                  stock    : 100,
-                  createdAt: new Date,
-                  editedAt : new Date,
-                  isRemoved: false, category: { id: '166e5d2d-25ac-40e2-afe2-c85d5ad739ac', name: 'Général' }, price: { amount: 50 } }
-            ],
-            price: { amount: 100 },
-            fundationId: 'abcdef',
-            pointId: 'pointId'
-        }
-    ]);
-}, 1000);
-
 /**
  * Functionment of Promotion algorithm :
  * basket contains articles ids
