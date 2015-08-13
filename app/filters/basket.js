@@ -17,9 +17,8 @@ Vue.filter('basket', () => {
 
     // Promotions display
     vm.$data.basketPromotions.forEach(promo => {
-        let promotionId        = Object.keys(promo)[0];
-        let promotionsArticles = promo[promotionId];
-        console.log(promotionId, promotionsArticles);
+        let promotionId        = promo.id;
+        let promotionsArticles = promo.contents;
 
         let fullItem = vm.$data.promotions.filterObjId(promotionId);
 

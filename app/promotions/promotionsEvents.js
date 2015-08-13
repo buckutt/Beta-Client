@@ -1,16 +1,13 @@
 'use strict';
 
-
 // Revert promotions to article. Useful when removing an item possibly in a promotion
-vmBuilder.methods.revertPromotions = silent => {
-    disableOneChange = (silent) ? true : false; // that isn't equal to disableOneChange = silent.
-
+vmBuilder.methods.revertPromotions = () => {
     let newBasket = vm.$data.basket.slice();
     vm.$data.basketPromotions.forEach(promotion => {
-        let promotionId = Object.keys(promotion)[0];
-        newBasket = newBasket.concat(promotion[promotionId]);
+        newBasket = newBasket.concat(promotion.contents);
     });
 
+    vm.silentBasketOnce();
     vm.$data.$set('basket', newBasket);
     vm.$data.$set('basketPromotions', []);
 };
@@ -34,6 +31,7 @@ vmBuilder.methods.onPromotionExpand = e => {
         $menuContainer = $menu.parentElement;
     }
 
+    // If there is a click elsewhere, just hide this menu
     document.addEventListener('click', () => {
         $$('.mdl-menu__container.is-visible > ul').forEach(menu => {
             menu.MaterialMenu.hide();

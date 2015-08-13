@@ -19,9 +19,8 @@ function calculateCost () {
 
     let promoCost = vm.$data.basketPromotions
         .map(basketPromotion => {
-            let promotionId = Object.keys(basketPromotion)[0];
             return vm.$data.promotions
-                .filterObjId(promotionId)
+                .filterObjId(basketPromotion.id)
                 .price.amount
         });
 
@@ -57,11 +56,12 @@ vmBuilder.methods.onMinusClick = e => {
     let $target = e.target.parents('.buckutt-card-image');
     let badge   = parseInt($target.getAttribute('data-badge'), 10);
 
-    vm.revertPromotions(true);
+    vm.revertPromotions();
 
     Vue.nextTick(() => {
         let id      = $target.getAttribute('data-id');
         let index   = vm.$data.basket.indexOf(id);
+        console.log(id, index);
 
         vm.$data.basket.splice(index, 1);
         Vue.nextTick(calculateCost);

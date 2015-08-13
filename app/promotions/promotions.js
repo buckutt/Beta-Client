@@ -2,143 +2,160 @@
 
 vmBuilder.data.promotionsLoaded = false;
 
+let articles;
+let promotions;
+
+let silent = false;
+
+vmBuilder.methods.silentBasketOnce = () => {
+    silent = true;
+};
+
+vmBuilder.watchers.push(['basket', basket => {
+    if (!vm.$data.promotionsLoaded || !vm.$data.articlesLoaded) {
+        return;
+    }
+
+    if (silent === true) {
+        silent = false;
+        return;
+    }
+
+    articles   = sanitizeArticles(vm.$data.articles);
+    promotions = sanitizePromotions(vm.$data.promotions);
+
+    let basketPromotions         = vm.$data.basketPromotions;
+    let promotionsThatDidntMatch = 0;
+    let i                        = 0;
+
+    // Check the first promotion and continues while they all stop matching (promotionsThatDidntMatch)
+    do {
+        let promotion   = promotions[i];
+        let basketCopy  = basket.slice();
+        let basketPromo = [];
+        // Count what needs to be found
+        let still       = promotion.articles.length + promotion.categories.length;
+
+
+        // First check if basket contains articles (more precise)
+        for (let j = 0; j < promotion.articles.length; j++) {
+            let articlePromotion = promotion.articles[j];
+            let position         = containsArticle(basketCopy, articlePromotion);
+
+            if (position > -1) {
+                // Remove from the temporary basket
+                basketCopy.splice(position, 1);
+                // And add to the temporary basket for this promotion
+                basketPromo.push(articlePromotion);
+                --still;
+            }
+        }
+
+        // Then check if basket contains article that matches category
+        for (let j = 0; j < promotion.categories.length; j++) {
+            let categoryPromotion = promotion.categories[j];
+            let position          = containsArticleFromCategory(basketCopy, categoryPromotion);
+
+            if (position > -1) {
+                // Get back the article id
+                let articlePromotion  = basketCopy[position];
+                // Remove from the temporary basket
+                basketCopy.splice(position, 1);
+                // And add to the temporary basket for this promotion
+                basketPromo.push(articlePromotion);
+                --still;
+            }
+        }
+
+        // still = 0 => everything has been found
+        if (still === 0) {
+            basket = basketCopy;
+            basketPromotions.push({ id: promotion.id, contents: basketPromo });
+        } else {
+            promotionsThatDidntMatch++;
+        }
+
+        // Increases or resets i
+        i = (i + 1) % promotions.length;
+    } while (promotionsThatDidntMatch < promotions.length);
+
+    // Keep one change silent to avoid infinite loop
+    silent = true;
+    vm.$data.$set('basket', basket);
+    vm.$data.$set('basketPromotions', basketPromotions);
+}]);
+
 /**
- * Functionment of Promotion algorithm :
- * basket contains articles ids
- * And in vuejs data, there is the full articles
- * For each promotion, it works on a copy of the basket because it will be modified and it should not impact the other promotions
- * Moreover, there is a watcher on basket, so copying it is mandatory
- * The algorithm copy what the promotion should have in articles and categories; copy because thoses arrays will be
- * filtered if found, and the final check checks if both of the arrays are empty.
- * Articles are first because they're more precise that categories
- * But, we must loop on thoses array and remove elements in the loop. That mean classic for() and forEach will fail or be a mess.
- * So the technique is : map on it. If found return undefined, else, return the original article or category. Then filter the undefined values.
- * The result is an array of what is needed left (or nothing if the promotion is complete)
- * To find the articles/categories, do the same (.map() + .filter() the undefined) on the copy of the basket
- * To remove articles from the basket used in the promotion
- * To avoid that one item is used in multiple promotions
- * If a promotion is found, loop again. Detects multiple promotions
+ * Sanitizes an articles array to keep only what's need for the algorithm
+ * @param  {Array} articles Array of articles loaded by AJAX
+ * @return {Array} Array sanitized
  */
+function sanitizeArticles (articles) {
+    return articles
+        .slice()
+        .map(article => {
+            return {
+                id: article.id,
+                category: article.category.id
+            };
+        });
+}
 
-// Disable one change (when the watcher is called, it will update basket, and trigger again the watcher).
-let disableOneChange = false;
-vmBuilder.watchers.push(['basket', newBasket => {
-    // Not ready yet
-    if (!vm.$data.promotions) {
-        return;
-    }
-
-    if (disableOneChange) {
-        disableOneChange = false;
-        return;
-    }
-
-    console.info('Basket change');
-
-    // Extract ids and categories in the basket
-    let basket = newBasket
-        .map(item => vm.$data.articles.filterObjId(item))
-        .map(article => { return { id: article.id, category: article.category.id } });
-
-    // { promotionId: [articleId, articleId] }
-    let removedUnderPromotion = {};
-
-    console.log('Basket extracted : ', basket);
-
-    while (1) {
-        let promotionFound = false;
-
-        vm.$data.promotions.forEach(promotion => {
-            // Copy basket to avoid remoing one item of X item needed to check.
-            // Instead, copy it, and if this promotion is okay, replace the general basket with copyBasket
-            let copyBasket = basket.slice();
-
-            console.log('Checking promotion : ', promotion.name);
-            let categories = (promotion.categories || []).slice();
-            let articles   = (promotion.articles || []).slice();
-            let removed    = [];
-
-            // Articles have priority on categories (more precise)
-            console.log('Starting articles');
-            let removedArticles = [];
-            // Use of .map to avoid splice in forEach, which cause forEach to fail.
-            articles = articles
-                .map((article, articleIndex) => {
-                    let found = false;
-                    // Use of .map to avoid splice in forEach, which cause forEach to fail.
-                    copyBasket = copyBasket
-                        .map((articleBasket, articleBasketIndex) => {
-                            // No need to search further if already validated in this category
-                            if (found) {
-                                return articleBasket;
-                            }
-
-                            console.log('Checking article', articleBasket.id);
-                            if (articleBasket.id === article.id) {
-                                console.log('Article is in the basket');
-                                // And remove tlater his article from the basket
-                                removed.push(articleBasket);
-                                found = true;
-                                return undefined;
-                            }
-                        })
-                        .filerUndefined();
-
-                    return (!found) ? article : undefined;
-                })
-                .filerUndefined();
-
-            // Use of .map to avoid splice in forEach, which cause forEach to fail.
-            categories = categories
-                .map((category, categoryIndex) => {
-                    let found = false;
-                    // Use of .map to avoid splice in forEach, which cause forEach to fail.
-                    copyBasket = copyBasket
-                        .map((articleBasket, articleBasketIndex) => {
-                            // No need to search further if already validated in this category
-                            if (found) {
-                                return articleBasket;
-                            }
-
-                            console.log('Checking article', articleBasket.id, '/', articleBasket.category, '===', category.id);
-                            if (articleBasket.category === category.id) {
-                                console.log('Article has the wanted category and is in the basket');
-                                removed.push(articleBasket);
-                                found = true;
-                                return undefined;
-                            }
-
-                            return articleBasket;
-                        })
-                        .filerUndefined();
-
-                    return (!found) ? category : undefined;
-                })
-                .filerUndefined();
-
-            removed = removed.map(removedItem => removedItem.id);
-
-            console.log('Status articles.length', articles.length, 'categories.length', categories.length);
-            // No more step => promotion is done. Copy back basket to make this promotion impact the next ones
-            if (articles.length === 0 && categories.length === 0) {
-                console.log('That should be good !');
-                let newPromotion = {};
-                vm.$data.basketPromotions.push(newPromotion);
-                newPromotion[promotion.id] = removed;
-                promotionFound             = true;
-                basket                     = copyBasket;
+/**
+ * Sanitizes a promotions array to keep only what's need for the algorithm
+ * @param  {Array} promotions Array of promotions loaded by AJAX
+ * @return {Array} Array sanitized
+ */
+function sanitizePromotions (promotions) {
+    return promotions
+        .slice()
+        .map(promotion => {
+            promotion.articles   = promotion.articles || [];
+            promotion.categories = promotion.categories || [];
+            return {
+                id: promotion.id,
+                articles: promotion.articles.map(article => article.id),
+                categories: promotion.categories.map(category =>category.id),
             }
         });
+}
 
-        // Stop when no promotion is found
-        if (!promotionFound) {
-            break;
+/**
+ * Checks if the basket contains article
+ * @param  {Array}  basketCopy Basket
+ * @param  {String} article    Article id
+ * @return {Number} Index of article in basketCopy
+ */
+function containsArticle (basketCopy, article) {
+    return basketCopy.indexOf(article);
+}
+
+/**
+ * Check if an article is in the basket with the specified category
+ * @param  {Array}  basketCopy Basket
+ * @param  {String} category   Category id
+ * @return {Number} Index of article in basketCopy
+ */
+function containsArticleFromCategory (basketCopy, category) {
+    for (var i = 0; i < basketCopy.length; i++) {
+        var article = basketCopy[i];
+
+        if (articleIsFromCategory(article, category)) {
+            return i;
         }
     }
 
-    basket = basket.map(item => item.id);
-    disableOneChange = true;
-    vm.$data.$set('basket', basket);
-    console.log('New basket : ', basket);
-    console.log('Under promotion : ', vm.$data.basketPromotions);
-}]);
+    return -1;
+}
+
+/**
+ * Returns true if article has category; false if article has not the category
+ * @param  {String} articleId Article id
+ * @param  {String} category  Category id
+ * @return {Boolean} True ir article is in the given category
+ */
+function articleIsFromCategory (articleId, category) {
+    var fullArticle = articles.filter(article => article.id === articleId && article.category === category);
+
+    return fullArticle.length > 0;
+}
