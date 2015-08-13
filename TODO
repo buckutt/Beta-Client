@@ -2,9 +2,9 @@ To do :
 
 * Real data input/output (articles, promotions, auth, basket)
 * Point change
-* Fix/Redo promotions algorithm
 
 Working :
+* If multiple promotions with different components they should be treated separately in bucket
 
 Done :
 * Basket is sent with error

@@ -78,13 +78,13 @@ main.mdl-layout__content {
 }
 
 .modal-error > .mdl-card {
-    height: 290px;
     margin: 150px auto 0 auto;
+    min-height: 0;
     width: 350px;
 }
 
 .modal-error .mdl-card__title {
-    padding: 40px 40px 0 40px;
+    padding: 20px 20px 0 20px;
     text-align: center;
 }
 

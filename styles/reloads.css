@@ -48,11 +48,15 @@
     line-height: 36px;
 }
 
-#reloadCard button.mdl-button--raised {
+#reloadCard button.mdl-button--raised:not([disabled]) {
     background-color: #3498db;
 }
 
-#reloadCard button:not(.mdl-button--raised) {
+#reloadCard button.mdl-button--raised[disabled] {
+    color: #3498db;
+}
+
+#reloadCard button:not([disabled]):not(.mdl-button--raised) {
     color: #3498db;
 }
 

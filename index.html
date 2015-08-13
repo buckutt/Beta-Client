@@ -31,7 +31,7 @@
                     </div>
                     <div class="mdl-card__supporting-text">
                         <p>
-                            {{{ error }}}
+                            {{{ errorMessage }}}
                         </p>
                         <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
                                 v-on="click: closeError">
@@ -56,6 +56,7 @@
                         <template v-repeat="paymentMethods">
                             <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
                                     v-class="mdl-button--raised: reloadMethod === slug"
+                                    v-attr="disabled: reloadCreditOpened && waitingForValidation"
                                     v-on="click: selectReloadMethod(slug)">
                                 {{ text }}
                             </button>

@@ -34,17 +34,13 @@ $('body').addEventListener('keypress', e => {
 
 /**
  * Checks the serie of number and do whatever it has to do (connect user or Seller)
- * @param  {String} etuNumber The number serie
+ * @param {String} etuNumber The number serie
  */
 function checkSerie (etuNumber) {
     // The infoCard of the visible grid (so the one that doesn't have style="display: none;")
     let $infoCard = $('.page-content > .mdl-grid:not([style]) .infoCard');
     if (!etuNumber.isEtuNumber()) {
-        let keepText = $infoCard.textContent;
-        $infoCard.textContent = 'Invalide !';
-        setTimeout(() => {
-            $infoCard.textContent = keepText;
-        }, 1000);
+        vm.throwError('Numéro de carte étu invalide');
         return;
     }
 
@@ -72,11 +68,7 @@ function checkSerie (etuNumber) {
                 console.info('Seller loaded !');
                 vm.$data.$set('sellerConnected', true);
             } else {
-                let keepText = $infoCard.textContent;
-                $infoCard.textContent = 'Invalide !';
-                setTimeout(() => {
-                    $infoCard.textContent = keepText;
-                }, 1000);
+                vm.throwError('Numéro de carte étu non vendeur');
             }
         }, 500);
     }

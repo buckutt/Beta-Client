@@ -69,10 +69,9 @@ vmBuilder.methods.sendBasket = () => {
 
     console.info('Basket sending', basketToSend);
     setTimeout(() => {
-        const success = false;
+        const success = true;
 
         if (success) {
-            // set last action by xxx
             vm.$data.$set('lastCredit', vm.$data.totalCost);
             vm.$data.$set('lastReload', vm.$data.totalReload);
             vm.$data.$set('lastUser', vm.$data.currentUser.fullname);

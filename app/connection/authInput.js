@@ -16,7 +16,6 @@ vmBuilder.methods.onClearInput = () => {
 
 let authingUser = false;
 vmBuilder.methods.onValidateInput = () => {
-
     if (authingUser) {
         return;
     }
@@ -40,13 +39,7 @@ vmBuilder.methods.onValidateInput = () => {
             vm.$data.$set('sellerPasswordInput', '');
             vm.$data.$set('sellerAuth', true);
         } else {
-            console.warn('Wrong password');
-            vm.$data.$set('wrongSellerPassword', true);
-            vm.$data.$set('sellerPasswordInput', '');
-
-            setTimeout(() => {
-                vm.$data.$set('wrongSellerPassword', false);
-            }, 2500);
+            vm.throwError('Mot de passe invalide');
         }
 
         // Wait for animations and nextTick

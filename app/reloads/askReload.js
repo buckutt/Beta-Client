@@ -1,10 +1,11 @@
 'use strict';
 
-vmBuilder.data.reloadCreditOpened = false;
-vmBuilder.data.reloadMethod       = 'card';
-vmBuilder.data.creditToReload     = 0;
-vmBuilder.data.totalReload        = 0;
-vmBuilder.data.detailedReloads    = [];
+vmBuilder.data.reloadCreditOpened   = false;
+vmBuilder.data.waitingForValidation = false;
+vmBuilder.data.reloadMethod         = 'card';
+vmBuilder.data.creditToReload       = 0;
+vmBuilder.data.totalReload          = 0;
+vmBuilder.data.detailedReloads      = [];
 
 vmBuilder.data.paymentMethods = [
     { slug: 'card', text: 'Carte' },
@@ -19,6 +20,15 @@ vmBuilder.methods.askReload = () => {
 
 vmBuilder.methods.closeReloadCredit = () => {
     vm.$set('reloadCreditOpened', false);
+
+    if (vm.$data.waitingForValidation) {
+        // Fake the event
+        vm.invalidPayment({
+            target: $('.buttonsGrid').children[0]
+        });
+    }
+
+    vm.$set('waitingForValidation', false);
 };
 
 vmBuilder.methods.selectReloadMethod = slug => {
@@ -42,6 +52,7 @@ vmBuilder.methods.onCreditToReloadInput = e => {
 
 vmBuilder.methods.onCreditToReloadValidateInput = e => {
     let grid = e.target.parents('.mdl-grid');
+    vm.$data.$set('waitingForValidation', true);
     grid.style.height = 0;
     grid.nextElementSibling.style.height = '122px';
 };
@@ -50,6 +61,7 @@ vmBuilder.methods.invalidPayment = e => {
     let grid = e.target.parents('.mdl-grid');
     grid.style.height = 0;
     grid.previousElementSibling.style.height = '242px';
+    vm.$data.$set('waitingForValidation', false);
 };
 
 vmBuilder.methods.validateReload = e => {
@@ -57,6 +69,7 @@ vmBuilder.methods.validateReload = e => {
     grid.style.height = 0;
     grid.previousElementSibling.style.height = '242px';
 
+    vm.$data.$set('waitingForValidation', false);
     vm.$data.$set('totalReload', vm.$data.totalReload + (vm.$data.creditToReload * 100));
 
     vm.$data.detailedReloads.push({

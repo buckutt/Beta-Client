@@ -8,6 +8,7 @@ let promotions;
 let silent = false;
 
 vmBuilder.methods.silentBasketOnce = () => {
+    debugger;
     silent = true;
 };
 
@@ -36,6 +37,7 @@ vmBuilder.watchers.push(['basket', basket => {
         // Count what needs to be found
         let still       = promotion.articles.length + promotion.categories.length;
 
+        console.log('Promotion', promotion.id);
 
         // First check if basket contains articles (more precise)
         for (let j = 0; j < promotion.articles.length; j++) {
@@ -43,6 +45,7 @@ vmBuilder.watchers.push(['basket', basket => {
             let position         = containsArticle(basketCopy, articlePromotion);
 
             if (position > -1) {
+                console.log(articlePromotion + ' is present');
                 // Remove from the temporary basket
                 basketCopy.splice(position, 1);
                 // And add to the temporary basket for this promotion
@@ -57,6 +60,7 @@ vmBuilder.watchers.push(['basket', basket => {
             let position          = containsArticleFromCategory(basketCopy, categoryPromotion);
 
             if (position > -1) {
+                console.log(categoryPromotion + ' has the good category');
                 // Get back the article id
                 let articlePromotion  = basketCopy[position];
                 // Remove from the temporary basket
@@ -69,9 +73,11 @@ vmBuilder.watchers.push(['basket', basket => {
 
         // still = 0 => everything has been found
         if (still === 0) {
+            console.log('Promotion matches');
             basket = basketCopy;
             basketPromotions.push({ id: promotion.id, contents: basketPromo });
         } else {
+            console.log('Promotion didnt match');
             promotionsThatDidntMatch++;
         }
 
@@ -79,8 +85,6 @@ vmBuilder.watchers.push(['basket', basket => {
         i = (i + 1) % promotions.length;
     } while (promotionsThatDidntMatch < promotions.length);
 
-    // Keep one change silent to avoid infinite loop
-    silent = true;
     vm.$data.$set('basket', basket);
     vm.$data.$set('basketPromotions', basketPromotions);
 }]);
