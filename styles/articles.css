@@ -18,7 +18,7 @@
 
 /* Activated */
 .buckutt-card-image.active {
-    border: 5px solid #3498db;
+    border: 5px solid #2980b9;
 }
 
 /* Badge correction */
@@ -95,4 +95,8 @@
     position: absolute;
     right: 0;
     z-index: 2;
+}
+
+.mdl-button--fab.mdl-button--colored:focus:not(:active) {
+    background-color: #e67e22;
 }

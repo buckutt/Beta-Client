@@ -4,7 +4,7 @@
 }
 
 .mdl-layout__header {
-    background-color: #2980b9;
+    background-color: #34495e;
     box-shadow: none;
 }
 
@@ -80,7 +80,7 @@
 
 /* Forces tab size*/
 .mdl-layout__tab-bar {
-    background-color: #2980b9;
+    background-color: transparent;
     height: 48px;
 }
 

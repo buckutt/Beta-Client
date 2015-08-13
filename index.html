@@ -22,6 +22,25 @@
                 <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
             </div>
 
+            <div class="modal-error"
+                 v-show="error"
+                 v-transition="fade">
+                <div class="mdl-card mdl-shadow--4dp">
+                    <div class="mdl-card__title">
+                        <h2 class="mdl-card__title-text">Erreur</h2>
+                    </div>
+                    <div class="mdl-card__supporting-text">
+                        <p>
+                            {{{ error }}}
+                        </p>
+                        <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
+                                v-on="click: closeError">
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="modal-reload-credit"
                  v-show="reloadCreditOpened"
                  v-transition="fade">
@@ -140,7 +159,7 @@
                 <div class="mdl-layout__tab-bar mdl-js-ripple-effect"
                      v-show="userConnected"
                      v-transition="fade">
-                    <a data-target="tab-{{ $index }}" class="mdl-layout__tab is-active"
+                    <a href="#tab-{{ $index }}" class="mdl-layout__tab is-active" data-target="tab-{{ $index }}"
                        v-on="click: onTabClick"
                        v-class="is-active: $index === 0"
                        v-repeat="categories">{{ $value }}</a>
@@ -230,12 +249,12 @@
                 </div>
             </main>
             <button id="done" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
-                    v-on="click: sendBucket">
+                    v-on="click: sendBasket">
                     <i class="material-icons">done_all</i>
             </button>
         </div>
         <script src="bower_components/vue/dist/vue.min.js"></script>
-        <script src="bower_components/material-design-lite/material.min.js"></script>
+        <script src="bower_components/material-design-lite/material.js"></script>
 
         <script src="init.js"></script>
         <script src="app/utils/uniq.js"></script>
@@ -246,6 +265,7 @@
         <script src="app/filters/credit.js"></script>
         <script src="app/filters/basket.js"></script>
         <script src="app/filters/passwordHide.js"></script>
+        <script src="app/error/error.js"></script>
         <script src="app/articles/articles.js"></script>
         <script src="app/directives/initTabs.js"></script>
         <script src="app/tabs/tabs.js"></script>
@@ -254,7 +274,7 @@
         <script src="app/connection/ejecter.js"></script>
         <script src="app/promotions/promotions.js"></script>
         <script src="app/promotions/promotionsEvents.js"></script>
-        <script src="app/sendBucket/sendBucket.js"></script>
+        <script src="app/sendBasket/sendBasket.js"></script>
         <script src="app/reloads/askReload.js"></script>
         <script src="app.js"></script>
     </body>

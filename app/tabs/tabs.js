@@ -16,8 +16,6 @@ vmBuilder.watchers.push(['tab', newTab => {
 
         let $newTab = $(`#${newTab}`);
 
-        console.log('SET TAB TO ', newTab, $newTab);
-
         if ($newTab) {
             $newTab.style.display = 'flex';
         }

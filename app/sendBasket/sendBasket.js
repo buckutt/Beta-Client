@@ -1,6 +1,6 @@
 'use strict';
 
-vmBuilder.methods.sendBucket = () => {
+vmBuilder.methods.sendBasket = () => {
     if (!vm.$data.currentUser.id) {
         vm.$data.$set('currentUser', {
             id: 'abc',
@@ -68,10 +68,20 @@ vmBuilder.methods.sendBucket = () => {
 
     console.info('Basket sending', basketToSend);
     setTimeout(() => {
-        if (true) {
-            
+        const success = false;
+
+        if (success) {
+            // set last action by xxx
+            vm.$data.$set('lastCredit', vm.$data.totalCost);
+            vm.$data.$set('lastReload', vm.$data.totalReload);
+            vm.$data.$set('lastUser', vm.$data.currentUser.fullname);
+
+            vm.onEject();
         } else {
-            
+            let error = 'Impossible d\'enregistrer les achats ou de déduire le crédit de l\'utilisateur.<br>';
+            error      += 'Si un rechargement par carte a été effectué, le débit a eu lieu.<br>';
+            error      += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckutt.';
+            vm.$data.$set('error', error);
         }
     }, 500);
 };

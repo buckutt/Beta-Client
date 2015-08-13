@@ -97,7 +97,6 @@ vmBuilder.watchers.push(['basket', newBasket => {
             // Copy basket to avoid remoing one item of X item needed to check.
             // Instead, copy it, and if this promotion is okay, replace the general basket with copyBasket
             let copyBasket = basket.slice();
-            console.log('CALL', copyBasket);
 
             console.log('Checking promotion : ', promotion.name);
             let categories = (promotion.categories || []).slice();
@@ -125,7 +124,6 @@ vmBuilder.watchers.push(['basket', newBasket => {
                                 // And remove tlater his article from the basket
                                 removed.push(articleBasket);
                                 found = true;
-                                console.log('Still', articles, categories, 'to match');
                                 return undefined;
                             }
                         })
@@ -152,7 +150,6 @@ vmBuilder.watchers.push(['basket', newBasket => {
                                 console.log('Article has the wanted category and is in the basket');
                                 removed.push(articleBasket);
                                 found = true;
-                                console.log('Still', articles, categories, 'to match');
                                 return undefined;
                             }
 

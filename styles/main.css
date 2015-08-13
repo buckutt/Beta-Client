@@ -64,3 +64,30 @@ main.mdl-layout__content {
 .shadow-loader .mdl-spinner--single-color .mdl-spinner__layer {
     border-color: #fff;
 }
+
+/* Error card */
+.modal-error {
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 20;
+}
+
+.modal-error > .mdl-card {
+    height: 290px;
+    margin: 150px auto 0 auto;
+    width: 350px;
+}
+
+.modal-error .mdl-card__title {
+    padding: 40px 40px 0 40px;
+    text-align: center;
+}
+
+.modal-error p {
+    text-align: left;
+}
