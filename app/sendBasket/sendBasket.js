@@ -27,6 +27,7 @@ vmBuilder.methods.sendBasket = () => {
 
     vm.$data.basket.forEach(articleId => {
         let article = vm.$data.articles.filter(article => article.id === articleId)[0];
+        console.log(article);
         basketToSend.push({
             buyerId: vm.$data.currentUser.id,
             fundationId: article.fundationId,
@@ -40,8 +41,8 @@ vmBuilder.methods.sendBasket = () => {
     });
 
     vm.$data.basketPromotions.forEach(basketPromo => {
-        let promoId        = Object.keys(basketPromo)[0];
-        let articlesInside = basketPromo[promoId];
+        let promoId        = basketPromo.id;
+        let articlesInside = basketPromo.contents;
         let promo          = vm.$data.promotions.filter(promoToCheck => promoToCheck.id === promoId)[0];
 
         basketToSend.push({
@@ -81,7 +82,7 @@ vmBuilder.methods.sendBasket = () => {
             let error = 'Impossible d\'enregistrer les achats ou de déduire le crédit de l\'utilisateur.<br>';
             error      += 'Si un rechargement par carte a été effectué, le débit a eu lieu.<br>';
             error      += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckutt.';
-            vm.$data.$set('error', error);
+            vm.throwError(error);
         }
     }, 500);
 };
