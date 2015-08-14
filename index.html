@@ -154,17 +154,16 @@
                     <nav class="mdl-navigation">
                         <a id="eject" class="mdl-navigation__link" href="#"
                            v-show="sellerConnected"
-                           v-on="click: onEject"
-                           v-transition="fade">
+                           v-on="click: onEject">
                             <i class="material-icons">eject</i>
                         </a>
                         <a id="reload" class="mdl-navigation__link" href="#"
                            v-show="userConnected"
-                           v-transition="fade"
                            v-on="click: askReload">
                             <i class="material-icons">attach_money</i>
                         </a>
-                        <a id="changePoint" class="mdl-navigation__link" href="#">
+                        <a id="changePoint" class="mdl-navigation__link" href="#"
+                           v-show="sellerAuth && !userConnected">
                             <i class="material-icons">sync</i>
                         </a>
                     </nav>
