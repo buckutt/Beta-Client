@@ -14,8 +14,7 @@ let serie = '';
 let clearSerieTimeout = 0;
 $('body').addEventListener('keypress', e => {
     if (vm.$data.userConnected ||
-       (vm.$data.sellerConnected && !vm.$data.sellerAuth) ||
-       (!vm.$data.promotionsLoaded || !vm.$data.articlesLoaded)) {
+       (vm.$data.sellerConnected && !vm.$data.sellerAuth)) {
         return;
     }
 

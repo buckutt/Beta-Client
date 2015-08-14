@@ -4,9 +4,9 @@ To do :
 * Point change
 
 Working :
+* Menu under reloads to be able to cancel a reload
 
 Done :
-* If multiple promotions with different components they should be treated separately in bucket
 * Basket is sent with error
 * Basket is sent without problem
 * Wrong seller password

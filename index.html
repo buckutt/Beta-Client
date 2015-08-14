@@ -17,7 +17,7 @@
     <body>
         <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
             <div class="shadow-loader"
-                 v-show="!articlesLoaded || !promotionsLoaded"
+                 v-show="startedLoading && (!articlesLoaded || !promotionsLoaded)"
                  v-transition="fade">
                 <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
             </div>
@@ -277,8 +277,9 @@
         <script src="app/promotions/promotionsEvents.js"></script>
         <script src="app/sendBasket/sendBasket.js"></script>
         <script src="app/reloads/askReload.js"></script>
-        <script src="app.js"></script>
 
         <script src="app/randomData.js"></script>
+
+        <script src="app.js"></script>
     </body>
 </html>

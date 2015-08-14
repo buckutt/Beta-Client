@@ -28,6 +28,8 @@ vmBuilder.methods.onValidateInput = () => {
         if (success) {
             console.info('Seller auth-ed');
 
+            vm.loadFakeData();
+
             vm.$data.$set('currentSeller', {
                 id: 'abc',
                 firstname: 'Gabriel',
