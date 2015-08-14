@@ -125,6 +125,18 @@
                                       v-if="currentUser.credit - totalCost + totalReload < 0">{{ currentUser.credit - totalCost + totalReload | credit true }}</span>
                                 <span v-if="currentUser.credit - totalCost + totalReload >= 0">{{ currentUser.credit - totalCost + totalReload | credit true }}</span>
                             </div>
+                            <span id="reloadMenu"
+                                  v-if="totalReload > 0"
+                                  v-on="click: toggleReloadMenu">
+                                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect">
+                                    <template v-repeat="detailedReloads">
+                                        <li class="mdl-menu__item"
+                                            v-on="click: removeReloadBasket($index)">
+                                            {{ with }} ({{ amount | credit true }}) <i class="material-icons">delete</i>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </span>
                             <span class="userBasket">Panier : {{{ panier | basket }}}</span>
                         </div>
                         <div v-if="!userConnected && sellerConnected && sellerAuth && lastUser && (lastCredit || lastReload)">
@@ -250,6 +262,7 @@
                 </div>
             </main>
             <button id="done" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
+                    v-if="userConnected"
                     v-on="click: sendBasket">
                     <i class="material-icons">done_all</i>
             </button>
@@ -263,6 +276,7 @@
         <script src="app/utils/etuNumber.js"></script>
         <script src="app/utils/filterObjId.js"></script>
         <script src="app/utils/filterUndefined.js"></script>
+        <script src="app/utils/listenOnce.js"></script>
         <script src="app/filters/credit.js"></script>
         <script src="app/filters/basket.js"></script>
         <script src="app/filters/passwordHide.js"></script>
@@ -277,6 +291,7 @@
         <script src="app/promotions/promotionsEvents.js"></script>
         <script src="app/sendBasket/sendBasket.js"></script>
         <script src="app/reloads/askReload.js"></script>
+        <script src="app/reloads/reloadMenu.js"></script>
 
         <script src="app/randomData.js"></script>
 

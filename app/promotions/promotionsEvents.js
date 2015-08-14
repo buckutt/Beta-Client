@@ -34,14 +34,9 @@ vmBuilder.methods.onPromotionExpand = e => {
     $menu.parentElement.style.display = 'block';
 
     // If there is a click elsewhere, just hide this menu
-    document.addEventListener('click', () => {
-        $$('.mdl-menu__container.is-visible > ul').forEach(menu => {
-            menu.MaterialMenu.hide();
-            setTimeout(() => {
-                console.log(menu.parentElement.classList.contains('is-visible'));
-            }, 300);
-        });
-    }, false);
+    document.once('click', () => {
+        $$('.mdl-menu__container.is-visible > ul').forEach(menu => menu.MaterialMenu.hide());
+    });
 
     // MaterialMenu activated to $menu is now the container
     $menu.MaterialMenu.toggle();
