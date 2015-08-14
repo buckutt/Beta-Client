@@ -1,28 +1,6 @@
 'use strict';
 
 vmBuilder.methods.sendBasket = () => {
-    if (!vm.$data.currentUser.id) {
-        vm.$data.$set('currentUser', {
-            id: 'abc',
-            firstname: 'Gabriel',
-            lastname: 'Juchault',
-            fullname: 'Gabriel Juchault',
-            credit: 500
-        });
-        vm.$data.$set('currentSeller', {
-            id: 'abc',
-            firstname: 'Gabriel',
-            lastname: 'Juchault',
-            fullname: 'Gabriel Juchault',
-            credit: 500
-        });
-
-        vm.$data.$set('sellerConnected', true);
-        vm.$data.$set('userConnected', true);
-        vm.$data.$set('sellerAuth', true);
-        return;
-    }
-
     let basketToSend = [];
 
     vm.$data.basket.forEach(articleId => {
@@ -31,7 +9,6 @@ vmBuilder.methods.sendBasket = () => {
         basketToSend.push({
             buyerId: vm.$data.currentUser.id,
             fundationId: article.fundationId,
-            pointId: article.pointId,
             promotionId: null,
             sellerId: vm.$data.currentSeller.id,
             articles: [article.id],
@@ -48,7 +25,6 @@ vmBuilder.methods.sendBasket = () => {
         basketToSend.push({
             buyerId: vm.$data.currentUser.id,
             fundationId: promo.fundationId,
-            pointId: promo.pointId,
             sellerId: vm.$data.currentSeller.id,
             promotionId: promo.id,
             articles: articlesInside,
@@ -61,7 +37,6 @@ vmBuilder.methods.sendBasket = () => {
         basketToSend.push({
             credit: reload.amount,
             trace: reload.with,
-            pointId: vm.$data.currentPoint.id,
             buyerId: vm.$data.currentUser.id,
             sellerId: vm.$data.currentSeller.id
         });

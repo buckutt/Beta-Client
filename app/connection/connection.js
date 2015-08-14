@@ -5,10 +5,6 @@ vmBuilder.data.currentUser     = {};
 vmBuilder.data.sellerConnected = false;
 vmBuilder.data.sellerAuth      = false;
 vmBuilder.data.userConnected   = false;
-vmBuilder.data.currentPoint    = {
-    id: 'pointId',
-    name: 'Foyer'
-};
 
 let serie = '';
 let clearSerieTimeout = 0;
