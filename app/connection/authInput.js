@@ -42,6 +42,7 @@ vmBuilder.methods.onValidateInput = () => {
             vm.$data.$set('sellerAuth', true);
         } else {
             vm.throwError('Mot de passe invalide');
+            vm.$data.$set('sellerPasswordInput', '');
         }
 
         // Wait for animations and nextTick
