@@ -1,5 +1,7 @@
 'use strict';
 
+/* global window, Vue */
+
 window.vm = new Vue(window.vmBuilder);
 
 /*

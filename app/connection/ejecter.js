@@ -1,11 +1,14 @@
 'use strict';
 
+/* global vmBuilder, vm */
+
 vmBuilder.methods.onEject = () => {
     if (!vm.$data.userConnected) {
         console.info('-> Eject seller');
         vm.$data.$set('currentSeller', {});
         vm.$data.$set('sellerConnected', false);
         vm.$data.$set('sellerAuth', false);
+
         return;
     }
 

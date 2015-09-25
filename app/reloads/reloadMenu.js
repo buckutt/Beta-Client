@@ -1,5 +1,7 @@
 'use strict';
 
+/* global vmBuilder, vm, , $$, document, MaterialMenu */
+
 vmBuilder.methods.toggleReloadMenu = e => {
     let $elem = e.target;
     e.preventDefault();
@@ -17,7 +19,6 @@ vmBuilder.methods.toggleReloadMenu = e => {
         $menu = $menu.children[1];
         $menuContainer = $menu.parentElement;
     }
-
 
     // If there is a click elsewhere, just hide this menu
     document.once('click', () => {

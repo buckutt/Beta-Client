@@ -1,5 +1,7 @@
 'use strict';
 
+/* global vmBuilder, vm */
+
 vmBuilder.data.error        = false;
 vmBuilder.data.errorMessage = '';
 

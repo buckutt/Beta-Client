@@ -1,5 +1,7 @@
 'use strict';
 
+/* global vm, Vue, $ */
+
 Vue.filter('basket', () => {
     let basket    = {};
     let promotion = {};
@@ -29,10 +31,10 @@ Vue.filter('basket', () => {
         // Store more complex structure for promotions
         if (!promotion.hasOwnProperty(fullItem.name)) {
             promotion[fullItem.name] = {
-                count: 0,
+                count   : 0,
                 articles: [],
-                name: fullItem.name
-            }
+                name    : fullItem.name
+            };
         }
 
         promotion[fullItem.name].count++;
@@ -67,6 +69,7 @@ Vue.filter('basket', () => {
 
     Vue.nextTick(() => {
         let $node = $('.mdl-layout-spacer');
+
         if ($node) {
             vm.$compile($node);
         }

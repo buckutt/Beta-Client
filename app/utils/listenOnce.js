@@ -1,5 +1,7 @@
 'use strict';
 
+/* global Document, Element */
+
 /**
  * Listen for only one event
  * @param {String}   event    The event name

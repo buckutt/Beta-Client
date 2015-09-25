@@ -1,5 +1,7 @@
 'use strict';
 
+/* global vmBuilder, vm, Vue, $, $$ */
+
 vmBuilder.data.tab = 'none';
 
 vmBuilder.methods.onTabClick = e => {
@@ -23,7 +25,7 @@ vmBuilder.watchers.push(['tab', newTab => {
 }]);
 
 let articlesParsed = false;
-vmBuilder.watchers.push(['articles', newArticles => {
+vmBuilder.watchers.push(['articles', () => {
     if (articlesParsed) {
         return;
     }

@@ -1,18 +1,20 @@
 'use strict';
 
+/* global window, Node, document */
+
 window.vmBuilder = {
-    el: '#main',
-    data: {},
-    methods: {},
+    el      : '#main',
+    data    : {},
+    methods : {},
     watchers: [],
-    inits: []
+    inits   : []
 };
 
 /**
  * Wrapper over Node.prototype.querySelector
  * @param  {String} s                   The selector
- * @param  {Node}   [fromEl = document] Optional. Source Node. If not specified, document
- * @return {Node}   The result
+ * @param  {Node}   [fromEl = document] Source Node. If not specified, document
+ * @return {Node} The result
  */
 window.$ = function (s, fromEl) {
     if (fromEl instanceof Node) {
@@ -24,9 +26,9 @@ window.$ = function (s, fromEl) {
 
 /**
  * Wrapper over Node.prototype.querySelectorAll
- * @param  {String}       s                   The selector
- * @param  {Node}         [fromEl = document] Optional. Source Node. If not specified, document
- * @return {Array<Node>}  The results
+ * @param  {String} s                   The selector
+ * @param  {Node}   [fromEl = document] Source Node. If not specified, document
+ * @return {Node[]} The results
  */
 window.$$ = function (s, fromEl) {
     if (fromEl instanceof Node) {

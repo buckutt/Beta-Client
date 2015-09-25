@@ -1,5 +1,7 @@
 'use strict';
 
+/* global vmBuilder, vm, $ */
+
 vmBuilder.data.reloadCreditOpened   = false;
 vmBuilder.data.waitingForValidation = false;
 vmBuilder.data.reloadMethod         = 'card';
@@ -8,10 +10,22 @@ vmBuilder.data.totalReload          = 0;
 vmBuilder.data.detailedReloads      = [];
 
 vmBuilder.data.paymentMethods = [
-    { slug: 'card', text: 'Carte' },
-    { slug: 'cash', text: 'Liquide' },
-    { slug: 'cheque', text: 'Chèque' },
-    { slug: 'gobby', text: 'Gobby' },
+    {
+        slug: 'card',
+        text: 'Carte'
+    },
+    {
+        slug: 'cash',
+        text: 'Liquide'
+    },
+    {
+        slug: 'cheque',
+        text: 'Chèque'
+    },
+    {
+        slug: 'gobby',
+        text: 'Gobby'
+    }
 ];
 
 vmBuilder.methods.askReload = () => {
@@ -73,7 +87,7 @@ vmBuilder.methods.validateReload = e => {
     vm.$data.$set('totalReload', vm.$data.totalReload + (vm.$data.creditToReload * 100));
 
     vm.$data.detailedReloads.push({
-        with: vmBuilder.data.paymentMethods.filter(payment => payment.slug === vm.$data.reloadMethod)[0].text,
+        with  : vmBuilder.data.paymentMethods.filter(payment => payment.slug === vm.$data.reloadMethod)[0].text,
         amount: vm.$data.creditToReload * 100
     });
 

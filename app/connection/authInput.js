@@ -1,5 +1,7 @@
 'use strict';
 
+/* global vmBuilder, vm */
+
 vmBuilder.data.sellerPasswordInput = '';
 vmBuilder.data.wrongSellerPassord  = false;
 
@@ -25,17 +27,18 @@ vmBuilder.methods.onValidateInput = () => {
     console.log('Password validate input');
     setTimeout(() => {
         const success = true;
+
         if (success) {
             console.info('Seller auth-ed');
 
             vm.loadFakeData();
 
             vm.$data.$set('currentSeller', {
-                id: 'abc',
+                id       : 'abc',
                 firstname: 'Gabriel',
-                lastname: 'Juchault',
-                fullname: 'Gabriel Juchault',
-                credit: 500
+                lastname : 'Juchault',
+                fullname : 'Gabriel Juchault',
+                credit   : 500
             });
 
             vm.$data.$set('sellerPasswordInput', '');
@@ -49,5 +52,5 @@ vmBuilder.methods.onValidateInput = () => {
         setTimeout(function () {
             authingUser = false;
         }, 500);
-    }, 500)
+    }, 500);
 };

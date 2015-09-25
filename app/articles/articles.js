@@ -1,5 +1,7 @@
 'use strict';
 
+/* global vmBuilder, vm, Vue */
+
 vmBuilder.data.articlesLoaded   = false;
 vmBuilder.data.basket           = [];
 vmBuilder.data.basketPromotions = [];
@@ -10,19 +12,19 @@ vmBuilder.data.totalCost        = 0;
  */
 function calculateCost () {
     let basketCost = vm.$data.basket
-        .map(articleId => {
-            return vm.$data.articles
+        .map(articleId =>
+            vm.$data.articles
                 .filterObjId(articleId)
                 .price
-                .amount;
-        });
+                .amount
+        );
 
     let promoCost = vm.$data.basketPromotions
-        .map(basketPromotion => {
-            return vm.$data.promotions
+        .map(basketPromotion =>
+            vm.$data.promotions
                 .filterObjId(basketPromotion.id)
                 .price.amount
-        });
+        );
 
     let totalCost = [0] // There must be at least one value to reduce
         .concat(basketCost)
@@ -74,4 +76,4 @@ vmBuilder.methods.onMinusClick = e => {
         $target.classList.remove('mdl-badge');
         $target.classList.remove('active');
     }
-}
+};

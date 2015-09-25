@@ -1,5 +1,7 @@
 'use strict';
 
+/* global vmBuilder, vm, MaterialMenu, document, $$ */
+
 // Revert promotions to article. Useful when removing an item possibly in a promotion
 vmBuilder.methods.revertPromotions = () => {
     let newBasket = vm.$data.basket.slice();
