@@ -18,6 +18,7 @@
 }
 
 .infoCard.authCard .mdl-cell {
+    border: 1px solid #ddd;
     cursor: pointer;
     font-size: 24px;
     height: 70px;

@@ -29,6 +29,10 @@
     transition: height .3s ease;
 }
 
+#reloadCard .amountGrid .mdl-button {
+    border: 1px solid #ddd;
+}
+
 /* Prepare buttons grid for animation */
 #reloadCard .buttonsGrid {
     height: 0;
