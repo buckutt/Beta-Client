@@ -39,10 +39,17 @@ main.mdl-layout__content {
     background-color: #2ecc71;
     bottom: 15px;
     cursor: pointer;
-    margin: 0 15px;
+    height: 72px;
+    margin: 0 0 0 15px;
     position: absolute;
     right: 15px;
+    width: 72px;
     z-index: 10;
+}
+
+#done i {
+    font-size: 36px;
+    transform: translate(-18px, -12px);
 }
 
 /* Loader and modal */
