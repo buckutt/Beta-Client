@@ -9,25 +9,6 @@ vmBuilder.data.creditToReload       = 0;
 vmBuilder.data.totalReload          = 0;
 vmBuilder.data.detailedReloads      = [];
 
-vmBuilder.data.paymentMethods = [
-    {
-        slug: 'card',
-        text: 'Carte'
-    },
-    {
-        slug: 'cash',
-        text: 'Liquide'
-    },
-    {
-        slug: 'cheque',
-        text: 'Chèque'
-    },
-    {
-        slug: 'gobby',
-        text: 'Gobby'
-    }
-];
-
 vmBuilder.methods.askReload = () => {
     vm.$set('reloadCreditOpened', true);
 };

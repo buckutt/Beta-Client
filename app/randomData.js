@@ -190,4 +190,27 @@ vmBuilder.methods.loadFakeData = () => {
             }
         ]);
     }, 1000);
+
+    setTimeout(function () {
+        console.log('Loaded payment methods');
+        vm.$data.$set('paymentMethodsLoaded', true);
+        vm.$data.$set('paymentMethods', [
+            {
+                slug: 'card',
+                text: 'Carte'
+            },
+            {
+                slug: 'cash',
+                text: 'Liquide'
+            },
+            {
+                slug: 'cheque',
+                text: 'Chèque'
+            },
+            {
+                slug: 'gobby',
+                text: 'Gobby'
+            }
+        ]);
+    }, 750);
 };
