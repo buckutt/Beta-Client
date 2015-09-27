@@ -1,17 +1,17 @@
 To do :
 
 * Real data input/output (articles, promotions, auth, basket)
-* Refuser la validation
-* Sets instead of Promotions
 * Reloader rights
 * Alcohol management (if any article contains alcohol and minor)
 * Double validation (second one made by user)
-* Increase validate button size
-* Dynamic payments method
 
 Working :
+* Refuser la validation
 
 Done :
+* Increase validate button size
+* Dynamic payments method
+* Sets instead of Promotions
 * Menu under reloads to be able to cancel a reload
 * Basket is sent with error
 * Basket is sent without problem
