@@ -3,6 +3,7 @@
 /* global vmBuilder, vm */
 
 vmBuilder.data.promotionsLoaded = false;
+vmBuilder.data.setsLoaded       = false;
 
 let articles;
 let promotions;
@@ -21,12 +22,10 @@ vmBuilder.methods.silentBasketOnce = () => {
 function sanitizeArticles (articles) {
     return articles
         .slice()
-        .map(article => {
-            return {
-                id      : article.id,
-                category: article.category.id
-            };
-        });
+        .map(article => ({
+                id: article.id
+            })
+        );
 }
 
 /**
@@ -38,13 +37,13 @@ function sanitizePromotions (promotions) {
     return promotions
         .slice()
         .map(promotion => {
-            promotion.articles   = promotion.articles || [];
-            promotion.categories = promotion.categories || [];
+            promotion.articles = promotion.articles || [];
+            promotion.sets     = promotion.sets || [];
 
             return {
-                id        : promotion.id,
-                articles  : promotion.articles.map(article => article.id),
-                categories: promotion.categories.map(category =>category.id)
+                id      : promotion.id,
+                articles: promotion.articles.map(article => article.id),
+                sets    : promotion.sets.map(set => set.id)
             };
         });
 }
@@ -60,28 +59,36 @@ function containsArticle (basketCopy, article) {
 }
 
 /**
- * Returns true if article has category; false if article has not the category
+ * Returns true if article has set; false if article has not the set
  * @param  {String} articleId Article id
- * @param  {String} category  Category id
- * @return {Boolean} True ir article is in the given category
+ * @param  {String} setId     Set id
+ * @return {Boolean} True if article is in the given set
  */
-function articleIsFromCategory (articleId, category) {
-    let fullArticle = articles.filter(article => article.id === articleId && article.category === category);
+function articleIsFromSet (articleId, setId) {
+    let found = false;
 
-    return fullArticle.length > 0;
+    let fullSet = vm.$data.sets.filter(set => set.id === setId)[0];
+
+    fullSet.articles.forEach(article => {
+        if (article.id === articleId) {
+            found = true;
+        }
+    });
+
+    return found;
 }
 
 /**
- * Check if an article is in the basket with the specified category
+ * Check if an article is in the basket with the specified set
  * @param  {Array}  basketCopy Basket
- * @param  {String} category   Category id
+ * @param  {String} set        Set id
  * @return {Number} Index of article in basketCopy
  */
-function containsArticleFromCategory (basketCopy, category) {
+function containsArticleFromSet (basketCopy, set) {
     for (let i = 0; i < basketCopy.length; i++) {
         let article = basketCopy[i];
 
-        if (articleIsFromCategory(article, category)) {
+        if (articleIsFromSet(article, set)) {
             return i;
         }
     }
@@ -113,7 +120,7 @@ vmBuilder.watchers.push(['basket', basket => {
         let basketCopy  = basket.slice();
         let basketPromo = [];
         // Count what needs to be found
-        let still       = promotion.articles.length + promotion.categories.length;
+        let still       = promotion.articles.length + promotion.sets.length;
 
         console.log('Promotion', promotion.id);
 
@@ -132,13 +139,13 @@ vmBuilder.watchers.push(['basket', basket => {
             }
         }
 
-        // Then check if basket contains article that matches category
-        for (let j = 0; j < promotion.categories.length; j++) {
-            let categoryPromotion = promotion.categories[j];
-            let position          = containsArticleFromCategory(basketCopy, categoryPromotion);
+        // Then check if basket contains article that matches set
+        for (let j = 0; j < promotion.sets.length; j++) {
+            let setPromotion = promotion.sets[j];
+            let position     = containsArticleFromSet(basketCopy, setPromotion);
 
             if (position > -1) {
-                console.log(categoryPromotion + ' has the good category');
+                console.log(setPromotion + ' has the good set');
                 // Get back the article id
                 let articlePromotion  = basketCopy[position];
                 // Remove from the temporary basket
