@@ -2,8 +2,29 @@
 
 /* global vmBuilder, vm */
 
+vmBuilder.data.loadingBasket   = false;
+vmBuilder.data.notEnoughCredit = false;
+
 vmBuilder.methods.sendBasket = () => {
     let basketToSend = [];
+
+    if (vm.$data.loadingBasket) {
+        return;
+    }
+
+    vm.$data.$set('loadingBasket', true);
+
+    if (vm.$data.currentUser.credit + vm.$data.totalReload - vm.$data.totalCost < 0) {
+        setTimeout(() => {
+            vm.$data.$set('loadingBasket', false);
+            vm.$data.$set('notEnoughCredit', true);
+
+            setTimeout(() => {
+                vm.$data.$set('notEnoughCredit', false);
+            }, 1000);
+        }, 1000);
+        return;
+    }
 
     vm.$data.basket.forEach(articleId => {
         let article = vm.$data.articles.filter(article => article.id === articleId)[0];

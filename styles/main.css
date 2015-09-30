@@ -43,13 +43,28 @@ main.mdl-layout__content {
     margin: 0 0 0 15px;
     position: absolute;
     right: 15px;
+    transition: .3s background-color ease;
     width: 72px;
     z-index: 10;
+}
+
+#done.error {
+    background-color: #e74c3c;
 }
 
 #done i {
     font-size: 36px;
     transform: translate(-18px, -12px);
+}
+
+#done .mdl-spinner--single-color {
+    height: 70px;
+    width: 70px;
+}
+
+#done .mdl-spinner--single-color .mdl-spinner__layer {
+    border-color: #93e6b6;
+    zoom: 1.5;
 }
 
 /* Loader and modal */
