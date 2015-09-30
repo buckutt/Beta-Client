@@ -18,13 +18,13 @@
         <div id="main" class="mdl-layout mdl-js-layout mdl-layout--fixed-header mdl-layout--fixed-tabs">
             <div class="shadow-loader"
                  v-show="startedLoading && (!articlesLoaded || !promotionsLoaded || !paymentMethodsLoaded || !setsLoaded)"
-                 v-transition="fade">
+                 transition="fade">
                 <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
             </div>
 
             <div class="modal-error"
                  v-show="error"
-                 v-transition="fade">
+                 transition="fade">
                 <div class="mdl-card mdl-shadow--4dp">
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text">Erreur</h2>
@@ -34,7 +34,7 @@
                             {{{ errorMessage }}}
                         </p>
                         <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
-                                v-on="click: closeError">
+                                @click="closeError">
                             Fermer
                         </button>
                     </div>
@@ -43,22 +43,22 @@
 
             <div class="modal-reload-credit"
                  v-show="reloadCreditOpened"
-                 v-transition="fade">
+                 transition="fade">
                 <div id="reloadCard" class="mdl-card mdl-shadow--4dp">
                     <div class="mdl-card__title">
                         <h2 class="mdl-card__title-text">Rechargement</h2>
                         <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
-                                v-on="click: closeReloadCredit">
+                                @click="closeReloadCredit">
                             Annuler
                         </button>
                     </div>
                     <div class="mdl-card__supporting-text">
-                        <template v-repeat="paymentMethods">
+                        <template v-for="method in paymentMethods">
                             <button class="mdl-button mdl-js-button mdl-button--colored mdl-js-ripple-effect"
-                                    v-class="mdl-button--raised: reloadMethod === slug"
-                                    v-attr="disabled: reloadCreditOpened && waitingForValidation"
-                                    v-on="click: selectReloadMethod(slug)">
-                                {{ text }}
+                                    :class="{ 'mdl-button--raised': reloadMethod === method.slug }"
+                                    :disabled="reloadCreditOpened && waitingForValidation"
+                                    @click="selectReloadMethod(method.slug)">
+                                {{ method.text }}
                             </button>
                         </template>
                         <div class="mdl-grid amountGrid">
@@ -66,44 +66,44 @@
                                 <span id="creditToReload">{{ creditToReload | credit }}</span>
                             </div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">1</div>
+                                 @click="onCreditToReloadInput">1</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">2</div>
+                                 @click="onCreditToReloadInput">2</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">3</div>
+                                 @click="onCreditToReloadInput">3</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">4</div>
+                                 @click="onCreditToReloadInput">4</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">5</div>
+                                 @click="onCreditToReloadInput">5</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">6</div>
+                                 @click="onCreditToReloadInput">6</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">7</div>
+                                 @click="onCreditToReloadInput">7</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">8</div>
+                                 @click="onCreditToReloadInput">8</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">9</div>
+                                 @click="onCreditToReloadInput">9</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadClearInput">
+                                 @click="onCreditToReloadClearInput">
                                 <i class="material-icons">clear</i>
                             </div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadInput">0</div>
+                                 @click="onCreditToReloadInput">0</div>
                             <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                 v-on="click: onCreditToReloadValidateInput">
+                                 @click="onCreditToReloadValidateInput">
                                 <i class="material-icons">check</i>
                             </div>
                         </div>
                         <div class="mdl-grid buttonsGrid">
                             <div class="mdl-cell mdl-cell--12-col validate">
                                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
-                                        v-on="click: validateReload">
+                                        @click="validateReload">
                                     Paiement accepté
                                 </button>
                             </div>
                             <div class="mdl-cell mdl-cell--12-col cancel">
                                 <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored mdl-js-ripple-effect"
-                                        v-on="click: invalidPayment">
+                                        @click="invalidPayment">
                                     Paiement refusé
                                 </button>
                             </div>
@@ -117,7 +117,7 @@
                     <div class="mdl-layout-spacer">
                         <div v-if="userConnected">
                             <div class="userCredit" data-badge="+{{ totalReload | credit true }}"
-                                 v-class="mdl-badge: totalReload > 0">
+                                 :class="{ 'mdl-badge': totalReload > 0 }">
                                 {{ currentUser.fullname }}
                                 <br>
                                 crédit :
@@ -127,12 +127,12 @@
                             </div>
                             <span id="reloadMenu"
                                   v-if="totalReload > 0"
-                                  v-on="click: toggleReloadMenu">
+                                  @click="toggleReloadMenu">
                                 <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect">
-                                    <template v-repeat="detailedReloads">
+                                    <template v-for="reload in detailedReloads">
                                         <li class="mdl-menu__item"
-                                            v-on="click: removeReloadBasket($index)">
-                                            {{ with }} ({{ amount | credit true }}) <i class="material-icons">delete</i>
+                                            @click="removeReloadBasket($index)">
+                                            {{ reload.with }} ({{ reload.amount | credit true }}) <i class="material-icons">delete</i>
                                         </li>
                                     </template>
                                 </ul>
@@ -145,7 +145,7 @@
                             <span v-if="lastCredit && lastReload">Dernière action par {{ lastUser }} pour un achat de {{ lastCredit | credit true }} et un rechargement de {{ lastReload | credit true }}</span>
                         </div>
                         <div v-if="!userConnected && sellerConnected && sellerAuth && !lastUser && !(lastCredit || lastReload)">
-                            En attente d'un étudiant
+                            En attente d'un acheteur
                         </div>
                         <div v-if="!userConnected && (!sellerConnected || !sellerAuth)">
                             En attente d'un vendeur
@@ -154,23 +154,23 @@
                     <nav class="mdl-navigation">
                         <a id="eject" class="mdl-navigation__link" href="#"
                            v-show="sellerConnected"
-                           v-on="click: onEject">
+                           @click="onEject">
                             <i class="material-icons">eject</i>
                         </a>
                         <a id="reload" class="mdl-navigation__link" href="#"
                            v-show="userConnected"
-                           v-on="click: askReload">
+                           @click="askReload">
                             <i class="material-icons">attach_money</i>
                         </a>
                     </nav>
                 </div>
                 <div class="mdl-layout__tab-bar mdl-js-ripple-effect"
                      v-show="userConnected"
-                     v-transition="fade">
+                     transition="fade">
                     <a href="#tab-{{ $index }}" class="mdl-layout__tab is-active" data-target="tab-{{ $index }}"
-                       v-on="click: onTabClick"
-                       v-class="is-active: $index === 0"
-                       v-repeat="categories">{{ $value }}</a>
+                       @click="onTabClick"
+                       :class="{ 'is-active': $index === 0 }"
+                       v-for="category in categories">{{ category }}</a>
                 </div>
             </header>
             <main class="mdl-layout__content">
@@ -179,18 +179,18 @@
                     <div class="mdl-grid"
                          v-if="userConnected"
                          v-inittabs="">
-                        <template v-repeat="categories">
+                        <template v-for="category in categories">
                             <div id="tab-{{ $index }}" class="mdl-tabs__panel mdl-cell mdl-cell--12-col articlesContainer">
-                                <template v-repeat="articles | filterBy categories[$index] in category.name" track-by="id">
+                                <template v-for="article in articles | filterBy category in 'category.name'" track-by="id">
                                     <div class="mdl-card mdl-shadow--2dp buckutt-card-image"
-                                         v-on="click: onArticleClick"
-                                         data-id="{{ id }}">
+                                         @click="onArticleClick"
+                                         data-id="{{ article.id }}">
                                         <div class="mdl-card__title mdl-card--expand"></div>
                                         <div class="mdl-card__actions">
-                                            <span class="buckutt-card-image__filename">{{ name }}</span>
+                                            <span class="buckutt-card-image__filename">{{ article.name }}</span>
                                         </div>
                                         <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
-                                                v-on="click: onMinusClick">
+                                                @click="onMinusClick">
                                             <i class="material-icons">remove</i>
                                         </button>
                                     </div>
@@ -200,47 +200,47 @@
                     </div>
                     <div class="mdl-grid"
                          v-show="sellerConnected && sellerAuth && !userConnected"
-                         v-transition="fade">
+                         transition="fade">
                         <div class="mdl-card mdl-shadow--6dp infoCard">
-                            En attente d'un étudiant
+                            En attente d'un acheteur
                         </div>
                     </div>
 
                     <div class="mdl-grid"
                          v-show="sellerConnected && !sellerAuth"
-                         v-transition="fade">
+                         transition="fade">
                         <div class="mdl-card mdl-shadow--6dp infoCard authCard">
                             <div class="mdl-grid">
                                 <div class="mdl-cell mdl-cell--12-col"
-                                     v-class="wrong: wrongSellerPassword">
+                                     :class="{ 'wrong': wrongSellerPassword }">
                                     <span id="password">{{ sellerPasswordInput | passwordHide }}</span>
                                 </div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">1</div>
+                                     @click="onPasswordInput">1</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">2</div>
+                                     @click="onPasswordInput">2</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">3</div>
+                                     @click="onPasswordInput">3</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">4</div>
+                                     @click="onPasswordInput">4</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">5</div>
+                                     @click="onPasswordInput">5</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">6</div>
+                                     @click="onPasswordInput">6</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">7</div>
+                                     @click="onPasswordInput">7</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">8</div>
+                                     @click="onPasswordInput">8</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">9</div>
+                                     @click="onPasswordInput">9</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onClearInput">
+                                     @click="onClearInput">
                                     <i class="material-icons">clear</i>
                                 </div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onPasswordInput">0</div>
+                                     @click="onPasswordInput">0</div>
                                 <div class="mdl-cell mdl-cell--4-col mdl-button mdl-js-button mdl-js-ripple-effect"
-                                     v-on="click: onValidateInput">
+                                     @click="onValidateInput">
                                     <i class="material-icons">check</i>
                                 </div>
                             </div>
@@ -249,7 +249,7 @@
 
                     <div class="mdl-grid"
                          v-show="!sellerAuth && !sellerConnected && !userConnected"
-                         v-transition="fade">
+                         transition="fade">
                         <div class="mdl-card mdl-shadow--6dp infoCard">
                             En attente d'un vendeur
                         </div>
@@ -257,12 +257,16 @@
                 </div>
             </main>
             <button id="done" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
-                    v-if="userConnected"
-                    v-on="click: sendBasket">
+                    v-show="userConnected"
+                    :class="{ 'error': notEnoughCredit }"
+                    @click="sendBasket">
                     <i class="material-icons">done_all</i>
+                    <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"
+                        v-show="loadingBasket"
+                        transition="fade"></div>
             </button>
         </div>
-        <script src="bower_components/vue/dist/vue.min.js"></script>
+        <script src="bower_components/vue/dist/vue.js"></script>
         <script src="bower_components/material-design-lite/material.js"></script>
 
         <script src="init.js"></script>

@@ -45,7 +45,7 @@ Vue.filter('basket', () => {
     promotion = Object.keys(promotion)
         .map(item => {
             let fullName = `${promotion[item].name} x${promotion[item].count}`;
-            let template = `<button class="mdl-button mdl-js-button promotionButton" v-on="click : onPromotionExpand">
+            let template = `<button class="mdl-button mdl-js-button promotionButton" @click="onPromotionExpand">
                                 ${fullName}
                             </button>
                             <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect">`;

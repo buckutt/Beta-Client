@@ -10,6 +10,11 @@ sudo npm install -g gulp bower node-static
 bower install
 ```
 
+### Note about material-design-lite
+
+Add `window.MaterialLayoutTab = MaterialLayoutTab;` after function declaration (
+`function MaterialLayoutTab(tab, tabs, panels, layout) {`)
+
 ## Starting
 
 ```sh

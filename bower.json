@@ -7,7 +7,7 @@
   "description": "Buckutt Client Application",
   "license": "MIT",
   "dependencies": {
-    "vue": "~0.12.7",
-    "material-design-lite": "~1.0.0"
+    "material-design-lite": "~1.0.4",
+    "vue": "yyx990803/vue#b7bc6e663abf4a7061061887c60670e51d44cd5a"
   }
 }

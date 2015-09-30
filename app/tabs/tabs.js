@@ -37,5 +37,5 @@ vmBuilder.watchers.push(['articles', () => {
         .uniq()
         .sort((a, b) => 1 - a.localeCompare(b)); // Reverse sort
 
-    vm.$data.$add('categories', categories);
+    vm.$data.$set('categories', categories);
 }]);
