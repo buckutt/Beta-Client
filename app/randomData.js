@@ -4,6 +4,33 @@
 
 /* global vmBuilder, vm */
 
+vmBuilder.methods.go = () => {
+    vm.loadFakeData();
+
+    vm.$data.$set('currentSeller', {
+        id       : 'abc',
+        firstname: 'Gabriel',
+        lastname : 'Juchault',
+        fullname : 'Gabriel Juchault',
+        credit   : 500
+    });
+
+    vm.$data.$set('sellerPasswordInput', '');
+    vm.$data.$set('sellerAuth', true);
+
+    setTimeout(function () {
+        vm.$data.$set('currentUser', {
+            id       : 'abc',
+            firstname: 'Gabriel',
+            lastname : 'Juchault',
+            fullname : 'Gabriel Juchault',
+            credit   : 500
+        });
+
+        vm.$data.$set('userConnected', true);
+    }, 1500);
+};
+
 vmBuilder.data.startedLoading = false;
 
 vmBuilder.methods.loadFakeData = () => {
