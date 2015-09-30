@@ -1,6 +1,6 @@
 'use strict';
 
-/* global vm, Vue, $, $$, MaterialLayoutTab */
+/* global vm, Vue, $, $$, componentHandler, MaterialLayoutTab */
 
 Vue.directive('inittabs', {
     bind: () => {
@@ -11,6 +11,9 @@ Vue.directive('inittabs', {
         let $panels = $$('.mdl-tabs__panel');
         let $layout = $('.mdl-js-layout');
 
-        $tabs.forEach((tab, i) => new MaterialLayoutTab($tabs[i], $tabs, $panels, $layout.MaterialLayout));
+        $tabs.forEach((tab, i) => {
+            new MaterialLayoutTab($tabs[i], $tabs, $panels, $layout.MaterialLayout);
+            componentHandler.upgradeElement($tabs[i].children[0]);
+        });
     }
 });
