@@ -351,19 +351,19 @@ vmBuilder.methods.loadFakeData = () => {
         vm.$data.$set('paymentMethods', [
             {
                 slug: 'card',
-                text: 'Carte'
+                name: 'Carte'
             },
             {
                 slug: 'cash',
-                text: 'Liquide'
+                name: 'Liquide'
             },
             {
                 slug: 'cheque',
-                text: 'Chèque'
+                name: 'Chèque'
             },
             {
                 slug: 'gobby',
-                text: 'Gobby'
+                name: 'Gobby'
             }
         ]);
     }, 750);

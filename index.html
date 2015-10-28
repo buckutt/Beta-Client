@@ -58,7 +58,7 @@
                                     :class="{ 'mdl-button--raised': reloadMethod === method.slug }"
                                     :disabled="reloadCreditOpened && waitingForValidation"
                                     @click="selectReloadMethod(method.slug)">
-                                {{ method.text }}
+                                {{ method.name }}
                             </button>
                         </template>
                         <div class="mdl-grid amountGrid">
