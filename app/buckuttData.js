@@ -8,6 +8,10 @@ const _1 = (objA, objB, name, keyA, keyB) => {
         keyB = 'id';
     }
 
+    if (!keyA) {
+        keyA = name + 'Id';
+    }
+
     objA[keyA] = objB[keyB];
     objA[name] = objB;
 };
@@ -59,7 +63,7 @@ let articleIceTeaPeche = {
 
 let articleEau = {
     id       : '4b3f9766-ed14-4a73-a5e2-69838cb8571d',
-    name     : 'Ice Tea Pêche',
+    name     : 'Eau',
     stock    : 100,
     createdAt: new Date(),
     editedAt : new Date(),
@@ -418,58 +422,58 @@ let userGJ = {
 };
 
 /* Articles - Relationships : cateogry, point, price, sets, promotion */
-_1(articleKinderDelice, categoryBarres, 'category', 'categoryId');
-_1(articleKinderDelice, pointFoyer, 'point', 'pointId');
-_1(articleKinderDelice, price50, 'price', 'priceId');
+_1(articleKinderDelice, categoryBarres, 'category');
+_1(articleKinderDelice, pointFoyer, 'point');
+_n(articleKinderDelice, price50, 'prices', 'priceId');
 _n(articleKinderDelice, setBarresf1e, 'sets');
 
-_1(articleMars, categoryBarres, 'category', 'categoryId');
-_1(articleMars, pointFoyer, 'point', 'pointId');
-_1(articleMars, price50, 'price', 'priceId');
+_1(articleMars, categoryBarres, 'category');
+_1(articleMars, pointFoyer, 'point');
+_n(articleMars, price50, 'prices', 'priceId');
 _n(articleMars, setBarresf1e, 'sets');
 
-_1(articleKinderCountry, categoryBarres, 'category', 'categoryId');
-_1(articleKinderCountry, pointFoyer, 'point', 'pointId');
-_1(articleKinderCountry, price50, 'price', 'priceId');
+_1(articleKinderCountry, categoryBarres, 'category');
+_1(articleKinderCountry, pointFoyer, 'point');
+_n(articleKinderCountry, price50, 'prices', 'priceId');
 _n(articleKinderCountry, setBarresf1e, 'sets');
 
-_1(articleIceTeaPeche, categoryCanettes, 'category', 'categoryId');
-_1(articleIceTeaPeche, pointFoyer, 'point', 'pointId');
-_1(articleIceTeaPeche, price50, 'price', 'priceId');
+_1(articleIceTeaPeche, categoryCanettes, 'category');
+_1(articleIceTeaPeche, pointFoyer, 'point');
+_n(articleIceTeaPeche, price50, 'prices', 'priceId');
 _n(articleIceTeaPeche, setCanettesf1e, 'sets');
 
-_1(articleEau, categoryGeneral, 'category', 'categoryId');
-_1(articleEau, pointFoyer, 'point', 'pointId');
-_1(articleEau, price50, 'price', 'priceId');
+_1(articleEau, categoryGeneral, 'category');
+_n(articleEau, pointFoyer, 'points', 'pointId');
+_n(articleEau, price50, 'prices');
 
-_1(articleIceTeaMangue, categoryCanettes, 'category', 'categoryId');
-_1(articleIceTeaMangue, pointFoyer, 'point', 'pointId');
-_1(articleIceTeaMangue, price50, 'price', 'priceId');
+_1(articleIceTeaMangue, categoryCanettes, 'category');
+_1(articleIceTeaMangue, pointFoyer, 'point');
+_n(articleIceTeaMangue, price50, 'prices', 'priceId');
 _n(articleIceTeaMangue, setCanettesf1e, 'sets');
 
-_1(articleLiptonic, categoryCanettes, 'category', 'categoryId');
-_1(articleLiptonic, pointFoyer, 'point', 'pointId');
-_1(articleLiptonic, price50, 'price', 'priceId');
+_1(articleLiptonic, categoryCanettes, 'category');
+_1(articleLiptonic, pointFoyer, 'point');
+_n(articleLiptonic, price50, 'prices', 'priceId');
 _n(articleLiptonic, setCanettesf1e, 'sets');
 
-_1(articleSchweppes, categoryCanettes, 'category', 'categoryId');
-_1(articleSchweppes, pointFoyer, 'point', 'pointId');
-_1(articleSchweppes, price50, 'price', 'priceId');
+_1(articleSchweppes, categoryCanettes, 'category');
+_1(articleSchweppes, pointFoyer, 'point');
+_n(articleSchweppes, price50, 'prices', 'priceId');
 _n(articleSchweppes, setCanettesf1e, 'sets');
 
-_1(articleSchweppesAgrum, categoryCanettes, 'category', 'categoryId');
-_1(articleSchweppesAgrum, pointFoyer, 'point', 'pointId');
-_1(articleSchweppesAgrum, price50, 'price', 'priceId');
+_1(articleSchweppesAgrum, categoryCanettes, 'category');
+_1(articleSchweppesAgrum, pointFoyer, 'point');
+_n(articleSchweppesAgrum, price50, 'prices', 'priceId');
 _n(articleSchweppesAgrum, setCanettesf1e, 'sets');
 
-_1(articleCocaCola, categoryCanettes, 'category', 'categoryId');
-_1(articleCocaCola, pointFoyer, 'point', 'pointId');
-_1(articleCocaCola, price50, 'price', 'priceId');
+_1(articleCocaCola, categoryCanettes, 'category');
+_1(articleCocaCola, pointFoyer, 'point');
+_n(articleCocaCola, price50, 'prices', 'priceId');
 _n(articleCocaCola, setCanettesf1e, 'sets');
 
-_1(articleCrepe, categoryGeneral, 'category', 'categoryId');
-_1(articleCrepe, pointFoyer, 'foyer', 'foyerId');
-_1(articleCrepe, price50, 'price', 'priceId');
+_1(articleCrepe, categoryGeneral, 'category');
+_1(articleCrepe, pointFoyer, 'foyer');
+_n(articleCrepe, price50, 'prices', 'priceId');
 _n(articleCrepe, promotion3crepes, 'promotions');
 
 /* Categories - Relationships : articles */
@@ -497,15 +501,15 @@ _n(fundationBde, groupCotisants, 'groups');
 _n(fundationBde, groupNonCotisants, 'groups');
 
 /* Groups - Relationships : fundation, users, prices */
-_1(groupCotisants, fundationFoyer, 'fundation', 'fundationId');
+_1(groupCotisants, fundationFoyer, 'fundation');
 _n(groupCotisants, userGJ, 'users');
 _n(groupCotisants, price50, 'prices');
 _n(groupCotisants, price100F1E, 'prices');
 _n(groupCotisants, price1003C, 'prices');
 
 /* MeanOfLogin - Relationships : user */
-_1(molGJEtuCard, userGJ, 'user', 'userId');
-_1(molGJEtuMail, userGJ, 'user', 'userId');
+_1(molGJEtuCard, userGJ, 'user');
+_1(molGJEtuMail, userGJ, 'user');
 
 /* Periods - Relationships : prices, rights */
 _n(periodEternity, price50, 'prices');
