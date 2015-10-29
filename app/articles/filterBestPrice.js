@@ -1,6 +1,6 @@
 'use strict';
 
-/* global vmBuilder, vm */
+/* global vmBuilder, vm, Vue */
 
 const now = new Date();
 
@@ -16,7 +16,7 @@ let filterBestPrice = article => {
         }
     });
 
-    article.$set('price', chosenPrice);
+    Vue.set(article, 'price', chosenPrice);
 
     return article;
 };
@@ -24,6 +24,5 @@ let filterBestPrice = article => {
 vmBuilder.watchers.push(['articles', () => {
     console.info('Finding prices');
 
-    let articles = vm.$data.articles.map(article => filterBestPrice(article));
-    console.log(articles[0]);
+    vm.articles.forEach(article => filterBestPrice(article));
 }]);

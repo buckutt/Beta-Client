@@ -4,7 +4,7 @@
 
 Vue.directive('inittabs', {
     bind: () => {
-        vm.$data.$set('tab', 'tab-0');
+        vm.tab = 'tab-0';
 
         // Re enable tabs. See https://github.com/google/material-design-lite/issues/1165
         let $tabs   = $$('.mdl-layout__tab');

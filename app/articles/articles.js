@@ -2,26 +2,33 @@
 
 /* global vmBuilder, vm, Vue */
 
-vmBuilder.data.articlesLoaded   = false;
-vmBuilder.data.basket           = [];
-vmBuilder.data.basketPromotions = [];
-vmBuilder.data.totalCost        = 0;
+vmBuilder.data.articles             = [];
+vmBuilder.data.articlesLoaded       = false;
+vmBuilder.data.promotions           = [];
+vmBuilder.data.setsLoaded           = false;
+vmBuilder.data.sets                 = [];
+vmBuilder.data.paymentMethodsLoaded = false;
+vmBuilder.data.paymentMethods       = [];
+vmBuilder.data.promotionsLoaded     = false;
+vmBuilder.data.basket               = [];
+vmBuilder.data.basketPromotions     = [];
+vmBuilder.data.totalCost            = 0;
 
 /**
  * Calculate the cost of the basket, including promotion.
  */
 function calculateCost () {
-    let basketCost = vm.$data.basket
+    let basketCost = vm.basket
         .map(articleId =>
-            vm.$data.articles
+            vm.articles
                 .filterObjId(articleId)
                 .price
                 .amount
         );
 
-    let promoCost = vm.$data.basketPromotions
+    let promoCost = vm.basketPromotions
         .map(basketPromotion =>
-            vm.$data.promotions
+            vm.promotions
                 .filterObjId(basketPromotion.id)
                 .price.amount
         );
@@ -31,7 +38,7 @@ function calculateCost () {
         .concat(promoCost)
         .reduce((a, b) => a + b);
 
-    vm.$data.totalCost = totalCost;
+    vm.totalCost = totalCost;
 }
 
 vmBuilder.methods.onArticleClick = e => {
@@ -39,7 +46,7 @@ vmBuilder.methods.onArticleClick = e => {
     let $target = e.target.parents('.buckutt-card-image');
     let id      = $target.getAttribute('data-id');
 
-    vm.$data.basket.push(id);
+    vm.basket.push(id);
     Vue.nextTick(calculateCost);
 
     if ($target.hasAttribute('data-badge')) {
@@ -62,10 +69,10 @@ vmBuilder.methods.onMinusClick = e => {
 
     Vue.nextTick(() => {
         let id      = $target.getAttribute('data-id');
-        let index   = vm.$data.basket.indexOf(id);
+        let index   = vm.basket.indexOf(id);
         console.log(id, index);
 
-        vm.$data.basket.splice(index, 1);
+        vm.basket.splice(index, 1);
         Vue.nextTick(calculateCost);
     });
 

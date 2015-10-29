@@ -25,19 +25,19 @@ function checkSerie (etuNumber) {
 
     etuNumber = etuNumber.toEtuNumber();
 
-    if (vm.$data.sellerConnected && vm.$data.sellerAuth) {
+    if (vm.sellerConnected && vm.sellerAuth) {
         console.info('User loading...');
         setTimeout(() => {
             console.info('User loaded !');
-            vm.$data.$set('currentUser', {
+            vm.currentUser = {
                 id       : 'abc',
                 firstname: 'Gabriel',
                 lastname : 'Juchault',
                 fullname : 'Gabriel Juchault',
                 credit   : 500
-            });
+            };
 
-            vm.$data.$set('userConnected', true);
+            vm.userConnected = true;
         }, 500);
     } else {
         console.info('Seller loading...');
@@ -46,8 +46,8 @@ function checkSerie (etuNumber) {
 
             if (success) {
                 console.info('Seller loaded !');
-                vm.$data.$set('sellerConnected', true);
-                vm.$data.$set('sellerCanReload', true);
+                vm.sellerConnected = true;
+                vm.sellerCanReload = true;
             } else {
                 vm.throwError('Numéro de carte étu non vendeur');
             }
@@ -56,8 +56,8 @@ function checkSerie (etuNumber) {
 }
 
 $('body').addEventListener('keypress', e => {
-    if (vm.$data.userConnected ||
-       (vm.$data.sellerConnected && !vm.$data.sellerAuth)) {
+    if (vm.userConnected ||
+       (vm.sellerConnected && !vm.sellerAuth)) {
         return;
     }
 

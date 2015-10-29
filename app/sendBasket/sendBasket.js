@@ -4,50 +4,54 @@
 
 vmBuilder.data.loadingBasket   = false;
 vmBuilder.data.notEnoughCredit = false;
+vmBuilder.data.lastCredit      = '';
+vmBuilder.data.lastReload      = '';
+vmBuilder.data.lastUser        = '';
 
 vmBuilder.methods.sendBasket = () => {
     let basketToSend = [];
 
-    if (vm.$data.loadingBasket) {
+    if (vm.loadingBasket) {
         return;
     }
 
-    vm.$data.$set('loadingBasket', true);
+    vm.loadingBasket = true;
 
-    if (vm.$data.currentUser.credit + vm.$data.totalReload - vm.$data.totalCost < 0) {
+    if (vm.currentUser.credit + vm.totalReload - vm.totalCost < 0) {
         setTimeout(() => {
-            vm.$data.$set('loadingBasket', false);
-            vm.$data.$set('notEnoughCredit', true);
+            vm.loadingBasket   = false;
+            vm.notEnoughCredit = true;
 
             setTimeout(() => {
-                vm.$data.$set('notEnoughCredit', false);
+                vm.notEnoughCredit = false;
             }, 1000);
         }, 1000);
+
         return;
     }
 
-    vm.$data.basket.forEach(articleId => {
-        let article = vm.$data.articles.filter(article => article.id === articleId)[0];
+    vm.basket.forEach(articleId => {
+        let article = vm.articles.filter(article => article.id === articleId)[0];
         basketToSend.push({
-            buyerId    : vm.$data.currentUser.id,
+            buyerId    : vm.currentUser.id,
             fundationId: article.fundationId,
             promotionId: null,
-            sellerId   : vm.$data.currentSeller.id,
+            sellerId   : vm.currentSeller.id,
             articles   : [article.id],
             cost       : article.price.amount,
             type       : 'purchase'
         });
     });
 
-    vm.$data.basketPromotions.forEach(basketPromo => {
+    vm.basketPromotions.forEach(basketPromo => {
         let promoId        = basketPromo.id;
         let articlesInside = basketPromo.contents;
-        let promo          = vm.$data.promotions.filter(promoToCheck => promoToCheck.id === promoId)[0];
+        let promo          = vm.promotions.filter(promoToCheck => promoToCheck.id === promoId)[0];
 
         basketToSend.push({
-            buyerId    : vm.$data.currentUser.id,
+            buyerId    : vm.currentUser.id,
             fundationId: promo.fundationId,
-            sellerId   : vm.$data.currentSeller.id,
+            sellerId   : vm.currentSeller.id,
             promotionId: promo.id,
             articles   : articlesInside,
             cost       : promo.price.amount,
@@ -55,12 +59,12 @@ vmBuilder.methods.sendBasket = () => {
         });
     });
 
-    vm.$data.detailedReloads.forEach(reload => {
+    vm.detailedReloads.forEach(reload => {
         basketToSend.push({
             credit  : reload.amount,
             trace   : reload.with,
-            buyerId : vm.$data.currentUser.id,
-            sellerId: vm.$data.currentSeller.id,
+            buyerId : vm.currentUser.id,
+            sellerId: vm.currentSeller.id,
             type    : 'reload'
         });
     });
@@ -70,15 +74,15 @@ vmBuilder.methods.sendBasket = () => {
         const success = true;
 
         if (success) {
-            vm.$data.$set('lastCredit', vm.$data.totalCost);
-            vm.$data.$set('lastReload', vm.$data.totalReload);
-            vm.$data.$set('lastUser', vm.$data.currentUser.fullname);
+            vm.lastCredit = vm.totalCost;
+            vm.lastReload = vm.totalReload;
+            vm.lastUser   = vm.currentUser.fullname;
 
             vm.onEject();
         } else {
             let error = 'Impossible d\'enregistrer les achats ou de déduire le crédit de l\'utilisateur.<br>';
-            error      += 'Si un rechargement par carte a été effectué, le débit a eu lieu.<br>';
-            error      += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckutt.';
+            error    += 'Si un rechargement par carte a été effectué, le débit a eu lieu.<br>';
+            error    += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckutt.';
             vm.throwError(error);
         }
     }, 500);

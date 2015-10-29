@@ -7,8 +7,8 @@ Vue.filter('basket', () => {
     let promotion = {};
 
     // Articles display
-    vm.$data.basket.forEach(item => {
-        let fullItem = vm.$data.articles.filterObjId(item);
+    vm.basket.forEach(item => {
+        let fullItem = vm.articles.filterObjId(item);
 
         if (!fullItem) {
             return;
@@ -18,11 +18,11 @@ Vue.filter('basket', () => {
     });
 
     // Promotions display
-    vm.$data.basketPromotions.forEach(promo => {
+    vm.basketPromotions.forEach(promo => {
         let promotionId        = promo.id;
         let promotionsArticles = promo.contents;
 
-        let fullItem = vm.$data.promotions.filterObjId(promotionId);
+        let fullItem = vm.promotions.filterObjId(promotionId);
 
         if (!fullItem) {
             return;
@@ -51,7 +51,7 @@ Vue.filter('basket', () => {
                             <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect">`;
 
             template += promotion[item].articles
-                .map(articleId => vm.$data.articles.filterObjId(articleId))
+                .map(articleId => vm.articles.filterObjId(articleId))
                 .filerUndefined()
                 .map(article => `<li class="mdl-menu__item">${article.name}</li>`)
                 .join('\n');

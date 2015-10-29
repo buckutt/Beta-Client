@@ -34,30 +34,30 @@ vmBuilder.methods.go = () => {
 vmBuilder.data.startedLoading = false;
 
 vmBuilder.methods.loadFakeData = () => {
-    vm.$data.$set('startedLoading', true);
+    vm.startedLoading = true;
 
     setTimeout(function () {
         console.info('Loaded articles');
-        vm.$data.$set('articlesLoaded', true);
-        vm.$data.$set('articles', window.data.articles);
+        vm.articlesLoaded = true;
+        vm.articles       = window.data.articles;
     }, 1500);
 
     setTimeout(function () {
         console.info('Loaded promotions');
-        vm.$data.$set('promotionsLoaded', true);
-        vm.$data.$set('promotions', window.data.promotions);
+        vm.promotionsLoaded = true;
+        vm.promotions       = window.data.promotions;
     }, 1000);
 
     setTimeout(function () {
         console.info('Loaded sets');
-        vm.$data.$set('setsLoaded', true);
-        vm.$data.$set('sets', window.data.sets);
+        vm.setsLoaded = true;
+        vm.sets       = window.data.sets;
     }, 630);
 
     setTimeout(function () {
         console.info('Loaded payment methods');
-        vm.$data.$set('paymentMethodsLoaded', true);
-        vm.$data.$set('paymentMethods', window.data.meansOfPayment);
+        vm.paymentMethodsLoaded = true;
+        vm.paymentMethods       = window.data.meansOfPayment;
     }, 750);
 };
 

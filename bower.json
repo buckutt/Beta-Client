@@ -8,6 +8,7 @@
   "license": "MIT",
   "dependencies": {
     "material-design-lite": "~1.0.4",
-    "vue": "yyx990803/vue#b7bc6e663abf4a7061061887c60670e51d44cd5a"
+    "vue": "~1.0.3",
+    "requirejs": "~2.1.20"
   }
 }

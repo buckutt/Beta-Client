@@ -4,14 +4,14 @@
 
 // Revert promotions to article. Useful when removing an item possibly in a promotion
 vmBuilder.methods.revertPromotions = () => {
-    let newBasket = vm.$data.basket.slice();
-    vm.$data.basketPromotions.forEach(promotion => {
+    let newBasket = vm.basket.slice();
+    vm.basketPromotions.forEach(promotion => {
         newBasket = newBasket.concat(promotion.contents);
     });
 
     vm.silentBasketOnce();
-    vm.$data.$set('basket', newBasket);
-    vm.$data.$set('basketPromotions', []);
+    vm.basket           = newBasket;
+    vm.basketPromotions = [];
 };
 
 vmBuilder.methods.onPromotionExpand = e => {

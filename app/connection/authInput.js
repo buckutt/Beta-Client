@@ -8,12 +8,12 @@ vmBuilder.data.wrongSellerPassord  = false;
 vmBuilder.methods.onPasswordInput = e => {
     console.log('Password key input');
     let value = e.target.parents('.mdl-cell').textContent.trim();
-    vm.$data.$set('sellerPasswordInput', vm.$data.sellerPasswordInput + value);
+    vm.sellerPasswordInput = vm.sellerPasswordInput + value;
 };
 
 vmBuilder.methods.onClearInput = () => {
     console.log('Password clear input');
-    vm.$data.$set('sellerPasswordInput', '');
+    vm.sellerPasswordInput = '';
 };
 
 let authingUser = false;
@@ -33,19 +33,19 @@ vmBuilder.methods.onValidateInput = () => {
 
             vm.loadFakeData();
 
-            vm.$data.$set('currentSeller', {
+            vm.currentSeller = {
                 id       : 'abc',
                 firstname: 'Gabriel',
                 lastname : 'Juchault',
                 fullname : 'Gabriel Juchault',
                 credit   : 500
-            });
+            };
 
-            vm.$data.$set('sellerPasswordInput', '');
-            vm.$data.$set('sellerAuth', true);
+            vm.sellerPasswordInput = '';
+            vm.sellerAuth          = true;
         } else {
             vm.throwError('Mot de passe invalide');
-            vm.$data.$set('sellerPasswordInput', '');
+            vm.sellerPasswordInput = '';
         }
 
         // Wait for animations and nextTick

@@ -67,7 +67,7 @@ function containsArticle (basketCopy, article) {
 function articleIsFromSet (articleId, setId) {
     let found = false;
 
-    let fullSet = vm.$data.sets.filter(set => set.id === setId)[0];
+    let fullSet = vm.sets.filterObjId(setId);
 
     fullSet.articles.forEach(article => {
         if (article.id === articleId) {
@@ -97,7 +97,7 @@ function containsArticleFromSet (basketCopy, set) {
 }
 
 vmBuilder.watchers.push(['basket', basket => {
-    if (!vm.$data.promotionsLoaded || !vm.$data.articlesLoaded) {
+    if (!vm.promotionsLoaded || !vm.articlesLoaded) {
         return;
     }
 
@@ -107,10 +107,10 @@ vmBuilder.watchers.push(['basket', basket => {
         return;
     }
 
-    articles   = sanitizeArticles(vm.$data.articles);
-    promotions = sanitizePromotions(vm.$data.promotions);
+    articles   = sanitizeArticles(vm.articles);
+    promotions = sanitizePromotions(vm.promotions);
 
-    let basketPromotions         = vm.$data.basketPromotions;
+    let basketPromotions         = vm.basketPromotions;
     let promotionsThatDidntMatch = 0;
     let i                        = 0;
 
@@ -173,6 +173,6 @@ vmBuilder.watchers.push(['basket', basket => {
         i = (i + 1) % promotions.length;
     } while (promotionsThatDidntMatch < promotions.length);
 
-    vm.$data.$set('basket', basket);
-    vm.$data.$set('basketPromotions', basketPromotions);
+    vm.basket           = basket;
+    vm.basketPromotions = basketPromotions;
 }]);

@@ -2,12 +2,13 @@
 
 /* global vmBuilder, vm, Vue, $, $$ */
 
-vmBuilder.data.tab = 'none';
+vmBuilder.data.tab        = 'none';
+vmBuilder.data.categories = [];
 
 vmBuilder.methods.onTabClick = e => {
     let target  = e.target.parentElement.getAttribute('data-target');
     console.info('New tab', target);
-    vm.$data.$set('tab', target);
+    vm.tab = target;
 };
 
 vmBuilder.watchers.push(['tab', newTab => {
@@ -26,16 +27,16 @@ vmBuilder.watchers.push(['tab', newTab => {
 
 let articlesParsed = false;
 vmBuilder.watchers.push(['articles', () => {
-    if (articlesParsed) {
+    if (articlesParsed || vm.articles.length === 0) {
         return;
     }
     console.info('Creating categories based on articles');
     articlesParsed = true;
 
-    let categories = vm.$data.articles
+    let categories = vm.articles
         .map(a => a.category.name)
         .uniq()
         .sort((a, b) => 1 - a.localeCompare(b)); // Reverse sort
 
-    vm.$data.$set('categories', categories);
+    vm.categories = categories;
 }]);

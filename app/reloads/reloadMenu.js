@@ -29,8 +29,8 @@ vmBuilder.methods.toggleReloadMenu = e => {
 };
 
 vmBuilder.methods.removeReloadBasket = index => {
-    let totalReload = vm.$data.totalReload;
+    let totalReload = vm.totalReload;
     // Remove the detailed reload and get the amount
     // Then update totalReload
-    vm.$data.$set('totalReload', totalReload - vm.$data.detailedReloads.splice(index, 1)[0].amount);
+    vm.totalReload = totalReload - vm.detailedReloads.splice(index, 1)[0].amount;
 };
