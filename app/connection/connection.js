@@ -7,6 +7,7 @@ vmBuilder.data.currentUser     = {};
 vmBuilder.data.sellerConnected = false;
 vmBuilder.data.sellerAuth      = false;
 vmBuilder.data.userConnected   = false;
+vmBuilder.data.sellerCanReload = false;
 
 let serie = '';
 let clearSerieTimeout = 0;
@@ -46,6 +47,7 @@ function checkSerie (etuNumber) {
             if (success) {
                 console.info('Seller loaded !');
                 vm.$data.$set('sellerConnected', true);
+                vm.$data.$set('sellerCanReload', true);
             } else {
                 vm.throwError('Numéro de carte étu non vendeur');
             }

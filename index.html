@@ -158,7 +158,7 @@
                             <i class="material-icons">eject</i>
                         </a>
                         <a id="reload" class="mdl-navigation__link" href="#"
-                           v-show="userConnected"
+                           v-show="userConnected && sellerCanReload"
                            @click="askReload">
                             <i class="material-icons">attach_money</i>
                         </a>

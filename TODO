@@ -2,13 +2,13 @@ To do :
 
 * Offline
 * Real data input/output (articles, promotions, auth, basket)
-* Reloader rights
 * Alcohol management (if any article contains alcohol and minor)
 * Double validation (second one made by user)
 
 Working :
 
 Done :
+* Reloader rights
 * Article 1:n prices -> select best price available
 * Refuser la validation + loader
 * Increase validate button size
