@@ -7,9 +7,9 @@ To do :
 * Double validation (second one made by user)
 
 Working :
-* Article 1:n prices -> select best price available
 
 Done :
+* Article 1:n prices -> select best price available
 * Refuser la validation + loader
 * Increase validate button size
 * Dynamic payments method
