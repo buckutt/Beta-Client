@@ -65,7 +65,8 @@ define('connection', require => {
     connection.controller = vm => {
         $('body').addEventListener('keypress', e => {
             if (vm.userConnected ||
-               (vm.sellerConnected && !vm.sellerAuth)) {
+               (vm.sellerConnected && !vm.sellerAuth) ||
+               (vm.error)) {
                 return;
             }
 
