@@ -1,15 +1,32 @@
 'use strict';
 
-/* global vmBuilder, vm */
+/* global define */
 
-vmBuilder.data.error        = false;
-vmBuilder.data.errorMessage = '';
+define('error', () => {
+    let error = {};
 
-vmBuilder.methods.throwError = message => {
-    vm.error        = true;
-    vm.errorMessage = message;
-};
+    error.data = {
+        error       : false,
+        errorMessage: ''
+    };
 
-vmBuilder.methods.closeError = () => {
-    vm.error = false;
-};
+    error.methods = {
+        /**
+         * Shows the error modal box
+         * @param  {String} message The error message
+         */
+        throwError(message) {
+            this.error        = true;
+            this.errorMessage = message;
+        },
+
+        /**
+         * Closes the error modal box
+         */
+        closeError() {
+            this.error = false;
+        }
+    };
+
+    return error;
+});

@@ -1,19 +1,28 @@
 'use strict';
 
-/* global vm, Vue, $, $$, componentHandler, MaterialLayoutTab */
+/* global define, componentHandler, MaterialLayoutTab */
 
-Vue.directive('inittabs', {
-    bind: () => {
-        vm.tab = 'tab-0';
+define('initTabs', require => {
+    const Vue = require('vue');
+    const $   = require('$');
+    const $$  = require('$$');
 
-        // Re enable tabs. See https://github.com/google/material-design-lite/issues/1165
-        let $tabs   = $$('.mdl-layout__tab');
-        let $panels = $$('.mdl-tabs__panel');
-        let $layout = $('.mdl-js-layout');
+    Vue.directive('inittabs', {
+        /**
+         * Automatically sets the first tab and material-upgrade the elements
+         */
+        bind() {
+            this.vm.tab = 'tab-0';
 
-        $tabs.forEach((tab, i) => {
-            new MaterialLayoutTab($tabs[i], $tabs, $panels, $layout.MaterialLayout);
-            componentHandler.upgradeElement($tabs[i].children[0]);
-        });
-    }
+            // Re enable tabs. See https://github.com/google/material-design-lite/issues/1165
+            let $tabs   = $$('.mdl-layout__tab');
+            let $panels = $$('.mdl-tabs__panel');
+            let $layout = $('.mdl-js-layout');
+
+            $tabs.forEach((tab, i) => {
+                new MaterialLayoutTab($tabs[i], $tabs, $panels, $layout.MaterialLayout);
+                componentHandler.upgradeElement($tabs[i].children[0]);
+            });
+        }
+    });
 });

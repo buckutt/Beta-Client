@@ -1,6 +1,6 @@
 'use strict';
 
-/* global document, $$, Element */
+/* global document, Element */
 
 /**
  * Search among all parents of a child, stops when the wanted parent is found
@@ -8,8 +8,10 @@
  * @return {HTMLElement} The parent
  */
 Element.prototype.parents = function (selector) {
-    let $matches = $$(selector);
+    let $matches = Array.prototype.slice.call(document.querySelectorAll(selector));
+    // jscs:disable
     let parent = this;
+    // jscs:enable
 
     do {
         if ($matches.indexOf(parent) !== -1) {

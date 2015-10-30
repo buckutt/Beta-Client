@@ -1,64 +1,74 @@
 'use strict';
 
-// jscs: disable
+/* global define */
 
-/* global window, vmBuilder, vm */
+define('randomData', require => {
+    const data = require('buckuttData');
 
-vmBuilder.methods.go = () => {
-    vm.loadFakeData();
+    let randomData = {};
 
-    vm.$data.$set('currentSeller', {
-        id       : 'abc',
-        firstname: 'Gabriel',
-        lastname : 'Juchault',
-        fullname : 'Gabriel Juchault',
-        credit   : 500
-    });
+    randomData.methods = {
+        /**
+         * Logs a seller and a user
+         */
+        go() {
+            this.loadFakeData();
 
-    vm.$data.$set('sellerPasswordInput', '');
-    vm.$data.$set('sellerAuth', true);
+            this.currentSeller = {
+                id       : 'abc',
+                firstname: 'Gabriel',
+                lastname : 'Juchault',
+                fullname : 'Gabriel Juchault',
+                credit   : 500
+            };
 
-    setTimeout(function () {
-        vm.$data.$set('currentUser', {
-            id       : 'abc',
-            firstname: 'Gabriel',
-            lastname : 'Juchault',
-            fullname : 'Gabriel Juchault',
-            credit   : 500
-        });
+            this.sellerPasswordInput = '';
+            this.sellerAuth          = true;
 
-        vm.$data.$set('userConnected', true);
-    }, 1500);
-};
+            setTimeout(function () {
+                this.currentUser = {
+                    id       : 'abc',
+                    firstname: 'Gabriel',
+                    lastname : 'Juchault',
+                    fullname : 'Gabriel Juchault',
+                    credit   : 500
+                };
 
-vmBuilder.data.startedLoading = false;
+                this.userConnected = true;
+            }, 1500);
+        },
 
-vmBuilder.methods.loadFakeData = () => {
-    vm.startedLoading = true;
+        /**
+         * Loads JSON data
+         */
+        loadFakeData() {
+            this.startedLoading = true;
 
-    setTimeout(function () {
-        console.info('Loaded articles');
-        vm.articlesLoaded = true;
-        vm.articles       = window.data.articles;
-    }, 1500);
+            setTimeout(() => {
+                console.info('Loaded articles');
+                this.articlesLoaded = true;
+                this.articles       = data.articles;
+            }, 1500);
 
-    setTimeout(function () {
-        console.info('Loaded promotions');
-        vm.promotionsLoaded = true;
-        vm.promotions       = window.data.promotions;
-    }, 1000);
+            setTimeout(() => {
+                console.info('Loaded promotions');
+                this.promotionsLoaded = true;
+                this.promotions       = data.promotions;
+            }, 1000);
 
-    setTimeout(function () {
-        console.info('Loaded sets');
-        vm.setsLoaded = true;
-        vm.sets       = window.data.sets;
-    }, 630);
+            setTimeout(() => {
+                console.info('Loaded sets');
+                this.setsLoaded = true;
+                this.sets       = data.sets;
+            }, 630);
 
-    setTimeout(function () {
-        console.info('Loaded payment methods');
-        vm.paymentMethodsLoaded = true;
-        vm.paymentMethods       = window.data.meansOfPayment;
-    }, 750);
-};
+            setTimeout(() => {
+                console.info('Loaded payment methods');
+                this.paymentMethodsLoaded = true;
+                this.paymentMethods       = data.meansOfPayment;
+            }, 750);
+        }
+    };
 
-// jscs: enable
+    return randomData;
+});

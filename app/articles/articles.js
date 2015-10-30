@@ -1,23 +1,12 @@
 'use strict';
 
-/* global vmBuilder, vm, Vue */
-
-vmBuilder.data.articles             = [];
-vmBuilder.data.articlesLoaded       = false;
-vmBuilder.data.promotions           = [];
-vmBuilder.data.setsLoaded           = false;
-vmBuilder.data.sets                 = [];
-vmBuilder.data.paymentMethodsLoaded = false;
-vmBuilder.data.paymentMethods       = [];
-vmBuilder.data.promotionsLoaded     = false;
-vmBuilder.data.basket               = [];
-vmBuilder.data.basketPromotions     = [];
-vmBuilder.data.totalCost            = 0;
+/* global define */
 
 /**
  * Calculate the cost of the basket, including promotion.
+ * @param {Vue} vm The view model
  */
-function calculateCost () {
+const calculateCost = vm => {
     let basketCost = vm.basket
         .map(articleId =>
             vm.articles
@@ -39,48 +28,83 @@ function calculateCost () {
         .reduce((a, b) => a + b);
 
     vm.totalCost = totalCost;
-}
-
-vmBuilder.methods.onArticleClick = e => {
-    console.log('Click on article');
-    let $target = e.target.parents('.buckutt-card-image');
-    let id      = $target.getAttribute('data-id');
-
-    vm.basket.push(id);
-    Vue.nextTick(calculateCost);
-
-    if ($target.hasAttribute('data-badge')) {
-        $target.setAttribute('data-badge', parseInt($target.getAttribute('data-badge'), 10) + 1 + '');
-    } else {
-        $target.setAttribute('data-badge', '1');
-        $target.classList.add('mdl-badge');
-        $target.classList.add('active');
-    }
 };
 
-vmBuilder.methods.onMinusClick = e => {
-    console.log('Click on article removal');
-    e.stopPropagation();
+define('articles', require => {
+    const Vue = require('vue');
 
-    let $target = e.target.parents('.buckutt-card-image');
-    let badge   = parseInt($target.getAttribute('data-badge'), 10);
+    let articles = {};
 
-    vm.revertPromotions();
+    articles.data = {
+        articles            : [],
+        articlesLoaded      : false,
+        promotions          : [],
+        setsLoaded          : false,
+        sets                : [],
+        paymentMethodsLoaded: false,
+        paymentMethods      : [],
+        promotionsLoaded    : false,
+        basket              : [],
+        basketPromotions    : [],
+        totalCost           : 0
+    };
 
-    Vue.nextTick(() => {
-        let id      = $target.getAttribute('data-id');
-        let index   = vm.basket.indexOf(id);
-        console.log(id, index);
+    articles.methods = {
+        /**
+         * Triggers basket change on article click
+         * @param  {MouseEvent} e The click event
+         */
+        onArticleClick(e) {
+            console.log('Click on article');
+            let $target = e.target.parents('.buckutt-card-image');
+            let id      = $target.getAttribute('data-id');
 
-        vm.basket.splice(index, 1);
-        Vue.nextTick(calculateCost);
-    });
+            this.basket.push(id);
+            Vue.nextTick(() => {
+                calculateCost(this);
+            });
 
-    if (badge > 1) {
-        $target.setAttribute('data-badge', badge - 1 + '');
-    } else {
-        $target.removeAttribute('data-badge');
-        $target.classList.remove('mdl-badge');
-        $target.classList.remove('active');
-    }
-};
+            if ($target.hasAttribute('data-badge')) {
+                $target.setAttribute('data-badge', parseInt($target.getAttribute('data-badge'), 10) + 1 + '');
+            } else {
+                $target.setAttribute('data-badge', '1');
+                $target.classList.add('mdl-badge');
+                $target.classList.add('active');
+            }
+        },
+
+        /**
+         * Triggers basket change on article removal
+         * @param  {MouseEvent} e The click event
+         */
+        onMinusClick(e) {
+            console.log('Click on article removal');
+            e.stopPropagation();
+
+            let $target = e.target.parents('.buckutt-card-image');
+            let badge   = parseInt($target.getAttribute('data-badge'), 10);
+
+            this.revertPromotions();
+
+            Vue.nextTick(() => {
+                let id      = $target.getAttribute('data-id');
+                let index   = this.basket.indexOf(id);
+
+                this.basket.splice(index, 1);
+                Vue.nextTick(() => {
+                    calculateCost(this);
+                });
+            });
+
+            if (badge > 1) {
+                $target.setAttribute('data-badge', badge - 1 + '');
+            } else {
+                $target.removeAttribute('data-badge');
+                $target.classList.remove('mdl-badge');
+                $target.classList.remove('active');
+            }
+        }
+    };
+
+    return articles;
+});

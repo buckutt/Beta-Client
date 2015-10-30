@@ -1,22 +1,12 @@
 'use strict';
 
-/* global vmBuilder, vm, $ */
-
-vmBuilder.data.currentSeller   = {};
-vmBuilder.data.currentUser     = {};
-vmBuilder.data.sellerConnected = false;
-vmBuilder.data.sellerAuth      = false;
-vmBuilder.data.userConnected   = false;
-vmBuilder.data.sellerCanReload = false;
-
-let serie = '';
-let clearSerieTimeout = 0;
+/* global define */
 
 /**
  * Checks the serie of number and do whatever it has to do (connect user or Seller)
  * @param {String} etuNumber The number serie
  */
-function checkSerie (etuNumber) {
+const checkSerie = (vm, etuNumber) => {
     if (!etuNumber.isEtuNumber()) {
         vm.throwError('Numéro de carte étu invalide');
 
@@ -53,23 +43,45 @@ function checkSerie (etuNumber) {
             }
         }, 500);
     }
-}
+};
 
-$('body').addEventListener('keypress', e => {
-    if (vm.userConnected ||
-       (vm.sellerConnected && !vm.sellerAuth)) {
-        return;
-    }
+define('connection', require => {
+    const $ = require('$');
 
-    console.log('keyPress and waiting for a user card number');
+    let connection = {};
 
-    serie += String.fromCharCode(e.which);
-    console.log('Actual number : ', serie);
-    clearTimeout(clearSerieTimeout);
+    let serie             = '';
+    let clearSerieTimeout = 0;
 
-    clearSerieTimeout = setTimeout(() => {
-        checkSerie(serie);
-        console.info('Checking');
-        serie = '';
-    }, 1000);
+    connection.data = {
+        currentSeller  : {},
+        currentUser    : {},
+        sellerConnected: false,
+        sellerAuth     : false,
+        userConnected  : false,
+        sellerCanReload: false
+    };
+
+    connection.controller = vm => {
+        $('body').addEventListener('keypress', e => {
+            if (vm.userConnected ||
+               (vm.sellerConnected && !vm.sellerAuth)) {
+                return;
+            }
+
+            console.log('keyPress and waiting for a user card number');
+
+            serie += String.fromCharCode(e.which);
+            console.log('Actual number : ', serie);
+            clearTimeout(clearSerieTimeout);
+
+            clearSerieTimeout = setTimeout(() => {
+                checkSerie(vm, serie);
+                console.info('Checking');
+                serie = '';
+            }, 1000);
+        });
+    };
+
+    return connection;
 });

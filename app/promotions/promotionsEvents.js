@@ -1,51 +1,67 @@
 'use strict';
 
-/* global vmBuilder, vm, MaterialMenu, document, $$ */
+/* global define, document, MaterialMenu */
 
-// Revert promotions to article. Useful when removing an item possibly in a promotion
-vmBuilder.methods.revertPromotions = () => {
-    let newBasket = vm.basket.slice();
-    vm.basketPromotions.forEach(promotion => {
-        newBasket = newBasket.concat(promotion.contents);
-    });
+define('promotionsEvents', require => {
+    const $$ = require('$$');
 
-    vm.silentBasketOnce();
-    vm.basket           = newBasket;
-    vm.basketPromotions = [];
-};
+    let promotionsEvents = {};
 
-vmBuilder.methods.onPromotionExpand = e => {
-    console.info('Promotion expanding');
-    let $elem = e.target;
-    e.preventDefault();
-    let $menu = $elem.nextElementSibling;
-    let $menuContainer;
+    promotionsEvents.methods = {
+        /**
+         * Revert promotions to article. Useful when removing an item possibly in a promotion
+         */
+        revertPromotions() {
+            let newBasket = this.basket.slice();
+            this.basketPromotions.forEach(promotion => {
+                newBasket = newBasket.concat(promotion.contents);
+            });
 
-    if (!$menu.classList.contains('mdl-menu__container')) {
-        // Init the mdl menu
-        let menu  = new MaterialMenu($menu);
-        $menu.MaterialMenu = menu;
-        $menuContainer = $menu.parentElement;
-        // Fix margin left not applied
-        $menuContainer.style.marginLeft = ($elem.offsetLeft - $menuContainer.offsetLeft) + 'px';
-    } else {
-        $menu = $menu.children[1];
-        $menuContainer = $menu.parentElement;
-    }
+            this.silentBasketOnce();
+            this.basket           = newBasket;
+            this.basketPromotions = [];
+        },
 
-    $menu.parentElement.style.display = 'block';
+        /**
+         * Triggered when a dropdown is called to see promotion's content
+         * @param  {MouseEvent} e The click event
+         */
+        onPromotionExpand(e) {
+            console.info('Promotion expanding');
+            let $elem = e.target;
+            e.preventDefault();
+            let $menu = $elem.nextElementSibling;
+            let $menuContainer;
 
-    // If there is a click elsewhere, just hide this menu
-    document.once('click', () => {
-        $$('.mdl-menu__container.is-visible > ul').forEach(menu => menu.MaterialMenu.hide());
-    });
+            if (!$menu.classList.contains('mdl-menu__container')) {
+                // Init the mdl menu
+                let menu  = new MaterialMenu($menu);
+                $menu.MaterialMenu = menu;
+                $menuContainer = $menu.parentElement;
+                // Fix margin left not applied
+                $menuContainer.style.marginLeft = ($elem.offsetLeft - $menuContainer.offsetLeft) + 'px';
+            } else {
+                $menu = $menu.children[1];
+                $menuContainer = $menu.parentElement;
+            }
 
-    // MaterialMenu activated to $menu is now the container
-    $menu.MaterialMenu.toggle();
+            $menu.parentElement.style.display = 'block';
 
-    setTimeout(() => {
-        if (!$menu.parentElement.classList.contains('is-visible')) {
-            $menu.parentElement.style.display = 'none';
+            // If there is a click elsewhere, just hide this menu
+            document.once('click', () => {
+                $$('.mdl-menu__container.is-visible > ul').forEach(menu => menu.MaterialMenu.hide());
+            });
+
+            // MaterialMenu activated to $menu is now the container
+            $menu.MaterialMenu.toggle();
+
+            setTimeout(() => {
+                if (!$menu.parentElement.classList.contains('is-visible')) {
+                    $menu.parentElement.style.display = 'none';
+                }
+            }, 300);
         }
-    }, 300);
-};
+    };
+
+    return promotionsEvents;
+});

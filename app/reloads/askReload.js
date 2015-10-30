@@ -1,81 +1,122 @@
 'use strict';
 
-/* global vmBuilder, vm, $ */
+/* global define */
 
-vmBuilder.data.reloadCreditOpened   = false;
-vmBuilder.data.waitingForValidation = false;
-vmBuilder.data.reloadMethod         = 'card';
-vmBuilder.data.creditToReload       = 0;
-vmBuilder.data.totalReload          = 0;
-vmBuilder.data.detailedReloads      = [];
+define('askReload', require => {
+    const $ = require('$');
 
-vmBuilder.methods.askReload = () => {
-    vm.reloadCreditOpened = true;
-};
+    let askReload = {};
 
-vmBuilder.methods.closeReloadCredit = () => {
-    vm.reloadCreditOpened = false;
+    askReload.data = {
+        reloadCreditOpened  : false,
+        waitingForValidation: false,
+        reloadMethod        : 'card',
+        creditToReload      : 0,
+        totalReload         : 0,
+        detailedReloads     : []
+    };
 
-    if (vm.waitingForValidation) {
-        // Fake the event
-        vm.invalidPayment({
-            target: $('.buttonsGrid').children[0]
-        });
-    }
+    askReload.methods = {
+        /**
+         * Open the reload modal
+         */
+        askReload() {
+            this.reloadCreditOpened = true;
+        },
 
-    vm.waitingForValidation = false;
-};
+        /**
+         * Closes the reload modal
+         */
+        closeReloadCredit() {
+            this.reloadCreditOpened = false;
 
-vmBuilder.methods.selectReloadMethod = slug => {
-    vm.reloadMethod = slug;
-};
+            if (this.waitingForValidation) {
+                // Fake the event
+                this.invalidPayment({
+                    target: $('.buttonsGrid').children[0]
+                });
+            }
 
-vmBuilder.methods.onCreditToReloadClearInput = () => {
-    vm.creditToReload = 0;
-};
+            this.waitingForValidation = false;
+        },
 
-vmBuilder.methods.onCreditToReloadInput = e => {
-    let value          = parseInt(e.target.parents('.mdl-cell').textContent.trim(), 10);
-    let creditToReload = vm.creditToReload;
+        /**
+         * Selects the payment method
+         * @param  {String} slug The method name
+         */
+        selectReloadMethod(slug) {
+            this.reloadMethod = slug;
+        },
 
-    creditToReload = creditToReload * 10 + value * 0.01;
-    creditToReload = Math.min(100, creditToReload);
-    creditToReload = Math.max(0, creditToReload);
+        /**
+         * Clears the reload amount
+         */
+        onCreditToReloadClearInput() {
+            this.creditToReload = 0;
+        },
 
-    vm.creditToReload = creditToReload;
-};
+        /**
+         * Adds a number to the reload amount (credit card terminal like)
+         * @param  {MouseEvent} e The click event
+         */
+        onCreditToReloadInput(e) {
+            let value          = parseInt(e.target.parents('.mdl-cell').textContent.trim(), 10);
+            let creditToReload = this.creditToReload;
 
-vmBuilder.methods.onCreditToReloadValidateInput = e => {
-    let grid = e.target.parents('.mdl-grid');
-    vm.waitingForValidation              = true;
-    grid.style.height                    = 0;
-    grid.nextElementSibling.style.height = '122px';
-};
+            creditToReload = creditToReload * 10 + value * 0.01;
+            creditToReload = Math.min(100, creditToReload);
+            creditToReload = Math.max(0, creditToReload);
 
-vmBuilder.methods.invalidPayment = e => {
-    let grid = e.target.parents('.mdl-grid');
-    grid.style.height                        = 0;
-    grid.previousElementSibling.style.height = '242px';
-    vm.waitingForValidation                  = false;
-};
+            this.creditToReload = creditToReload;
+        },
 
-vmBuilder.methods.validateReload = e => {
-    let grid = e.target.parents('.mdl-grid');
-    grid.style.height                        = 0;
-    grid.previousElementSibling.style.height = '242px';
+        /**
+         * Validates the amount
+         * @param  {MouseEvent} e The click event
+         */
+        onCreditToReloadValidateInput(e) {
+            let grid = e.target.parents('.mdl-grid');
+            this.waitingForValidation              = true;
+            grid.style.height                    = 0;
+            grid.nextElementSibling.style.height = '122px';
+        },
 
-    vm.waitingForValidation = false;
-    vm.totalReload          = vm.totalReload + (vm.creditToReload * 100);
+        /**
+         * Clears the payment
+         * @param  {MouseEvent} e The click event
+         */
+        invalidPayment(e) {
+            let grid = e.target.parents('.mdl-grid');
+            grid.style.height                        = 0;
+            grid.previousElementSibling.style.height = '242px';
+            this.waitingForValidation                  = false;
+        },
 
-    vm.detailedReloads.push({
-        with  : vmBuilder.data.paymentMethods.filter(payment => payment.slug === vm.reloadMethod)[0].text,
-        amount: vm.creditToReload * 100
-    });
+        /**
+         * Validates the reload
+         * @param  {MouseEvent} e The click event
+         */
+        validateReload(e) {
+            let grid = e.target.parents('.mdl-grid');
+            grid.style.height                        = 0;
+            grid.previousElementSibling.style.height = '242px';
 
-    setTimeout(function () {
-        $('.userCredit').classList.add('showBadge');
-    }, 300);
+            this.waitingForValidation = false;
+            this.totalReload          = this.totalReload + (this.creditToReload * 100);
 
-    vm.creditToReload     = 0;
-    vm.reloadCreditOpened = false;
-};
+            this.detailedReloads.push({
+                with  : this.paymentMethods.filter(payment => payment.slug === this.reloadMethod)[0].text,
+                amount: this.creditToReload * 100
+            });
+
+            setTimeout(function () {
+                $('.userCredit').classList.add('showBadge');
+            }, 300);
+
+            this.creditToReload     = 0;
+            this.reloadCreditOpened = false;
+        }
+    };
+
+    return askReload;
+});

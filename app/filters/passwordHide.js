@@ -1,14 +1,18 @@
 'use strict';
 
-/* global Vue */
+/* global define */
 
-Vue.filter('passwordHide', password => {
-    let len    = Math.max(0, password.length - 1);
-    let result = '';
+define('passwordHide', require => {
+    let Vue = require('vue');
 
-    while (len--) {
-        result += '*';
-    }
+    Vue.filter('passwordHide', password => {
+        let len    = Math.max(0, password.length - 1);
+        let result = '';
 
-    return result + password.slice(-1);
+        while (len--) {
+            result += '*';
+        }
+
+        return result + password.slice(-1);
+    });
 });

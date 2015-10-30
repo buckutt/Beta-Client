@@ -696,7 +696,7 @@ _n(userGJ, molGJEtuMail, 'meansOfLogin');
     };
 
     if (typeof define === 'function') {
-        define('data', data);
+        define(data);
 
         return;
     } else if (typeof exports !== 'object') {

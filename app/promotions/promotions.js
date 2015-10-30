@@ -1,18 +1,6 @@
 'use strict';
 
-/* global vmBuilder, vm */
-
-vmBuilder.data.promotionsLoaded = false;
-vmBuilder.data.setsLoaded       = false;
-
-let articles;
-let promotions;
-
-let silent = false;
-
-vmBuilder.methods.silentBasketOnce = () => {
-    silent = true;
-};
+/* global define */
 
 /**
  * Sanitizes an articles array to keep only what's need for the algorithm
@@ -60,11 +48,12 @@ function containsArticle (basketCopy, article) {
 
 /**
  * Returns true if article has set; false if article has not the set
+ * @param  {Vue}    vm The view model
  * @param  {String} articleId Article id
  * @param  {String} setId     Set id
  * @return {Boolean} True if article is in the given set
  */
-function articleIsFromSet (articleId, setId) {
+function articleIsFromSet (vm, articleId, setId) {
     let found = false;
 
     let fullSet = vm.sets.filterObjId(setId);
@@ -80,15 +69,16 @@ function articleIsFromSet (articleId, setId) {
 
 /**
  * Check if an article is in the basket with the specified set
+ * @param  {Vue}    vm The view model
  * @param  {Array}  basketCopy Basket
  * @param  {String} set        Set id
  * @return {Number} Index of article in basketCopy
  */
-function containsArticleFromSet (basketCopy, set) {
+function containsArticleFromSet (vm, basketCopy, set) {
     for (let i = 0; i < basketCopy.length; i++) {
         let article = basketCopy[i];
 
-        if (articleIsFromSet(article, set)) {
+        if (articleIsFromSet(vm, article, set)) {
             return i;
         }
     }
@@ -96,83 +86,110 @@ function containsArticleFromSet (basketCopy, set) {
     return -1;
 }
 
-vmBuilder.watchers.push(['basket', basket => {
-    if (!vm.promotionsLoaded || !vm.articlesLoaded) {
-        return;
-    }
+define('promotions', () => {
+    let promotions = {};
 
-    if (silent === true) {
-        silent = false;
+    let articles_;
+    let promotions_;
 
-        return;
-    }
+    let silent = false;
 
-    articles   = sanitizeArticles(vm.articles);
-    promotions = sanitizePromotions(vm.promotions);
+    promotions.data = {
+        promotionsLoaded: false,
+        setsLoaded      : false
+    };
 
-    let basketPromotions         = vm.basketPromotions;
-    let promotionsThatDidntMatch = 0;
-    let i                        = 0;
+    promotions.methods = {
+        /**
+         * Silents one basket modification. Avoid infinite watchers loop
+         */
+        silentBasketOnce() {
+            silent = true;
+        }
+    };
 
-    // Check the first promotion and continues while they all stop matching (promotionsThatDidntMatch)
-    do {
-        let promotion   = promotions[i];
-        let basketCopy  = basket.slice();
-        let basketPromo = [];
-        // Count what needs to be found
-        let still       = promotion.articles.length + promotion.sets.length;
-
-        console.log('Promotion', promotion.id);
-
-        // First check if basket contains articles (more precise)
-        for (let j = 0; j < promotion.articles.length; j++) {
-            let articlePromotion = promotion.articles[j];
-            let position         = containsArticle(basketCopy, articlePromotion);
-
-            if (position > -1) {
-                console.log(articlePromotion + ' is present');
-                // Remove from the temporary basket
-                basketCopy.splice(position, 1);
-                // And add to the temporary basket for this promotion
-                basketPromo.push(articlePromotion);
-                --still;
+    promotions.controller = vm => {
+        vm.$watch('basket', function (basket) {
+            if (!this.promotionsLoaded || !this.articlesLoaded) {
+                return;
             }
-        }
 
-        // Then check if basket contains article that matches set
-        for (let j = 0; j < promotion.sets.length; j++) {
-            let setPromotion = promotion.sets[j];
-            let position     = containsArticleFromSet(basketCopy, setPromotion);
+            if (silent === true) {
+                silent = false;
 
-            if (position > -1) {
-                console.log(setPromotion + ' has the good set');
-                // Get back the article id
-                let articlePromotion  = basketCopy[position];
-                // Remove from the temporary basket
-                basketCopy.splice(position, 1);
-                // And add to the temporary basket for this promotion
-                basketPromo.push(articlePromotion);
-                --still;
+                return;
             }
-        }
 
-        // still = 0 => everything has been found
-        if (still === 0) {
-            console.log('Promotion matches');
-            basket = basketCopy;
-            basketPromotions.push({
-                id      : promotion.id,
-                contents: basketPromo
-            });
-        } else {
-            console.log('Promotion didnt match');
-            promotionsThatDidntMatch++;
-        }
+            articles_   = sanitizeArticles(this.articles);
+            promotions_ = sanitizePromotions(this.promotions);
 
-        // Increases or resets i
-        i = (i + 1) % promotions.length;
-    } while (promotionsThatDidntMatch < promotions.length);
+            let basketPromotions         = this.basketPromotions;
+            let promotionsThatDidntMatch = 0;
+            let i                        = 0;
 
-    vm.basket           = basket;
-    vm.basketPromotions = basketPromotions;
-}]);
+            // Check the first promotion and continues while they all stop matching (promotionsThatDidntMatch)
+            do {
+                let promotion   = promotions_[i];
+                let basketCopy  = basket.slice();
+                let basketPromo = [];
+                // Count what needs to be found
+                let still       = promotion.articles.length + promotion.sets.length;
+
+                console.log('Promotion', promotion.id);
+
+                // First check if basket contains articles (more precise)
+                for (let j = 0; j < promotion.articles.length; j++) {
+                    let articlePromotion = promotion.articles[j];
+                    let position         = containsArticle(basketCopy, articlePromotion);
+
+                    if (position > -1) {
+                        console.log(articlePromotion + ' is present');
+                        // Remove from the temporary basket
+                        basketCopy.splice(position, 1);
+                        // And add to the temporary basket for this promotion
+                        basketPromo.push(articlePromotion);
+                        --still;
+                    }
+                }
+
+                // Then check if basket contains article that matches set
+                for (let j = 0; j < promotion.sets.length; j++) {
+                    let setPromotion = promotion.sets[j];
+                    let position     = containsArticleFromSet(this, basketCopy, setPromotion);
+
+                    if (position > -1) {
+                        console.log(setPromotion + ' has the good set');
+                        // Get back the article id
+                        let articlePromotion  = basketCopy[position];
+                        // Remove from the temporary basket
+                        basketCopy.splice(position, 1);
+                        // And add to the temporary basket for this promotion
+                        basketPromo.push(articlePromotion);
+                        --still;
+                    }
+                }
+
+                // still = 0 => everything has been found
+                if (still === 0) {
+                    console.log('Promotion matches');
+                    basket = basketCopy;
+                    basketPromotions.push({
+                        id      : promotion.id,
+                        contents: basketPromo
+                    });
+                } else {
+                    console.log('Promotion didnt match');
+                    promotionsThatDidntMatch++;
+                }
+
+                // Increases or resets i
+                i = (i + 1) % promotions_.length;
+            } while (promotionsThatDidntMatch < promotions_.length);
+
+            this.basket           = basket;
+            this.basketPromotions = basketPromotions;
+        });
+    };
+
+    return promotions;
+});

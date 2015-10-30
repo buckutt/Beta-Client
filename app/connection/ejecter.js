@@ -1,26 +1,36 @@
 'use strict';
 
-/* global vmBuilder, vm */
+/* global define */
 
-vmBuilder.methods.onEject = () => {
-    if (!vm.userConnected) {
-        console.info('-> Eject seller');
-        vm.currentSeller   = {};
-        vm.sellerConnected = false;
-        vm.sellerAuth      = false;
+define('ejecter', () => {
+    let ejecter = {};
 
-        return;
-    }
+    ejecter.methods = {
+        /**
+         * Resets variables when user/seller disconnects
+         */
+        onEject() {
+            if (!this.userConnected) {
+                console.info('-> Eject seller');
+                this.currentSeller   = {};
+                this.sellerConnected = false;
+                this.sellerAuth      = false;
 
-    console.info('Please eject');
-    console.info('-> Eject user');
-    vm.currentUser      = {};
-    vm.userConnected    = false;
-    vm.basket           = [];
-    vm.basketPromotions = [];
-    vm.totalCost        = 0;
-    vm.totalReload      = 0;
-    vm.detailedReloads  = [];
-    vm.reloadMethod     = 'card';
-    vm.tab              = null;
-};
+                return;
+            }
+
+            console.info('-> Eject user');
+            this.currentUser      = {};
+            this.userConnected    = false;
+            this.basket           = [];
+            this.basketPromotions = [];
+            this.totalCost        = 0;
+            this.totalReload      = 0;
+            this.detailedReloads  = [];
+            this.reloadMethod     = 'card';
+            this.tab              = null;
+        }
+    };
+
+    return ejecter;
+});

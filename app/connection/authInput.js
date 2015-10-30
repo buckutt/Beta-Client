@@ -1,56 +1,77 @@
 'use strict';
 
-/* global vmBuilder, vm */
+/* global define */
 
-vmBuilder.data.sellerPasswordInput = '';
-vmBuilder.data.wrongSellerPassord  = false;
+define('authInput', () => {
+    let authInput   = {};
 
-vmBuilder.methods.onPasswordInput = e => {
-    console.log('Password key input');
-    let value = e.target.parents('.mdl-cell').textContent.trim();
-    vm.sellerPasswordInput = vm.sellerPasswordInput + value;
-};
+    let authingUser = false;
 
-vmBuilder.methods.onClearInput = () => {
-    console.log('Password clear input');
-    vm.sellerPasswordInput = '';
-};
+    authInput.data = {
+        sellerPasswordInput: '',
+        wrongSellerPassord : false
+    };
 
-let authingUser = false;
-vmBuilder.methods.onValidateInput = () => {
-    if (authingUser) {
-        return;
-    }
+    authInput.methods = {
+        /**
+         * Adds value to password input when key is pressed
+         * @param  {KeyboardEvent} e The key press event
+         */
+        onPasswordInput(e) {
+            console.log('Password key input');
+            let value = e.target.parents('.mdl-cell').textContent.trim();
+            this.sellerPasswordInput = this.sellerPasswordInput + value;
+        },
 
-    authingUser = true;
+        /**
+         * Clears password input when clear button is pressed
+         */
+        onClearInput() {
+            console.log('Password clear input');
+            this.sellerPasswordInput = '';
+        },
 
-    console.log('Password validate input');
-    setTimeout(() => {
-        const success = true;
+        /**
+         * Checks the seller when validating password
+         */
+        onValidateInput() {
+            if (authingUser) {
+                return;
+            }
 
-        if (success) {
-            console.info('Seller auth-ed');
+            authingUser = true;
 
-            vm.loadFakeData();
+            console.log('Password validate input');
+            setTimeout(() => {
+                const success = true;
 
-            vm.currentSeller = {
-                id       : 'abc',
-                firstname: 'Gabriel',
-                lastname : 'Juchault',
-                fullname : 'Gabriel Juchault',
-                credit   : 500
-            };
+                if (success) {
+                    console.info('Seller auth-ed');
 
-            vm.sellerPasswordInput = '';
-            vm.sellerAuth          = true;
-        } else {
-            vm.throwError('Mot de passe invalide');
-            vm.sellerPasswordInput = '';
+                    this.loadFakeData();
+
+                    this.currentSeller = {
+                        id       : 'abc',
+                        firstname: 'Gabriel',
+                        lastname : 'Juchault',
+                        fullname : 'Gabriel Juchault',
+                        credit   : 500
+                    };
+
+                    this.sellerPasswordInput = '';
+                    this.sellerAuth          = true;
+                } else {
+                    this.throwError('Mot de passe invalide');
+                    this.sellerPasswordInput = '';
+                }
+
+                // Wait for animations and nextTick
+                setTimeout(function () {
+                    authingUser = false;
+                }, 500);
+            }, 500);
         }
+    };
 
-        // Wait for animations and nextTick
-        setTimeout(function () {
-            authingUser = false;
-        }, 500);
-    }, 500);
-};
+    return authInput;
+});

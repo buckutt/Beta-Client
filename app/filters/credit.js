@@ -1,10 +1,13 @@
 'use strict';
 
-/* global Vue */
+/* global define */
 
-Vue.filter('credit', (credit, divide) => {
-    let newCredit = (divide) ? (credit / 100) : credit;
-    newCredit = newCredit.toFixed(2);
+define('credit', require => {
+    let Vue = require('vue');
+    Vue.filter('credit', (credit, divide) => {
+        let newCredit = (divide) ? (credit / 100) : credit;
+        newCredit = newCredit.toFixed(2);
 
-    return `${newCredit}€`;
+        return `${newCredit}€`;
+    });
 });

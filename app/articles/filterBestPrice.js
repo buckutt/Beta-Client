@@ -1,28 +1,38 @@
 'use strict';
 
-/* global vmBuilder, vm, Vue */
+/* global define */
 
-const now = new Date();
+define('filterBestPrice', require => {
+    const Vue = require('vue');
 
-let filterBestPrice = article => {
-    article.prices = article.prices.filter(price => (price.period.start <= now && now <= price.period.end));
+    let filterBestPrice = {};
 
-    let min   = Infinity;
-    let chosenPrice = null;
-    article.prices.forEach(price => {
-        if (price.amount < min) {
-            min         = price.amount;
-            chosenPrice = price;
-        }
-    });
+    const now = new Date();
 
-    Vue.set(article, 'price', chosenPrice);
+    let filterBestPriceArticle = article => {
+        article.prices = article.prices.filter(price => (price.period.start <= now && now <= price.period.end));
 
-    return article;
-};
+        let min   = Infinity;
+        let chosenPrice = null;
+        article.prices.forEach(price => {
+            if (price.amount < min) {
+                min         = price.amount;
+                chosenPrice = price;
+            }
+        });
 
-vmBuilder.watchers.push(['articles', () => {
-    console.info('Finding prices');
+        Vue.set(article, 'price', chosenPrice);
 
-    vm.articles.forEach(article => filterBestPrice(article));
-}]);
+        return article;
+    };
+
+    filterBestPrice.controller = vm => {
+        vm.$watch('articles', function () {
+            console.info('Finding prices');
+
+            this.articles.forEach(article => filterBestPriceArticle(article));
+        });
+    };
+
+    return filterBestPrice;
+});
