@@ -81,7 +81,7 @@ define('sendBasket', () => {
             console.info('Basket sending', basketToSend);
             setTimeout(() => {
                 const success      = true;
-                this.loadingBasket = true;
+                this.loadingBasket = false;
 
                 if (success) {
                     this.lastCredit = this.totalCost;

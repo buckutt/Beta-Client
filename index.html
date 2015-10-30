@@ -258,7 +258,8 @@
             </main>
             <button id="done" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored"
                     v-show="userConnected"
-                    :class="{ 'error': notEnoughCredit }"
+                    transition="fade"
+                    :class="{ 'error': notEnoughCredit, 'hiddenFab': loadingBasket }"
                     @click="sendBasket">
                     <i class="material-icons">done_all</i>
                     <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"

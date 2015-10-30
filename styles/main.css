@@ -43,13 +43,19 @@ main.mdl-layout__content {
     margin: 0 0 0 15px;
     position: absolute;
     right: 15px;
-    transition: .3s background-color ease;
+    transition: .3s background-color ease,
+                .3s box-shadow ease;
     width: 72px;
     z-index: 10;
 }
 
 #done.error {
     background-color: #e74c3c;
+}
+
+#done.hiddenFab {
+    background-color: transparent;
+    box-shadow: none;
 }
 
 #done i {
@@ -63,7 +69,7 @@ main.mdl-layout__content {
 }
 
 #done .mdl-spinner--single-color .mdl-spinner__layer {
-    border-color: #93e6b6;
+    border-color: #2ecc71;
     zoom: 1.5;
 }
 
