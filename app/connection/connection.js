@@ -66,7 +66,8 @@ define('connection', require => {
         $('body').addEventListener('keypress', e => {
             if (vm.userConnected ||
                (vm.sellerConnected && !vm.sellerAuth) ||
-               (vm.error)) {
+                vm.error ||
+                vm.startedLoading) {
                 return;
             }
 
