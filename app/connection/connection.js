@@ -4,10 +4,10 @@
 
 /**
  * Checks the serie of number and do whatever it has to do (connect user or Seller)
- * @param {String} etuNumber The number serie
+ * @param {String} cardNumber The number serie
  */
-const checkSerie = (vm, etuNumber) => {
-    if (!etuNumber.isEtuNumber()) {
+const checkSerie = (vm, cardNumber) => {
+    if (!cardNumber.isCardNumber()) {
         vm.throwError('Numéro de carte étu invalide');
 
         return;
@@ -15,7 +15,7 @@ const checkSerie = (vm, etuNumber) => {
 
     if (vm.sellerConnected && vm.sellerAuth && vm.userConnected && vm.inputIsForDoubleValidation) {
         console.info('Revalidating...');
-        vm.revalidate(etuNumber);
+        vm.revalidate(cardNumber);
     } else if (vm.sellerConnected && vm.sellerAuth) {
         console.info('User loading...');
         setTimeout(() => {

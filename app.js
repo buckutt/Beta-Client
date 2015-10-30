@@ -12,7 +12,7 @@ requirejs.config({
         $$              : '/app/utils/selector',
         uniq            : '/app/utils/uniq',
         parents         : '/app/utils/parents',
-        etuNumber       : '/app/utils/etuNumber',
+        cardNumber      : '/app/utils/cardNumber',
         filterObjId     : '/app/utils/filterObjId',
         filterUndefined : '/app/utils/filterUndefined',
         listenOnce      : '/app/utils/listenOnce',
@@ -43,7 +43,7 @@ define('app', require => {
 
     require('uniq');
     require('parents');
-    require('etuNumber');
+    require('cardNumber');
     require('filterObjId');
     require('filterUndefined');
     require('listenOnce');

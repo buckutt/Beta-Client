@@ -45,7 +45,7 @@ When connecting, the certificate is checked, and the certificate fingerprint is 
 identifier.
 
 * Reflexion about offline/caching
-Use a safeMode parameter. If not enabled, every transaction must be written on the server to be accepted. Used with student
+Use a safeMode parameter. If not enabled, every transaction must be written on the server to be accepted. Used with buyer
 cards (not writable cards). If enabled, check for internet connection every X minutes. If connection is failing, switch
 to offline mode. Offline mode : write amount on card, and dates with transactions. Then store everything locally on
 devices. When connection is restored, push everything. May use RethinkDB to sync (replication auto activated)

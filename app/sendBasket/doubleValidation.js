@@ -12,14 +12,14 @@ define('doubleValidation', () => {
     doubleValidation.methods = {
         /**
          * Revalidates the basket.
-         * @param  {String} etuNumber The buyer id
+         * @param  {String} cardNumber The buyer id
          */
-        revalidate(etuNumber) {
+        revalidate(cardNumber) {
             const revalidate = true;
 
             let mol = this.currentUser.meansOfLogin.filter(mol => mol.type === 'etuId')[0];
 
-            if (etuNumber === mol || revalidate) {
+            if (cardNumber === mol || revalidate) {
                 this.inputIsForDoubleValidation = false;
                 this.sendBasket(true);
             }
