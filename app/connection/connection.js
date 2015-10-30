@@ -13,19 +13,14 @@ const checkSerie = (vm, etuNumber) => {
         return;
     }
 
-    etuNumber = etuNumber.toEtuNumber();
-
-    if (vm.sellerConnected && vm.sellerAuth) {
+    if (vm.sellerConnected && vm.sellerAuth && vm.userConnected && vm.inputIsForDoubleValidation) {
+        console.info('Revalidating...');
+        vm.revalidate(etuNumber);
+    } else if (vm.sellerConnected && vm.sellerAuth) {
         console.info('User loading...');
         setTimeout(() => {
             console.info('User loaded !');
-            vm.currentUser = {
-                id       : 'abc',
-                firstname: 'Gabriel',
-                lastname : 'Juchault',
-                fullname : 'Gabriel Juchault',
-                credit   : 500
-            };
+            vm.currentUser = require('buckuttData').users[0];
 
             vm.userConnected = true;
         }, 500);
@@ -68,7 +63,10 @@ define('connection', require => {
                (vm.sellerConnected && !vm.sellerAuth) ||
                 vm.error ||
                 vm.startedLoading) {
-                return;
+
+                if (!vm.inputIsForDoubleValidation) {
+                    return;
+                }
             }
 
             console.log('keyPress and waiting for a user card number');

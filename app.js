@@ -1,11 +1,12 @@
 'use strict';
 
-/* global requirejs, define */
+/* global requirejs, define, window */
 
 requirejs.config({
     paths: {
         vue             : '/bower_components/vue/dist/vue',
         material        : '/bower_components/material-design-lite/material',
+        axios           : '/bower_components/axios/dist/axios.min.js',
 
         $               : '/app/utils/selector',
         $$              : '/app/utils/selector',
@@ -29,10 +30,11 @@ requirejs.config({
         promotions      : '/app/promotions/promotions',
         promotionsEvents: '/app/promotions/promotionsEvents',
         sendBasket      : '/app/sendBasket/sendBasket',
+        doubleValidation: '/app/sendBasket/doubleValidation',
         askReload       : '/app/reloads/askReload',
         reloadMenu      : '/app/reloads/reloadMenu',
         buckuttData     : '/app/buckuttData',
-        randomData      : '/app/randomData'
+        dataLoader      : '/app/dataLoader'
     }
 });
 
@@ -48,7 +50,8 @@ define('app', require => {
 
     let Vue     = require('vue');
     let data    = {
-        startedLoading: false
+        startedLoading: false,
+        config        : {}
     };
     let methods = {};
 
@@ -67,10 +70,11 @@ define('app', require => {
     modules.push(require('promotions'));
     modules.push(require('promotionsEvents'));
     modules.push(require('sendBasket'));
+    modules.push(require('doubleValidation'));
     modules.push(require('askReload'));
     modules.push(require('reloadMenu'));
     modules.push(require('buckuttData'));
-    modules.push(require('randomData'));
+    modules.push(require('dataLoader'));
 
     // Get only modules data
     let modulesDatas   = modules.map(module => (module && module.data) ? module.data : {});

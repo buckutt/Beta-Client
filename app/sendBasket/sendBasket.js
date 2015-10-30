@@ -16,12 +16,23 @@ define('sendBasket', () => {
     sendBasket.methods = {
         /**
          * Sends the basket to the API
+         * @param {Boolean} revalidated Sends basket after correct revalidation
          */
-        sendBasket() {
+        sendBasket(revalidated) {
             let basketToSend = [];
 
             if (this.loadingBasket) {
                 return;
+            }
+
+            if (this.config.doubleValidation) {
+                // revalidated may be a MouseEvent
+                if (revalidated !== true) {
+                    console.info('Entering double validation mode');
+                    this.inputIsForDoubleValidation = true;
+
+                    return;
+                }
             }
 
             this.loadingBasket = true;

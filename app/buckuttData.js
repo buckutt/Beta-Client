@@ -678,6 +678,10 @@ _n(userGJ, molGJEtuMail, 'meansOfLogin');
         userGJ
     ];
 
+    let config = {
+        doubleValidation: true
+    };
+
     let data = {
         articles,
         categories,
@@ -692,7 +696,8 @@ _n(userGJ, molGJEtuMail, 'meansOfLogin');
         promotions,
         rights,
         sets,
-        users
+        users,
+        config
     };
 
     if (typeof define === 'function') {
