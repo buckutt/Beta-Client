@@ -9,36 +9,6 @@ define('randomData', require => {
 
     randomData.methods = {
         /**
-         * Logs a seller and a user
-         */
-        go() {
-            this.loadFakeData();
-
-            this.currentSeller = {
-                id       : 'abc',
-                firstname: 'Gabriel',
-                lastname : 'Juchault',
-                fullname : 'Gabriel Juchault',
-                credit   : 500
-            };
-
-            this.sellerPasswordInput = '';
-            this.sellerAuth          = true;
-
-            setTimeout(function () {
-                this.currentUser = {
-                    id       : 'abc',
-                    firstname: 'Gabriel',
-                    lastname : 'Juchault',
-                    fullname : 'Gabriel Juchault',
-                    credit   : 500
-                };
-
-                this.userConnected = true;
-            }, 1500);
-        },
-
-        /**
          * Loads JSON data
          */
         loadFakeData() {
