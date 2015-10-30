@@ -48,15 +48,9 @@ define('authInput', () => {
                 if (success) {
                     console.info('Seller auth-ed');
 
-                    this.loadFakeData();
+                    this.loadData();
 
-                    this.currentSeller = {
-                        id       : 'abc',
-                        firstname: 'Gabriel',
-                        lastname : 'Juchault',
-                        fullname : 'Gabriel Juchault',
-                        credit   : 500
-                    };
+                    this.currentSeller = require('buckuttData').users[0];
 
                     this.sellerPasswordInput = '';
                     this.sellerAuth          = true;

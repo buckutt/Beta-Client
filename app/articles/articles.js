@@ -36,17 +36,13 @@ define('articles', require => {
     let articles = {};
 
     articles.data = {
-        articles            : [],
-        articlesLoaded      : false,
-        promotions          : [],
-        setsLoaded          : false,
-        sets                : [],
-        paymentMethodsLoaded: false,
-        paymentMethods      : [],
-        promotionsLoaded    : false,
-        basket              : [],
-        basketPromotions    : [],
-        totalCost           : 0
+        articles        : [],
+        promotions      : [],
+        sets            : [],
+        paymentMethods  : [],
+        basket          : [],
+        basketPromotions: [],
+        totalCost       : 0
     };
 
     articles.methods = {
