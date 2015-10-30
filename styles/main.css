@@ -70,7 +70,7 @@ main.mdl-layout__content {
 
 #done .mdl-spinner--single-color .mdl-spinner__layer {
     border-color: #2ecc71;
-    zoom: 1.5;
+    zoom: 2;
 }
 
 /* Loader and modal */
@@ -118,4 +118,20 @@ main.mdl-layout__content {
 
 .modal-error p {
     text-align: left;
+}
+
+/* Revalidation */
+#revalidation {
+    background: #34495e;
+    box-sizing: border-box;
+    color: #fff;
+    font-size: 30px;
+    height: 100%;
+    left: 0;
+    padding-top: 140px;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 100%;
+    z-index: 15;
 }
