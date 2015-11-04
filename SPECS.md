@@ -4,8 +4,7 @@
 * Warning : chrome beta (v > 44), --harmony.
 * Goal : beautiful, usable, performant web client.
 * Structure :
-    - init.js : puts a global object that will be used in the constructor of Vuejs : `vmBuilder`
-    - app.js  : instanciantes the Vuejs with `vmBuilder` : `vm`. And add automatic watchers and also functions automatically called after the initialisation
+    - app.js  : Use require to load every vm component
     - app/    : contains either global directories (`utils`, `filters`, `components`, `directives`) that are used by everything **or** custom directories that has multiple functionnalities uner the same category (`connection`, `articles`, etc.)
 * Notes :
     - Reloads should be in the basket to make everything in one request, and to be able to cancel it
@@ -13,12 +12,12 @@
     - Use ES6 specs in Harmony Chrome https://kangax.github.io/compat-table/es6/ (`google-chrome --harmony`) : actually : `let`, `const`, `for ... of`, template strings, arrow functions, classes, `Promise` but not `import` nor default parameters
 * Workflow :
     1. Start the webpage
-    2. Wait for articles and promotions to be loaded
-    3. Badge with a seller card
-    4. Auth yourself with the pin board
-    5. Wait for the hash computation
+    2. Badge with a seller card
+    3. Auth yourself with the pin board
+    4. Wait for the hash computation
         1. If failed, go to 4. or to 13.
         2. If succeded, go to 6.
+    5. Wait for articles and promotions to be loaded
     6. Badge with a buyer card
     7. Wait for the buyer to load
     8. The buyer tells what he wants to buy
@@ -47,8 +46,7 @@ identifier.
 * Reflexion about offline/caching
 Use a safeMode parameter. If not enabled, every transaction must be written on the server to be accepted. Used with buyer
 cards (not writable cards). If enabled, check for internet connection every X minutes. If connection is failing, switch
-to offline mode. Offline mode : write amount on card, and dates with transactions. Then store everything locally on
-devices. When connection is restored, push everything. May use RethinkDB to sync (replication auto activated)
+to offline mode. Offline mode : write amount on card. Then store xhr requests that are made (with an unlimited timeout -- by default). When connection is up; cancel and restart thoses requests
 
 * Reflexion about double validation
 User may not trust the seller and may want to validate itself his command -> rebadge

@@ -1,10 +1,10 @@
 To do :
 
-* Offline
 * Real data input/output (articles, promotions, auth, basket)
-* Alcohol management (if any article contains alcohol and minor)
+* Alcohol management (if any article contains alcohol last point)
 
 Working :
+* Offline
 
 Done :
 * Double validation (second one made by user)

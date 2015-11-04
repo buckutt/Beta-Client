@@ -124,6 +124,16 @@ let articleCrepe = {
     isRemoved: false
 };
 
+let articleBeer = {
+    id       : '6ff44907-e7c6-47f7-85a2-6a7ec44f5ee6',
+    name     : 'Bière',
+    stock    : 100,
+    alcohol  : 1.2,
+    createdAt: new Date(),
+    editedAt : new Date(),
+    isRemoved: false
+};
+
 /* Categories */
 let categoryBarres = {
     id       : '69c82673-98d6-455d-9aa7-4c24f46e8908',
@@ -360,6 +370,14 @@ let price1003C = {
     isRemoved: false
 };
 
+let price250 = {
+    id       : 'cfd24f6e-9dca-408e-9639-be52c93640bf',
+    amount   : 250,
+    createdAt: new Date(),
+    editedAt : new Date(),
+    isRemoved: false
+};
+
 /* Promotions */
 let promotionF1e = {
     id       : 'ab9e8bd3-be70-4787-b714-86ec9a611d60',
@@ -476,6 +494,10 @@ _1(articleCrepe, pointFoyer, 'foyer');
 _n(articleCrepe, price50, 'prices', 'priceId');
 _n(articleCrepe, promotion3crepes, 'promotions');
 
+_1(articleBeer, categoryGeneral, 'category');
+_1(articleBeer, pointFoyer, 'foyer');
+_n(articleBeer, price250, 'prices', 'priceId');
+
 /* Categories - Relationships : articles */
 _n(categoryBarres, articleKinderDelice, 'articles');
 _n(categoryBarres, articleMars, 'articles');
@@ -488,6 +510,7 @@ _n(categoryCanettes, articleSchweppesAgrum, 'articles');
 _n(categoryCanettes, articleCocaCola, 'articles');
 _n(categoryGeneral, articleEau, 'articles');
 _n(categoryGeneral, articleCrepe, 'articles');
+_n(categoryGeneral, articleBeer, 'articles');
 
 /* Devices - Relationships : points */
 _n(deviceEeetop1, pointFoyer, 'points');
@@ -497,6 +520,7 @@ _n(deviceEeetop2, pointFoyer, 'points');
 _n(fundationFoyer, price50, 'prices');
 _n(fundationFoyer, price100F1E, 'prices');
 _n(fundationFoyer, price1003C, 'prices');
+_n(fundationFoyer, price250, 'prices');
 _n(fundationBde, groupCotisants, 'groups');
 _n(fundationBde, groupNonCotisants, 'groups');
 
@@ -506,6 +530,7 @@ _n(groupCotisants, userGJ, 'users');
 _n(groupCotisants, price50, 'prices');
 _n(groupCotisants, price100F1E, 'prices');
 _n(groupCotisants, price1003C, 'prices');
+_n(groupCotisants, price250, 'prices');
 
 /* MeanOfLogin - Relationships : user */
 _1(molGJEtuCard, userGJ, 'user');
@@ -515,6 +540,7 @@ _1(molGJEtuMail, userGJ, 'user');
 _n(periodEternity, price50, 'prices');
 _n(periodEternity, price100F1E, 'prices');
 _n(periodEternity, price1003C, 'prices');
+_n(periodEternity, price250, 'prices');
 _n(periodNow, rightGJAdmin, 'users');
 
 /* Points - Relationships : articles, promotions */
@@ -529,6 +555,7 @@ _n(pointFoyer, articleSchweppes, 'articles');
 _n(pointFoyer, articleSchweppesAgrum, 'articles');
 _n(pointFoyer, articleCocaCola, 'articles');
 _n(pointFoyer, articleCrepe, 'articles');
+_n(pointFoyer, articleBeer, 'articles');
 _n(pointFoyer, promotionF1e, 'promotions');
 _n(pointFoyer, promotion3crepes, 'promotions');
 
@@ -557,6 +584,11 @@ _1(price1003C, fundationFoyer, 'fundation');
 _1(price1003C, groupCotisants, 'group');
 _1(price1003C, periodEternity, 'period');
 _1(price1003C, promotion3crepes, 'promotion');
+
+_1(price250, fundationFoyer, 'fundation');
+_1(price250, groupCotisants, 'group');
+_1(price250, periodEternity, 'period');
+_n(price250, articleBeer, 'articles');
 
 /* Promotions - Relationships : point, price, articles, sets */
 _1(promotionF1e, pointFoyer, 'point');
@@ -605,7 +637,8 @@ _n(userGJ, molGJEtuMail, 'meansOfLogin');
         articleSchweppes,
         articleSchweppesAgrum,
         articleCocaCola,
-        articleCrepe
+        articleCrepe,
+        articleBeer
     ];
 
     let categories = [
@@ -657,7 +690,8 @@ _n(userGJ, molGJEtuMail, 'meansOfLogin');
     let prices = [
         price50,
         price100F1E,
-        price1003C
+        price1003C,
+        price250
     ];
 
     let promotions = [
@@ -679,7 +713,8 @@ _n(userGJ, molGJEtuMail, 'meansOfLogin');
     ];
 
     let config = {
-        doubleValidation: true
+        doubleValidation: true,
+        offlineSupport  : true
     };
 
     let data = {
