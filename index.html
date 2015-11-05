@@ -146,9 +146,21 @@
                             <span class="userBasket">Panier : {{{ panier | basket }}}</span>
                         </div>
                         <div v-if="!userConnected && sellerConnected && sellerAuth && lastUser && (lastCredit || lastReload)">
-                            <span v-if="lastCredit && !lastReload">Dernière action par {{ lastUser }} pour un achat de {{ lastCredit | credit true }}</span>
-                            <span v-if="!lastCredit && lastReload">Dernière action par {{ lastUser }} pour un rechargement de {{ lastReload | credit true }}</span>
-                            <span v-if="lastCredit && lastReload">Dernière action par {{ lastUser }} pour un achat de {{ lastCredit | credit true }} et un rechargement de {{ lastReload | credit true }}</span>
+                            <span v-if="lastCredit && !lastReload">
+                                Dernière action par {{ lastUser }} : achat de {{ lastCredit | credit true }}
+                                <br>
+                                Nouveau crédit : {{ lastAmount | credit true }}
+                            </span>
+                            <span v-if="!lastCredit && lastReload">
+                                Dernière action par {{ lastUser }} : rechargement de {{ lastReload | credit true }}
+                                <br>
+                                Nouveau crédit : {{ lastAmount | credit true }}
+                            </span>
+                            <span v-if="lastCredit && lastReload">
+                                Dernière action par {{ lastUser }} : achat de {{ lastCredit | credit true }} et rechargement de {{ lastReload | credit true }}
+                                <br>
+                                Nouveau crédit : {{ lastAmount | credit true }}
+                            </span>
                         </div>
                         <div v-if="!userConnected && sellerConnected && sellerAuth && !lastUser && !(lastCredit || lastReload)">
                             En attente d'un acheteur

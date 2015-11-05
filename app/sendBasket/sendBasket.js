@@ -10,7 +10,8 @@ define('sendBasket', () => {
         notEnoughCredit: false,
         lastCredit     : '',
         lastReload     : '',
-        lastUser       : ''
+        lastUser       : '',
+        lastAmount     : ''
     };
 
     sendBasket.methods = {
@@ -97,6 +98,7 @@ define('sendBasket', () => {
                 if (success) {
                     this.lastCredit = this.totalCost;
                     this.lastReload = this.totalReload;
+                    this.lastAmount = this.currentUser.credit - this.totalCost + this.totalReload;
                     this.lastUser   = this.currentUser.fullname;
 
                     this.onEject();
