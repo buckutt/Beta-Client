@@ -22,6 +22,7 @@ requirejs.config({
         error           : '/app/error/error',
         articles        : '/app/articles/articles',
         filterBestPrice : '/app/articles/filterBestPrice',
+        filterPoint     : '/app/articles/filterPoint',
         initTabs        : '/app/directives/initTabs',
         tabs            : '/app/tabs/tabs',
         connection      : '/app/connection/connection',
@@ -75,6 +76,7 @@ define('app', require => {
     modules.push(require('reloadMenu'));
     modules.push(require('buckuttData'));
     modules.push(require('dataLoader'));
+    modules.push(require('filterPoint'));
 
     // Get only modules data
     let modulesDatas   = modules.map(module => (module && module.data) ? module.data : {});

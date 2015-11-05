@@ -12,7 +12,9 @@ define('dataLoader', require => {
         setsLoaded          : false,
         paymentMethodsLoaded: false,
         promotionsLoaded    : false,
-        configLoaded        : false
+        configLoaded        : false,
+        pointId             : '',
+        deviceId            : ''
     };
 
     dataLoader.methods = {
@@ -21,6 +23,9 @@ define('dataLoader', require => {
          */
         loadData() {
             this.startedLoading = true;
+
+            // Get the device id and point id from the headers
+
 
             let loadArticles = new Promise(resolve => {
                 setTimeout(() => {

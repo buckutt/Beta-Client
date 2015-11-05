@@ -320,7 +320,7 @@ let periodAfter = {
 
 let periodNow = {
     id       : '05a7a844-53f9-4a32-9b30-fc492d1169f3',
-    name     : 'Après',
+    name     : 'Maintenant',
     start    : new Date() - new Date(1000 * 60 * 60 * 24 * 30 * 2),
     end      : new Date() + new Date(1000 * 60 * 60 * 24 * 30 * 2),
     createdAt: new Date(),
@@ -441,61 +441,61 @@ let userGJ = {
 
 /* Articles - Relationships : cateogry, point, price, sets, promotion */
 _1(articleKinderDelice, categoryBarres, 'category');
-_1(articleKinderDelice, pointFoyer, 'point');
+_n(articleKinderDelice, pointFoyer, 'points');
 _n(articleKinderDelice, price50, 'prices', 'priceId');
 _n(articleKinderDelice, setBarresf1e, 'sets');
 
 _1(articleMars, categoryBarres, 'category');
-_1(articleMars, pointFoyer, 'point');
+_n(articleMars, pointFoyer, 'points');
 _n(articleMars, price50, 'prices', 'priceId');
 _n(articleMars, setBarresf1e, 'sets');
 
 _1(articleKinderCountry, categoryBarres, 'category');
-_1(articleKinderCountry, pointFoyer, 'point');
+_n(articleKinderCountry, pointFoyer, 'points');
 _n(articleKinderCountry, price50, 'prices', 'priceId');
 _n(articleKinderCountry, setBarresf1e, 'sets');
 
 _1(articleIceTeaPeche, categoryCanettes, 'category');
-_1(articleIceTeaPeche, pointFoyer, 'point');
+_n(articleIceTeaPeche, pointFoyer, 'points');
 _n(articleIceTeaPeche, price50, 'prices', 'priceId');
 _n(articleIceTeaPeche, setCanettesf1e, 'sets');
 
 _1(articleEau, categoryGeneral, 'category');
-_n(articleEau, pointFoyer, 'points', 'pointId');
+_n(articleEau, pointFoyer, 'points');
 _n(articleEau, price50, 'prices');
 
 _1(articleIceTeaMangue, categoryCanettes, 'category');
-_1(articleIceTeaMangue, pointFoyer, 'point');
+_n(articleIceTeaMangue, pointFoyer, 'points');
 _n(articleIceTeaMangue, price50, 'prices', 'priceId');
 _n(articleIceTeaMangue, setCanettesf1e, 'sets');
 
 _1(articleLiptonic, categoryCanettes, 'category');
-_1(articleLiptonic, pointFoyer, 'point');
+_n(articleLiptonic, pointFoyer, 'points');
 _n(articleLiptonic, price50, 'prices', 'priceId');
 _n(articleLiptonic, setCanettesf1e, 'sets');
 
 _1(articleSchweppes, categoryCanettes, 'category');
-_1(articleSchweppes, pointFoyer, 'point');
+_n(articleSchweppes, pointFoyer, 'points');
 _n(articleSchweppes, price50, 'prices', 'priceId');
 _n(articleSchweppes, setCanettesf1e, 'sets');
 
 _1(articleSchweppesAgrum, categoryCanettes, 'category');
-_1(articleSchweppesAgrum, pointFoyer, 'point');
+_n(articleSchweppesAgrum, pointFoyer, 'points');
 _n(articleSchweppesAgrum, price50, 'prices', 'priceId');
 _n(articleSchweppesAgrum, setCanettesf1e, 'sets');
 
 _1(articleCocaCola, categoryCanettes, 'category');
-_1(articleCocaCola, pointFoyer, 'point');
+_n(articleCocaCola, pointFoyer, 'points');
 _n(articleCocaCola, price50, 'prices', 'priceId');
 _n(articleCocaCola, setCanettesf1e, 'sets');
 
 _1(articleCrepe, categoryGeneral, 'category');
-_1(articleCrepe, pointFoyer, 'foyer');
+_n(articleCrepe, pointFoyer, 'points');
 _n(articleCrepe, price50, 'prices', 'priceId');
 _n(articleCrepe, promotion3crepes, 'promotions');
 
 _1(articleBeer, categoryGeneral, 'category');
-_1(articleBeer, pointFoyer, 'foyer');
+_n(articleBeer, pointFoyer, 'points');
 _n(articleBeer, price250, 'prices', 'priceId');
 
 /* Categories - Relationships : articles */
