@@ -14,7 +14,9 @@ define('dataLoader', require => {
         promotionsLoaded    : false,
         configLoaded        : false,
         pointId             : '',
-        deviceId            : ''
+        deviceId            : '',
+        doubleValidation    : false,
+        offlineSupport      : false
     };
 
     dataLoader.methods = {
@@ -26,12 +28,13 @@ define('dataLoader', require => {
 
             // Get the device id and point id from the headers
 
-
             let loadArticles = new Promise(resolve => {
                 setTimeout(() => {
                     console.info('Loaded articles');
-                    this.articlesLoaded = true;
-                    this.articles       = data.articles;
+                    this.articlesLoaded   = true;
+                    this.articles         = data.articles;
+                    this.doubleValidation = data.devices[0].doubleValidation;
+                    this.offlineSupport   = data.devices[0].offlineSupport;
                     resolve();
                 }, 1500);
             });

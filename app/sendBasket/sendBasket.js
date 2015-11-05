@@ -25,7 +25,7 @@ define('sendBasket', () => {
                 return;
             }
 
-            if (this.config.doubleValidation) {
+            if (this.doubleValidation) {
                 // revalidated may be a MouseEvent
                 if (revalidated !== true) {
                     console.info('Entering double validation mode');

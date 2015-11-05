@@ -161,21 +161,25 @@ let categoryGeneral = {
 
 /* Devices */
 let deviceEeetop1 = {
-    id         : '180e1e56-79a4-4a9b-acfe-c397bb488131',
-    fingerprint: 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
-    name       : 'Eeetop1',
-    createdAt  : new Date(),
-    editedAt   : new Date(),
-    isRemoved  : false
+    id              : '180e1e56-79a4-4a9b-acfe-c397bb488131',
+    fingerprint     : 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
+    name            : 'Eeetop1',
+    doubleValidation: true,
+    offlineSupport  : true,
+    createdAt       : new Date(),
+    editedAt        : new Date(),
+    isRemoved       : false
 };
 
 let deviceEeetop2 = {
-    id         : '33433d25-7f12-48ac-8ea1-1f7ed4bd66f0',
-    fingerprint: 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
-    name       : 'Eeetop2',
-    createdAt  : new Date(),
-    editedAt   : new Date(),
-    isRemoved  : false
+    id              : '33433d25-7f12-48ac-8ea1-1f7ed4bd66f0',
+    fingerprint     : 'da39a3ee5e6b4b0d3255bfef95601890afd80709',
+    name            : 'Eeetop2',
+    doubleValidation: true,
+    offlineSupport  : true,
+    createdAt       : new Date(),
+    editedAt        : new Date(),
+    isRemoved       : false
 };
 
 /* Fundations */
@@ -712,11 +716,6 @@ _n(userGJ, molGJEtuMail, 'meansOfLogin');
         userGJ
     ];
 
-    let config = {
-        doubleValidation: true,
-        offlineSupport  : true
-    };
-
     let data = {
         articles,
         categories,
@@ -731,8 +730,7 @@ _n(userGJ, molGJEtuMail, 'meansOfLogin');
         promotions,
         rights,
         sets,
-        users,
-        config
+        users
     };
 
     if (typeof define === 'function') {
