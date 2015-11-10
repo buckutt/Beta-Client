@@ -444,6 +444,7 @@ let userGJ = {
     lastname   : 'Juchault',
     fullname   : 'Gabriel Juchault',
     nickname   : 'Extaze',
+    image      : 'shiba.jpg',
     pin        : '$2a$12$0Hgro3cPeVvZNWrpcBsT2O2AfAfMsoigS9na6V6esH3G462.WV2fm',
     password   : '$2a$12$aqJWiCvjD.azTpE2krKu3.1GDLHApaE.hfz2BM8pIeil.OJ1khST.',
     mail       : 'gabriel.juchault@utt.fr',
