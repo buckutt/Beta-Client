@@ -166,6 +166,7 @@ let deviceEeetop1 = {
     name            : 'Eeetop1',
     doubleValidation: true,
     offlineSupport  : true,
+    showPicture     : true,
     createdAt       : new Date(),
     editedAt        : new Date(),
     isRemoved       : false
@@ -177,6 +178,7 @@ let deviceEeetop2 = {
     name            : 'Eeetop2',
     doubleValidation: true,
     offlineSupport  : true,
+    showPicture     : true,
     createdAt       : new Date(),
     editedAt        : new Date(),
     isRemoved       : false
@@ -349,6 +351,15 @@ let pointFoyer = {
     isRemoved: false
 };
 
+/* PeriodPoint */
+let periodPointEternityForEEtop1BDE = {
+    id: '6eb7c859-1633-4395-972d-d1b4f8d17af8'
+};
+
+let periodPointEternityForEEtop2Foyer = {
+    id: '894c48d4-a06e-48e6-9398-930ca680eb08'
+};
+
 /* Prices */
 let price50 = {
     id       : '81b880dd-22f3-4a99-a28c-25e0a68030bc',
@@ -519,6 +530,8 @@ _n(categoryGeneral, articleBeer, 'articles');
 /* Devices - Relationships : points */
 _n(deviceEeetop1, pointFoyer, 'points');
 _n(deviceEeetop2, pointFoyer, 'points');
+_n(deviceEeetop1, periodPointEternityForEEtop1BDE, 'periodPoints');
+_n(deviceEeetop2, periodPointEternityForEEtop2Foyer, 'periodPoints');
 
 /* Fundations - Relationships : groups, prices */
 _n(fundationFoyer, price50, 'prices');
@@ -562,6 +575,14 @@ _n(pointFoyer, articleCrepe, 'articles');
 _n(pointFoyer, articleBeer, 'articles');
 _n(pointFoyer, promotionF1e, 'promotions');
 _n(pointFoyer, promotion3crepes, 'promotions');
+_n(pointFoyer, periodPointEternityForEEtop2Foyer, 'periodPoints');
+_n(pointBde, periodPointEternityForEEtop1BDE, 'periodPoints');
+
+/* PeriodPoint - Relationships : pointId, periodId */
+_1(periodPointEternityForEEtop1BDE, pointBde, 'pointId');
+_n(periodPointEternityForEEtop1BDE, deviceEeetop1, 'devices');
+_1(periodPointEternityForEEtop2Foyer, pointFoyer, 'periodId');
+_n(periodPointEternityForEEtop2Foyer, deviceEeetop2, 'devices');
 
 /* Prices - Relationships : fundation, group, period, articles, promotion */
 _1(price50, fundationFoyer, 'fundation');

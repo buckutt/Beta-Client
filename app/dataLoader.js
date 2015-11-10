@@ -12,9 +12,9 @@ define('dataLoader', require => {
         setsLoaded          : false,
         paymentMethodsLoaded: false,
         promotionsLoaded    : false,
-        configLoaded        : false,
-        pointId             : '',
-        deviceId            : '',
+        deviceLoaded        : false,
+        pointId             : 'adf24c29-fa1f-4561-8556-938da22f4897',
+        deviceId            : '180e1e56-79a4-4a9b-acfe-c397bb488131',
         doubleValidation    : false,
         offlineSupport      : false
     };
@@ -66,17 +66,17 @@ define('dataLoader', require => {
                 }, 750);
             });
 
-            let loadConfig = new Promise(resolve => {
+            let loadDevice = new Promise(resolve => {
                 setTimeout(() => {
-                    console.info('Loaded config');
-                    this.configLoaded = true;
-                    this.config       = data.config;
+                    console.info('Loaded device');
+                    this.deviceLoaded = true;
+                    this.device       = data.devices.filter(device => device.id === this.deviceId)[0];
                     resolve();
                 }, 400);
             });
 
             Promise
-                .all([loadArticles, loadPromotions, loadSets, loadPayments, loadConfig])
+                .all([loadArticles, loadPromotions, loadSets, loadPayments, loadDevice])
                 .then(() => {
                     this.startedLoading = false;
                 });

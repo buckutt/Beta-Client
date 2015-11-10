@@ -9,6 +9,22 @@
 }
 
 /* User info in header */
+.picture {
+    background: #34495e;
+    height: 112px;
+    position: absolute;
+    width: 100px;
+}
+
+.picture img {
+    margin-top: 6px;
+}
+
+.mdl-layout__header.with-picture {
+    width: calc(100% - 100px);
+    margin-left: 100px;
+}
+
 .mdl-layout__header .mdl-layout-spacer {
     font-size: 18px;
     line-height: 20px;

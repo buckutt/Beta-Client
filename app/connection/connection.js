@@ -21,6 +21,7 @@ const checkSerie = (vm, cardNumber) => {
         setTimeout(() => {
             console.info('User loaded !');
             vm.currentUser = require('buckuttData').users[0];
+            vm.showPicture = vm.device.showPicture;
 
             vm.userConnected = true;
         }, 500);
@@ -54,7 +55,8 @@ define('connection', require => {
         sellerConnected: false,
         sellerAuth     : false,
         userConnected  : false,
-        sellerCanReload: false
+        sellerCanReload: false,
+        showPicture    : false
     };
 
     connection.controller = vm => {
@@ -63,7 +65,6 @@ define('connection', require => {
                (vm.sellerConnected && !vm.sellerAuth) ||
                 vm.error ||
                 vm.startedLoading) {
-
                 if (!vm.inputIsForDoubleValidation) {
                     return;
                 }
