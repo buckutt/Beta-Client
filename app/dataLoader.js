@@ -3,7 +3,9 @@
 /* global define */
 
 define('dataLoader', require => {
-    const data = require('buckuttData');
+    const config         = require('config');
+    const q              = require('q');
+    const OfflineRequest = require('OfflineRequest');
 
     let dataLoader = {};
 
@@ -28,57 +30,64 @@ define('dataLoader', require => {
 
             // Get the device id and point id from the headers
 
-            let loadArticles = new Promise(resolve => {
-                setTimeout(() => {
-                    console.info('Loaded articles');
-                    this.articlesLoaded   = true;
-                    this.articles         = data.articles;
-                    this.doubleValidation = data.devices[0].doubleValidation;
-                    this.offlineSupport   = data.devices[0].offlineSupport;
-                    resolve();
-                }, 1500);
-            });
+            let notRemoved = {
+                field: 'isRemoved',
+                eq   : false
+            };
 
-            let loadPromotions = new Promise(resolve => {
-                setTimeout(() => {
-                    console.info('Loaded promotions');
+            let articlesJoin = {
+                category: true,
+                points  : true,
+                prices  : {
+                    fundation: true,
+                    group    : true,
+                    period   : true,
+                    promotion: true
+                }
+            };
+
+            OfflineRequest.get(`${config.baseURL}/articles/search?q=${q(notRemoved)}&embed=${q(articlesJoin)}`)
+                .then(response => {
+                    if (response.status === 401) {
+                        throw new Error('Pas de droits vendeurs');
+                    }
+
+                    this.articlesLoaded = true;
+                    this.articles       = response;
+
+                    return OfflineRequest.get(`${config.baseURL}/promotions/search?q=${q(notRemoved)}`);
+                })
+                .then(response => {
                     this.promotionsLoaded = true;
-                    this.promotions       = data.promotions;
-                    resolve();
-                }, 1000);
-            });
+                    this.promotions       = response;
 
-            let loadSets = new Promise(resolve => {
-                setTimeout(() => {
-                    console.info('Loaded sets');
+                    return OfflineRequest.get(`${config.baseURL}/sets/search?q=${q(notRemoved)}`);
+                })
+                .then(response => {
                     this.setsLoaded = true;
-                    this.sets       = data.sets;
-                    resolve();
-                }, 630);
-            });
+                    this.sets       = response;
 
-            let loadPayments = new Promise(resolve => {
-                setTimeout(() => {
-                    console.info('Loaded payment methods');
+                    return OfflineRequest.get(`${config.baseURL}/meansofpayment/search?q=${q(notRemoved)}`);
+                })
+                .then(response => {
                     this.paymentMethodsLoaded = true;
-                    this.paymentMethods       = data.meansOfPayment;
-                    resolve();
-                }, 750);
-            });
+                    this.paymentMethods       = response;
 
-            let loadDevice = new Promise(resolve => {
-                setTimeout(() => {
-                    console.info('Loaded device');
+                    return OfflineRequest.get(`${config.baseURL}/devices/search?q=${q(notRemoved)}`);
+                })
+                .then(response => {
                     this.deviceLoaded = true;
-                    this.device       = data.devices.filter(device => device.id === this.deviceId)[0];
-                    resolve();
-                }, 400);
-            });
-
-            Promise
-                .all([loadArticles, loadPromotions, loadSets, loadPayments, loadDevice])
+                    this.device       = response.filter(device => device.id === this.deviceId)[0];
+                })
                 .then(() => {
                     this.startedLoading = false;
+                })
+                .catch(err => {
+                    this.throwError(err.message);
+                    this.onEject();
+                    setTimeout(() => {
+                        this.startedLoading = false;
+                    }, 1000);
                 });
         }
     };

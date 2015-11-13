@@ -2,7 +2,10 @@
 
 /* global define */
 
-define('authInput', () => {
+define('authInput', require => {
+    const OfflineRequest = require('OfflineRequest');
+    const config         = require('config');
+
     let authInput   = {};
 
     let authingUser = false;
@@ -42,28 +45,37 @@ define('authInput', () => {
             authingUser = true;
 
             console.log('Password validate input');
-            setTimeout(() => {
-                const success = true;
 
-                if (success) {
-                    console.info('Seller auth-ed');
+            OfflineRequest
+                .post(`${config.baseURL}/services/login`, {
+                    meanOfLogin: 'etuId',
+                    data       : this.sellerCardNum.trim(),
+                    pin        : this.sellerPasswordInput
+                })
+                .then(response => {
+                    authingUser = false;
+
+                    if (response.status === 404) {
+                        this.throwError('Vendeur inconnu');
+
+                        return this.onEject();
+                    } else if (response.status === 401) {
+                        this.sellerPasswordInput = '';
+
+                        return this.throwError('Mot de passe invalide');
+                    }
+
+                    this.currentSeller = response.user;
+                    OfflineRequest.setBearer(response.token);
+
+                    this.sellerCardNum       = '';
+                    this.sellerPasswordInput = '';
+                    this.sellerConnected     = true;
+                    this.sellerCanReload     = true;
+                    this.sellerAuth          = true;
 
                     this.loadData();
-
-                    this.currentSeller = require('buckuttData').users[0];
-
-                    this.sellerPasswordInput = '';
-                    this.sellerAuth          = true;
-                } else {
-                    this.throwError('Mot de passe invalide');
-                    this.sellerPasswordInput = '';
-                }
-
-                // Wait for animations and nextTick
-                setTimeout(function () {
-                    authingUser = false;
-                }, 500);
-            }, 500);
+                });
         }
     };
 

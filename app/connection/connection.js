@@ -4,9 +4,12 @@
 
 /**
  * Checks the serie of number and do whatever it has to do (connect user or Seller)
- * @param {String} cardNumber The number serie
+ * @param {Vue}    vm             The vue instance
+ * @param {Object} config         The configuration
+ * @param {Class}  OfflineRequest The OfflineRequest module
+ * @param {String} cardNumber     The number serie
  */
-const checkSerie = (vm, cardNumber) => {
+const checkSerie = (vm, config, OfflineRequest, cardNumber) => {
     if (!cardNumber.isCardNumber()) {
         vm.throwError('Numéro de carte étu invalide');
 
@@ -18,6 +21,7 @@ const checkSerie = (vm, cardNumber) => {
         vm.revalidate(cardNumber);
     } else if (vm.sellerConnected && vm.sellerAuth) {
         console.info('User loading...');
+
         setTimeout(() => {
             console.info('User loaded !');
             vm.currentUser = require('buckuttData').users[0];
@@ -27,22 +31,16 @@ const checkSerie = (vm, cardNumber) => {
         }, 500);
     } else {
         console.info('Seller loading...');
-        setTimeout(() => {
-            const success = true;
 
-            if (success) {
-                console.info('Seller loaded !');
-                vm.sellerConnected = true;
-                vm.sellerCanReload = true;
-            } else {
-                vm.throwError('Numéro de carte étu non vendeur');
-            }
-        }, 500);
+        vm.sellerCardNum = cardNumber;
+        vm.sellerConnected = true;
     }
 };
 
 define('connection', require => {
-    const $ = require('$');
+    const OfflineRequest = require('OfflineRequest');
+    const config         = require('config');
+    const $              = require('$');
 
     let connection = {};
 
@@ -54,6 +52,7 @@ define('connection', require => {
         currentUser    : {},
         sellerConnected: false,
         sellerAuth     : false,
+        sellerCardNum  : '',
         userConnected  : false,
         sellerCanReload: false,
         showPicture    : false
@@ -77,7 +76,7 @@ define('connection', require => {
             clearTimeout(clearSerieTimeout);
 
             clearSerieTimeout = setTimeout(() => {
-                checkSerie(vm, serie);
+                checkSerie(vm, config, OfflineRequest, serie);
                 console.info('Checking');
                 serie = '';
             }, 1000);
