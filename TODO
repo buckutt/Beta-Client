@@ -1,10 +1,10 @@
 To do :
 
-* Real data input/output (articles, promotions, auth, basket)
 * Alcohol management (if any article contains alcohol last point)
 * Offline
 
 Working :
+* Real data input/output (articles, promotions, auth, basket)
 
 Done :
 * Show amount after disconnection
