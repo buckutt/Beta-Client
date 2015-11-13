@@ -1,10 +1,12 @@
 'use strict';
 
-/* global document, navigator, XMLHttpRequest */
+/* global define, document, navigator, XMLHttpRequest */
 
 const strictUriEncode = str =>
     encodeURIComponent(str)
     .replace(/[!'()*]/g, c => '%' + c.charCodeAt(0).toString(16));
+
+let bearer;
 
 class OfflineRequest {
     constructor (method, url, params) {
@@ -15,7 +17,13 @@ class OfflineRequest {
         const withDataMethods = ['post', 'put', 'patch'];
 
         if (withDataMethods.indexOf(this.method.toLowerCase()) === -1) {
-            this.url    = `${this.url}?${OfflineRequest.qs(this.params)}`;
+            this.url = `${this.url}`;
+            const qs = OfflineRequest.qs(this.params);
+
+            if (qs.length > 0) {
+                this.url += qs;
+            }
+
             this.params = null;
         } else {
             this.params = JSON.stringify(params);
@@ -47,6 +55,15 @@ class OfflineRequest {
             req.onerror = err => {
                 reject(err);
             };
+
+            OfflineRequest.pointId  = req.getResponseHeader('point');
+            OfflineRequest.deviceId = req.getResponseHeader('device');
+
+            if (bearer) {
+                req.setRequestHeader('Authorization', `Bearer ${bearer}`);
+            }
+
+            req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 
             if (navigator.onLine) {
                 req.send(this.params);
@@ -131,19 +148,15 @@ class OfflineRequest {
             .filter(x => x.length > 0)
             .join('&');
     }
+
+    static setBearer (bearer_) {
+        bearer = bearer_;
+    }
 }
 
 OfflineRequest.pendingRequests    = [];
 OfflineRequest.isWatchingForAlive = false;
+OfflineRequest.pointId;
+OfflineRequest.deviceId;
 
-OfflineRequest
-    .post('https://httpbin.org/post', {
-        a: 'c'
-    })
-    .then(response => {
-        console.log(response);
-    })
-    .catch(err => {
-        console.log('err', err);
-    });
-
+define('OfflineRequest', () => OfflineRequest);
