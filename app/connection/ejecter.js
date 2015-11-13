@@ -12,9 +12,10 @@ define('ejecter', () => {
         onEject() {
             if (!this.userConnected) {
                 console.info('-> Eject seller');
-                this.currentSeller   = {};
-                this.sellerConnected = false;
-                this.sellerAuth      = false;
+                this.currentSeller       = {};
+                this.sellerConnected     = false;
+                this.sellerPasswordInput = '';
+                this.sellerAuth          = false;
 
                 return;
             }
