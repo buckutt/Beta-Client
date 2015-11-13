@@ -6,13 +6,15 @@ requirejs.config({
     paths: {
         vue             : '/bower_components/vue/dist/vue',
         material        : '/bower_components/material-design-lite/material',
-        axios           : '/bower_components/axios/dist/axios.min.js',
 
+        config          : '/app/config',
+        OfflineRequest  : '/app/OfflineRequest',
         $               : '/app/utils/selector',
         $$              : '/app/utils/selector',
         uniq            : '/app/utils/uniq',
         parents         : '/app/utils/parents',
         cardNumber      : '/app/utils/cardNumber',
+        q               : '/app/utils/q',
         filterObjId     : '/app/utils/filterObjId',
         filterUndefined : '/app/utils/filterUndefined',
         listenOnce      : '/app/utils/listenOnce',
