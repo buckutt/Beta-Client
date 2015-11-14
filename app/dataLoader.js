@@ -15,8 +15,8 @@ define('dataLoader', require => {
         paymentMethodsLoaded: false,
         promotionsLoaded    : false,
         deviceLoaded        : false,
-        pointId             : 'adf24c29-fa1f-4561-8556-938da22f4897',
-        deviceId            : '180e1e56-79a4-4a9b-acfe-c397bb488131',
+        pointId             : '',
+        deviceId            : '',
         doubleValidation    : false,
         offlineSupport      : false
     };
@@ -51,6 +51,9 @@ define('dataLoader', require => {
                     if (response.status === 401) {
                         throw new Error('Pas de droits vendeurs');
                     }
+
+                    this.deviceId = OfflineRequest.deviceId;
+                    this.pointId  = OfflineRequest.pointId;
 
                     this.articlesLoaded = true;
                     this.articles       = response;

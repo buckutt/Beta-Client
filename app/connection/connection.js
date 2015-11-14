@@ -10,6 +10,8 @@
  * @param {String} cardNumber     The number serie
  */
 const checkSerie = (vm, config, OfflineRequest, cardNumber) => {
+    const q = require('q');
+
     if (!cardNumber.isCardNumber()) {
         vm.throwError('Numéro de carte étu invalide');
 
@@ -22,17 +24,55 @@ const checkSerie = (vm, config, OfflineRequest, cardNumber) => {
     } else if (vm.sellerConnected && vm.sellerAuth) {
         console.info('User loading...');
 
-        setTimeout(() => {
-            console.info('User loaded !');
-            vm.currentUser = require('buckuttData').users[0];
-            vm.showPicture = vm.device.showPicture;
+        let molSearchIsRemoved = q({
+            field: 'isRemoved',
+            eq   : false
+        });
 
-            vm.userConnected = true;
-        }, 500);
+        let molSearchType = q({
+            field: 'type',
+            eq   : 'etuId'
+        });
+
+        let molSearchData = q({
+            field: 'data',
+            eq   : cardNumber.trim()
+        });
+
+        let mol;
+        OfflineRequest
+            .get(`${config.baseURL}/meansoflogin/search` +
+                 `?q[]=${molSearchIsRemoved}&q[]=${molSearchType}&q[]=${molSearchData}`)
+            .then(response => {
+                if (!Array.isArray(response) || response.length === 0) {
+                    throw new Error('Utilisateur invalide');
+                }
+
+                mol = response[0];
+
+                return OfflineRequest.get(`${config.baseURL}/users/${mol.userId}`);
+            })
+            .then(response => {
+                if (!response.id) {
+                    throw new Error('Utilisateur invalide');
+                }
+
+                console.info('User loaded !');
+                let user = response;
+                user.meansoflogin = [
+                    mol
+                ];
+                vm.currentUser   = user;
+                vm.userConnected = true;
+                vm.showPicture = vm.device.showPicture;
+            })
+            .catch(err => {
+                vm.throwError(err.message);
+            });
     } else {
         console.info('Seller loading...');
 
-        vm.sellerCardNum = cardNumber;
+        vm.sellerCardNum   = cardNumber;
         vm.sellerConnected = true;
     }
 };

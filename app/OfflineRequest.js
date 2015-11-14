@@ -50,14 +50,14 @@ class OfflineRequest {
                 } else {
                     resolve(req.responseText);
                 }
+
+                OfflineRequest.pointId  = req.getResponseHeader('point');
+                OfflineRequest.deviceId = req.getResponseHeader('device');
             };
 
             req.onerror = err => {
                 reject(err);
             };
-
-            OfflineRequest.pointId  = req.getResponseHeader('point');
-            OfflineRequest.deviceId = req.getResponseHeader('device');
 
             if (bearer) {
                 req.setRequestHeader('Authorization', `Bearer ${bearer}`);
@@ -156,7 +156,7 @@ class OfflineRequest {
 
 OfflineRequest.pendingRequests    = [];
 OfflineRequest.isWatchingForAlive = false;
-OfflineRequest.pointId;
-OfflineRequest.deviceId;
+OfflineRequest.pointId            = '';
+OfflineRequest.deviceId           = '';
 
 define('OfflineRequest', () => OfflineRequest);
