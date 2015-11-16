@@ -2,43 +2,30 @@
 
 /* global define */
 
-define('filterPoint', require => {
+define('filterPoint', () => {
     let filterPoint = {};
 
-    let filterPointArticle = (article, i, articles, pointId) => {
+    let filterPointArticle = (article, pointId) => {
         let articleHasPoint = article.points
             .filter(point => point.id === pointId)
             .length > 0;
 
         if (!articleHasPoint) {
-            articles.splice(i, 1);
+            return null;
         }
 
         return article;
     };
 
-    filterPoint.data = {
-        silentWatch: false
-    };
-
-    filterPoint.controller = vm => {
-        vm.$watch('articles', function () {
-            if (this.silentWatch) {
-                return;
-            }
-
+    filterPoint.methods = {
+        /**
+         * Filters the most accurate point
+         */
+        filterPoint() {
             console.info('Filtering articles', this.articles.length);
 
-            this.silentWatch = true;
-
-            for (let i = this.articles.length - 1; i >= 0; i--) {
-                filterPointArticle(this.articles[i], i, this.articles, this.pointId);
-            }
-
-            require('vue').nextTick((function () {
-                this.silentWatch = false;
-            }));
-        });
+            this.articles = this.articles.map(article => filterPointArticle(article, this.pointId));
+        }
     };
 
     return filterPoint;

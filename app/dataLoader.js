@@ -46,6 +46,19 @@ define('dataLoader', require => {
                 }
             };
 
+            let promotionsJoin = {
+                price   : true,
+                articles: true,
+                sets    : {
+                    articles: true
+                }
+            };
+
+            let setsJoin = {
+                promotion: true,
+                articles : true
+            };
+
             OfflineRequest.get(`${config.baseURL}/articles/search?q=${q(notRemoved)}&embed=${q(articlesJoin)}`)
                 .then(response => {
                     if (response.status === 401) {
@@ -57,14 +70,16 @@ define('dataLoader', require => {
 
                     this.articlesLoaded = true;
                     this.articles       = response;
+                    this.filterBestPrice();
+                    this.filterPoint();
 
-                    return OfflineRequest.get(`${config.baseURL}/promotions/search?q=${q(notRemoved)}`);
+                    return OfflineRequest.get(`${config.baseURL}/promotions/search?q=${q(notRemoved)}&embed=${q(promotionsJoin)}`);
                 })
                 .then(response => {
                     this.promotionsLoaded = true;
                     this.promotions       = response;
 
-                    return OfflineRequest.get(`${config.baseURL}/sets/search?q=${q(notRemoved)}`);
+                    return OfflineRequest.get(`${config.baseURL}/sets/search?q=${q(notRemoved)}&embed=${q(setsJoin)}`);
                 })
                 .then(response => {
                     this.setsLoaded = true;

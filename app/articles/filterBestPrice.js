@@ -10,7 +10,8 @@ define('filterBestPrice', require => {
     const now = new Date();
 
     let filterBestPriceArticle = article => {
-        article.prices = article.prices.filter(price => (price.period.start <= now && now <= price.period.end));
+        article.prices = article.prices.filter(price => (new Date(price.period.start) <= now &&
+                                                         now <= new Date(price.period.end)));
 
         let min         = Infinity;
         let chosenPrice = null;
@@ -26,16 +27,14 @@ define('filterBestPrice', require => {
         return article;
     };
 
-    filterBestPrice.controller = vm => {
-        vm.$watch('articles', function () {
-            if (this.silentWatch) {
-                return;
-            }
-
-            console.info('Finding prices');
-
+    filterBestPrice.methods = {
+        /**
+         * Filters the best article price
+         */
+        filterBestPrice() {
+            console.info('Finding prices', this.articles.length);
             this.articles.forEach(article => filterBestPriceArticle(article));
-        });
+        }
     };
 
     return filterBestPrice;

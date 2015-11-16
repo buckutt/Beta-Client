@@ -87,6 +87,8 @@ function containsArticleFromSet (vm, basketCopy, set) {
 }
 
 define('promotions', () => {
+    const Vue = require('vue');
+
     let promotions = {};
 
     let articles_;
@@ -105,20 +107,17 @@ define('promotions', () => {
          */
         silentBasketOnce() {
             silent = true;
-        }
-    };
+        },
 
-    promotions.controller = vm => {
-        vm.$watch('basket', function (basket) {
+        /**
+         * Checks for promotions in the basket
+         */
+        checkForPromotions() {
             if (!this.promotionsLoaded || !this.articlesLoaded) {
                 return;
             }
 
-            if (silent === true) {
-                silent = false;
-
-                return;
-            }
+            let basket = this.basket;
 
             articles_   = sanitizeArticles(this.articles);
             promotions_ = sanitizePromotions(this.promotions);
@@ -135,7 +134,9 @@ define('promotions', () => {
                 // Count what needs to be found
                 let still       = promotion.articles.length + promotion.sets.length;
 
-                console.log('Promotion', promotion.id);
+                console.log(promotion);
+
+                console.log('Promotion', promotion.id, 'containing', still, 'items');
 
                 // First check if basket contains articles (more precise)
                 for (let j = 0; j < promotion.articles.length; j++) {
@@ -188,7 +189,7 @@ define('promotions', () => {
 
             this.basket           = basket;
             this.basketPromotions = basketPromotions;
-        });
+        }
     };
 
     return promotions;

@@ -3,7 +3,8 @@
 /* global define, document, MaterialMenu */
 
 define('promotionsEvents', require => {
-    const $$ = require('$$');
+    const Vue = require('vue');
+    const $$  = require('$$');
 
     let promotionsEvents = {};
 
@@ -17,7 +18,6 @@ define('promotionsEvents', require => {
                 newBasket = newBasket.concat(promotion.contents);
             });
 
-            this.silentBasketOnce();
             this.basket           = newBasket;
             this.basketPromotions = [];
         },

@@ -56,9 +56,8 @@ define('articles', require => {
             let id      = $target.getAttribute('data-id');
 
             this.basket.push(id);
-            Vue.nextTick(() => {
-                calculateCost(this);
-            });
+            this.checkForPromotions();
+            calculateCost(this);
 
             if ($target.hasAttribute('data-badge')) {
                 $target.setAttribute('data-badge', parseInt($target.getAttribute('data-badge'), 10) + 1 + '');
