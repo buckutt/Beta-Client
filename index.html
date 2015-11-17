@@ -120,7 +120,12 @@
 
             <div class="picture"
                  v-if="userConnected && showPicture">
-                <img :src="'images/' + currentUser.image" alt="User pic" width="100" height="100">
+                <template v-if="currentUser.image !== undefined">
+                    <img :src="'images/' + currentUser.image" alt="User pic" width="100" height="100">
+                </template>
+                <template v-if="currentUser.image === undefined">
+                    <i class="material-icons">face</i>
+                </template>
             </div>
             <header class="mdl-layout__header"
                     :class="{ 'with-picture': userConnected && showPicture }">

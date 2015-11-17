@@ -1,6 +1,6 @@
 'use strict';
 
-/* global define, componentHandler, MaterialLayoutTab */
+/* global define, componentHandler, location, MaterialLayoutTab */
 
 define('initTabs', require => {
     const Vue = require('vue');
@@ -20,7 +20,11 @@ define('initTabs', require => {
             let $layout = $('.mdl-js-layout');
 
             $tabs.forEach((tab, i) => {
-                new MaterialLayoutTab($tabs[i], $tabs, $panels, $layout.MaterialLayout);
+                try {
+                    new MaterialLayoutTab($tabs[i], $tabs, $panels, $layout.MaterialLayout);
+                } catch (e) {
+                    location.reload();
+                }
                 componentHandler.upgradeElement($tabs[i].children[0]);
             });
         }
