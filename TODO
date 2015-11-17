@@ -4,9 +4,11 @@ To do :
 * Offline
 
 Working :
-* Real data input/output (articles, promotions, auth, basket)
+* Send only price id
+* Show user icon when image is 404?
 
 Done :
+* Real data input/output (articles, promotions, auth, basket)
 * Show amount after disconnection
 * Double validation (second one made by user)
 * Reloader rights
