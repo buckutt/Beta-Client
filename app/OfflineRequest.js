@@ -115,7 +115,6 @@ class OfflineRequest {
         OfflineRequest.pendingRequests.forEach(req_ => {
             let req  = req_[0];
             let data = req_[1];
-            debugger;
             req.send(data);
         });
     }

@@ -2,7 +2,10 @@
 
 /* global define */
 
-define('sendBasket', () => {
+define('sendBasket', require => {
+    const config         = require('config');
+    const OfflineRequest = require('OfflineRequest');
+
     let sendBasket = {};
 
     sendBasket.data = {
@@ -91,24 +94,43 @@ define('sendBasket', () => {
             });
 
             console.info('Basket sending', basketToSend);
-            setTimeout(() => {
-                const success      = true;
-                this.loadingBasket = false;
+            OfflineRequest
+                .post(`${config.baseURL}/services/basket`, basketToSend)
+                .then(response => {
+                    this.loadingBasket = false;
 
-                if (success) {
-                    this.lastCredit = this.totalCost;
-                    this.lastReload = this.totalReload;
-                    this.lastAmount = this.currentUser.credit - this.totalCost + this.totalReload;
-                    this.lastUser   = this.currentUser.fullname;
+                    if (response.hasOwnProperty('newCredit')) {
+                        this.lastCredit = this.totalCost;
+                        this.lastReload = this.totalReload;
+                        this.lastAmount = this.currentUser.credit - this.totalCost + this.totalReload;
+                        this.lastUser   = this.currentUser.fullname;
 
-                    this.onEject();
-                } else {
-                    let error = 'Impossible d\'enregistrer les achats ou de déduire le crédit de l\'utilisateur.<br>';
-                    error    += 'Si un rechargement par carte a été effectué, le débit a eu lieu.<br>';
-                    error    += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckutt.';
-                    this.throwError(error);
-                }
-            }, 500);
+                        this.onEject();
+                    } else {
+                        let error = 'Impossible d\'enregistrer les achats ou de déduire le crédit de l\'utilisateur.<br>';
+                        error    += 'Si un rechargement par carte a été effectué, le débit a eu lieu.<br>';
+                        error    += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckutt.';
+                        this.throwError(error);
+                    }
+                });
+            // setTimeout(() => {
+            //     const success      = true;
+            //     this.loadingBasket = false;
+
+            //     if (success) {
+            //         this.lastCredit = this.totalCost;
+            //         this.lastReload = this.totalReload;
+            //         this.lastAmount = this.currentUser.credit - this.totalCost + this.totalReload;
+            //         this.lastUser   = this.currentUser.fullname;
+
+            //         this.onEject();
+            //     } else {
+            //         let error = 'Impossible d\'enregistrer les achats ou de déduire le crédit de l\'utilisateur.<br>';
+            //         error    += 'Si un rechargement par carte a été effectué, le débit a eu lieu.<br>';
+            //         error    += 'Vous pouvez réessayer l\'achat ou concacter l\'équipe gérant Buckutt.';
+            //         this.throwError(error);
+            //     }
+            // }, 500);
         }
     };
 

@@ -36,7 +36,6 @@ requirejs.config({
         doubleValidation: '/app/sendBasket/doubleValidation',
         askReload       : '/app/reloads/askReload',
         reloadMenu      : '/app/reloads/reloadMenu',
-        buckuttData     : '/app/buckuttData',
         dataLoader      : '/app/dataLoader'
     }
 });
@@ -76,7 +75,6 @@ define('app', require => {
     modules.push(require('doubleValidation'));
     modules.push(require('askReload'));
     modules.push(require('reloadMenu'));
-    modules.push(require('buckuttData'));
     modules.push(require('dataLoader'));
     modules.push(require('filterPoint'));
 
