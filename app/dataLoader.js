@@ -95,7 +95,7 @@ define('dataLoader', require => {
                 })
                 .then(response => {
                     this.deviceLoaded = true;
-                    this.device       = response.filter(device => device.id === this.deviceId)[0];
+                    this.device       = response.filterObjId(this.deviceId);
                 })
                 .then(() => {
                     this.startedLoading = false;

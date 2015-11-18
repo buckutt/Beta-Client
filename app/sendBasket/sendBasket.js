@@ -55,7 +55,7 @@ define('sendBasket', require => {
             }
 
             this.basket.forEach(articleId => {
-                let article = this.articles.filter(article => article.id === articleId)[0];
+                let article = this.articles.filterObjId(articleId);
                 basketToSend.push({
                     buyerId    : this.currentUser.id,
                     fundationId: article.fundationId,
@@ -70,7 +70,7 @@ define('sendBasket', require => {
             this.basketPromotions.forEach(basketPromo => {
                 let promoId        = basketPromo.id;
                 let articlesInside = basketPromo.contents;
-                let promo          = this.promotions.filter(promoToCheck => promoToCheck.id === promoId)[0];
+                let promo          = this.promotions.filterObjId(promoId);
 
                 basketToSend.push({
                     buyerId    : this.currentUser.id,

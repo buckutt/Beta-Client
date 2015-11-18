@@ -6,9 +6,7 @@ define('filterPoint', () => {
     let filterPoint = {};
 
     let filterPointArticle = (article, pointId) => {
-        let articleHasPoint = article.points
-            .filter(point => point.id === pointId)
-            .length > 0;
+        let articleHasPoint = article.points.filterObjId(pointId) !== undefined;
 
         if (!articleHasPoint) {
             return null;
