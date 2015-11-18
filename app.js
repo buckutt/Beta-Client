@@ -1,6 +1,6 @@
 'use strict';
 
-/* global requirejs, define, window */
+/* global requirejs, define, window, componentHandler */
 
 requirejs.config({
     paths: {
@@ -97,6 +97,8 @@ define('app', require => {
             module.controller(app);
         }
     });
+
+    componentHandler.upgradeAllRegistered();
 
     window.app = app;
 });
