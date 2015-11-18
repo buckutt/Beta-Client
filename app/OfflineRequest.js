@@ -66,7 +66,11 @@ class OfflineRequest {
             req.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
 
             if (navigator.onLine) {
-                req.send(this.params);
+                try {
+                    req.send(this.params);
+                } catch (err) {
+                    reject(err);
+                }
             } else {
                 OfflineRequest.pendingRequests.push([req, this.params]);
             }

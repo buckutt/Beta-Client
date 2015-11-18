@@ -75,6 +75,13 @@ define('authInput', require => {
                     this.sellerAuth          = true;
 
                     this.loadData();
+                })
+                .catch(e => {
+                    if (e.type === 'error') {
+                        this.throwError('Impossible de se connecter');
+
+                        return this.onEject();
+                    }
                 });
         }
     };
