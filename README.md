@@ -6,7 +6,8 @@ Required : node/io.js, npm, bower, gulp, static
 
 ```sh
 sudo apt-get install node npm
-sudo npm install -g gulp bower node-static
+sudo npm install -g gulp bower node-static webpack webpack-dev-server
+npm install
 bower install
 ```
 
@@ -15,10 +16,18 @@ bower install
 Add `window.MaterialLayoutTab = MaterialLayoutTab;` after function declaration (
 `function MaterialLayoutTab(tab, tabs, panels, layout) {`)
 
-## Starting
+## Building
 
 ```sh
-static
+npm run build
+```
+
+## Starting
+
+Will build+watch the project
+
+```sh
+npm run dev
 ```
 
 Open browser at http://localhost:8080/
